@@ -1,0 +1,59 @@
+.bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0 var(--space-2);
+}
+
+.plate {
+  display: flex;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2) var(--space-2);
+  background: linear-gradient(#33322f, #191816);
+  border: 2px solid #050505;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  box-shadow: var(--shadow-bubble);
+}
+
+.pip {
+  width: clamp(16px, 4.5vw, 28px);
+  height: auto;
+}
+
+.historyTab {
+  border: none;
+  cursor: pointer;
+  background: #191816;
+  border-radius: 0 0 50% 50%;
+  width: clamp(56px, 14vw, 88px);
+  height: clamp(40px, 9vw, 60px);
+  display: grid;
+  place-items: center;
+  box-shadow: var(--shadow-bubble);
+}
+
+.arrowUp,
+.arrowDown {
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+}
+
+.arrowUp {
+  border-bottom: 16px solid var(--color-parchment);
+}
+
+.arrowDown {
+  border-top: 16px solid var(--color-parchment);
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

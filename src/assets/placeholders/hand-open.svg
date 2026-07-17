@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420">
+<path d="M 30 420 Q 40 300 150 270 Q 280 230 430 260 Q 560 290 580 380 L 580 420 Z" fill="#d9cbb2"/>
+   <path d="M 150 270 Q 170 320 165 380 M 260 250 Q 285 320 275 385 M 370 250 Q 400 320 390 390 M 470 275 Q 500 330 490 395" stroke="#b3a180" stroke-width="12" fill="none"/>
+  <rect x="1" y="1" width="598" height="418" fill="none" stroke="#8a6d3b" stroke-width="2" stroke-dasharray="10 6" opacity="0.6"/>
+  <text x="300" y="406" text-anchor="middle" font-family="Georgia, serif" font-size="23.333333333333332" fill="#8a6d3b" opacity="0.85">PLACEHOLDER · hand.open</text>
+</svg>

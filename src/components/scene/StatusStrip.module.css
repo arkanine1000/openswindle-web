@@ -1,0 +1,49 @@
+.strip {
+  /* Mobile: wide and shifted right so the hand overlaps its left corner,
+   * like the reference's "Bid 5 ones" bar. Fixed so it pins to the viewport
+   * edge no matter where in the scene it is rendered (the stage is
+   * full-viewport). */
+  position: fixed;
+  z-index: var(--z-hud);
+  bottom: var(--space-3);
+  left: 56%;
+  transform: translateX(-50%);
+  min-width: 72vw;
+  max-width: 90vw;
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-parchment);
+  color: var(--color-ink);
+  border: none;
+  border-radius: var(--radius-chip);
+  box-shadow: var(--shadow-bubble);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-lg);
+  text-align: center;
+}
+
+button.strip {
+  cursor: pointer;
+}
+
+button.strip:hover {
+  background: var(--color-parchment-shade);
+}
+
+.top {
+  /* Narration banner: pinned under the HUD instead of the action edge. */
+  bottom: auto;
+  top: clamp(64px, 15vw, 88px);
+  left: 50%;
+}
+
+@media (min-width: 768px) {
+  .strip {
+    left: 50%;
+    min-width: min(60vw, 340px);
+  }
+
+  .top {
+    top: 76px;
+  }
+}

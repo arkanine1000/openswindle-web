@@ -1,0 +1,14 @@
+.chip {
+  /* Its own line beneath the table talk, centered — readability over the
+   * reference's inline placement. */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  width: fit-content;
+  margin: var(--space-2) auto 0;
+}
+
+.count {
+  font-size: var(--text-lg);
+}

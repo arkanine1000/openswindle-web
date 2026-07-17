@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
+<ellipse cx="400" cy="175" rx="150" ry="175" fill="#5d6b5a"/>
+     <path d="M 0 1000 Q 25 470 400 395 Q 775 470 800 1000 Z" fill="#5d6b5a"/>
+     <path d="M 60 840 Q 400 660 740 840 L 740 1000 L 60 1000 Z" fill="#4c453e"/>
+     <circle cx="345" cy="150" r="17" fill="#241d15"/>
+     <circle cx="455" cy="150" r="17" fill="#241d15"/>
+     <path d="M 340 255 Q 400 290 460 255" stroke="#241d15" stroke-width="12" fill="none"/>
+  <rect x="1" y="1" width="798" height="998" fill="none" stroke="#8a6d3b" stroke-width="2" stroke-dasharray="10 6" opacity="0.6"/>
+  <text x="400" y="986" text-anchor="middle" font-family="Georgia, serif" font-size="44.44444444444444" fill="#8a6d3b" opacity="0.85">PLACEHOLDER · npc.variant-1.seated</text>
+</svg>

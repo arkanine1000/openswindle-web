@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<defs>
+         <radialGradient id="body" cx="0.38" cy="0.3" r="1">
+           <stop offset="0%" stop-color="#c9707a"/>
+           <stop offset="55%" stop-color="#b54a55"/>
+           <stop offset="100%" stop-color="#8f2f3a"/>
+         </radialGradient>
+       </defs>
+       <ellipse cx="100" cy="180" rx="78" ry="12" fill="#000000" opacity="0.3"/>
+       <path d="M 91 30 Q 100 14 109 30 L 183 156 Q 192 172 174 172 L 26 172 Q 8 172 17 156 Z"
+             fill="url(#body)" stroke="#611f27" stroke-width="5" stroke-linejoin="round"/>
+       <path d="M 109 30 L 183 156 Q 192 172 174 172 L 148 172 Q 160 96 104 34 Z"
+             fill="#8f2f3a" opacity="0.55"/>
+       <path d="M 91 30 Q 100 14 109 30 L 116 42 Q 100 30 84 42 Z" fill="#ffffff" opacity="0.35"/>
+       <path d="M 26 172 L 174 172" stroke="#611f27" stroke-width="7" opacity="0.5" stroke-linecap="round"/>
+       <circle cx="72" cy="70" r="1.6" fill="#f6f2e7" opacity="0.16"/>
+<circle cx="128" cy="82" r="2.2" fill="#611f27" opacity="0.16"/>
+<circle cx="96" cy="60" r="2.8" fill="#f6f2e7" opacity="0.16"/>
+<circle cx="60" cy="128" r="1.6" fill="#611f27" opacity="0.16"/>
+<circle cx="142" cy="130" r="2.2" fill="#f6f2e7" opacity="0.16"/>
+<circle cx="104" cy="150" r="2.8" fill="#611f27" opacity="0.16"/>
+<circle cx="82" cy="108" r="1.6" fill="#f6f2e7" opacity="0.16"/>
+<circle cx="120" cy="116" r="2.2" fill="#611f27" opacity="0.16"/>
+       <circle cx="100" cy="88" r="13" fill="#f6f2e7"/>
+           <circle cx="100" cy="88" r="13" fill="none" stroke="#611f27" stroke-opacity="0.4" stroke-width="2.5"/>
+           <circle cx="96" cy="84" r="3.5" fill="#ffffff" opacity="0.85"/>
+<circle cx="76" cy="140" r="13" fill="#f6f2e7"/>
+           <circle cx="76" cy="140" r="13" fill="none" stroke="#611f27" stroke-opacity="0.4" stroke-width="2.5"/>
+           <circle cx="72" cy="136" r="3.5" fill="#ffffff" opacity="0.85"/>
+<circle cx="124" cy="140" r="13" fill="#f6f2e7"/>
+           <circle cx="124" cy="140" r="13" fill="none" stroke="#611f27" stroke-opacity="0.4" stroke-width="2.5"/>
+           <circle cx="120" cy="136" r="3.5" fill="#ffffff" opacity="0.85"/>
+  <rect x="1" y="1" width="198" height="198" fill="none" stroke="#8a6d3b" stroke-width="2" stroke-dasharray="10 6" opacity="0.6"/>
+  <text x="100" y="186" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#8a6d3b" opacity="0.85">die.npc.3</text>
+</svg>

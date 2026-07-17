@@ -1,0 +1,26 @@
+.table {
+  position: absolute;
+  z-index: var(--z-table);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--table-h);
+}
+
+.table::before {
+  /* Soft edge where the table meets the room. */
+  content: '';
+  position: absolute;
+  top: -18px;
+  left: 0;
+  right: 0;
+  height: 18px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent);
+  pointer-events: none;
+}
+
+.table img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

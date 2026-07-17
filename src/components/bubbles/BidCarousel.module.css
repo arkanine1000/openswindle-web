@@ -1,0 +1,62 @@
+.viewport {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  touch-action: pan-y;
+}
+
+.strip {
+  display: flex;
+  cursor: grab;
+}
+
+.strip:active {
+  cursor: grabbing;
+}
+
+.item {
+  flex: 0 0 76px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.item[data-selectable='false'] {
+  cursor: default;
+}
+
+.count {
+  font-size: var(--text-lg);
+}
+
+.callLabel {
+  font-size: var(--text-sm);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-danger);
+  padding: var(--space-3) 0;
+}
+
+.fadeLeft,
+.fadeRight {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12%;
+  pointer-events: none;
+}
+
+.fadeLeft {
+  left: 0;
+  background: linear-gradient(to right, var(--color-bubble), transparent);
+}
+
+.fadeRight {
+  right: 0;
+  background: linear-gradient(to left, var(--color-bubble), transparent);
+}

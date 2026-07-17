@@ -1,0 +1,8 @@
+.row {
+  position: absolute;
+  z-index: var(--z-hand);
+  right: 6%;
+  bottom: calc(var(--table-h) * 0.45);
+  display: flex;
+  gap: var(--space-1);
+}

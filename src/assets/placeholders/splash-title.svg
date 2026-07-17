@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400">
+<rect width="1200" height="400" fill="none"/>
+   <text x="600" y="215" text-anchor="middle" font-family="Georgia, serif" font-size="120" fill="#f4efe4">SWINDLESTONES</text>
+   <path d="M 300 270 L 900 270" stroke="#8a6d3b" stroke-width="4"/>
+   <path d="M 560 60 L 585 105 L 535 105 Z" fill="#4a7fb5"/>
+   <path d="M 640 60 L 665 105 L 615 105 Z" fill="#b54a55"/>
+  <rect x="1" y="1" width="1198" height="398" fill="none" stroke="#8a6d3b" stroke-width="2" stroke-dasharray="10 6" opacity="0.6"/>
+  <text x="600" y="386" text-anchor="middle" font-family="Georgia, serif" font-size="22.22222222222222" fill="#8a6d3b" opacity="0.85">PLACEHOLDER · splash.title</text>
+</svg>

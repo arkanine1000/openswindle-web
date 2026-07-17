@@ -1,0 +1,42 @@
+.bubble {
+  position: relative;
+  background: var(--color-bubble);
+  color: var(--color-ink);
+  border-radius: var(--radius-bubble);
+  box-shadow: var(--shadow-bubble);
+  padding: var(--space-3) var(--space-4);
+  max-width: min(64vw, 340px);
+  font-size: var(--text-base);
+  line-height: 1.35;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .bubble {
+    padding: var(--space-4) var(--space-5);
+    max-width: min(36vw, 420px);
+    font-size: var(--text-lg);
+  }
+}
+
+.bubble::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 14px solid transparent;
+}
+
+/* Tail toward the NPC (bubble sits left of the figure). */
+.tailNpc::after {
+  right: -22px;
+  top: 38%;
+  border-left-color: var(--color-bubble);
+}
+
+/* Tail toward the player's seat (lower left). */
+.tailPlayer::after {
+  left: -20px;
+  bottom: 22%;
+  border-right-color: var(--color-bubble);
+}

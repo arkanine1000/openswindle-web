@@ -1,0 +1,64 @@
+/*
+ * Design tokens — the only place magic values live.
+ * Component modules consume var() exclusively.
+ */
+:root {
+  /* Palette — inked parchment over dark wood */
+  --color-ink: #1d1812;
+  --color-parchment: #f4efe4;
+  --color-parchment-shade: #e6ddc9;
+  --color-bubble: #f8f5ec;
+  --color-bubble-ghost: rgba(248, 245, 236, 0.45);
+  --color-wood: #3a2d20;
+  --color-wood-dark: #241b12;
+  --color-backdrop: #17130e;
+  --color-player: #4a7fb5; /* player dice blue */
+  --color-player-deep: #2f5f92;
+  --color-npc: #b54a55; /* npc dice red */
+  --color-npc-deep: #8f2f3a;
+  --color-pip-lost: #2b2b2b;
+  --color-accent: #8a6d3b; /* brass/gold trim */
+  --color-danger: #a33326;
+  --color-success: #3f7d4e;
+  --color-text-faint: rgba(29, 24, 18, 0.55);
+
+  /* Type */
+  --font-serif: 'Sorts Mill Goudy', 'Iowan Old Style', Georgia, serif;
+  --text-sm: 0.85rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.6rem;
+  --text-hero: clamp(2.4rem, 8vw, 4.5rem);
+
+  /* Space */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-8: 3rem;
+
+  /* Radii & chrome */
+  --radius-bubble: 1.1rem;
+  --radius-chip: 0.5rem;
+  --shadow-bubble: 0 2px 10px rgba(0, 0, 0, 0.35);
+  --shadow-sheet: 0 6px 24px rgba(0, 0, 0, 0.5);
+
+  /* Z-layers (documented scale; never use raw numbers).
+   * The NPC sits in front of the table (their body overlaps its top edge,
+   * shadow and all), and the player's hand is the foremost scenery — it
+   * overlaps even the bottom status strip. */
+  --z-backdrop: 0;
+  --z-table: 20;
+  --z-npc: 25;
+  --z-bubbles: 40;
+  --z-hand: 45;
+  --z-hud: 50;
+  --z-overlay: 60;
+
+  /* Motion */
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 600ms;
+}

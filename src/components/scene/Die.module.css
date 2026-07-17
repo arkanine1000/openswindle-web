@@ -1,0 +1,12 @@
+.die {
+  width: clamp(48px, 12vw, 88px);
+  height: auto;
+  user-select: none;
+}
+
+.small {
+  width: 2.6em;
+  height: auto;
+  vertical-align: middle;
+  user-select: none;
+}

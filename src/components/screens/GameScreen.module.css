@@ -1,0 +1,107 @@
+/* The rolling conversation window: bottom-anchored column above the table.
+ * Mobile: every bubble's right edge lands on the same line (the gap is on
+ * the left), clear of the opponent's face. */
+.conversation {
+  position: absolute;
+  left: var(--space-3);
+  right: 25%;
+  bottom: calc(var(--table-h) + var(--space-6));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: var(--space-3);
+  max-height: calc(100dvh - var(--table-h) - 18dvh);
+  overflow: hidden;
+}
+
+.youRow,
+.npcRow {
+  display: flex;
+  max-width: 100%;
+}
+
+.callShout {
+  font-size: var(--text-xl);
+  letter-spacing: 0.08em;
+  margin-left: var(--space-2);
+}
+
+.introCard {
+  position: absolute;
+  top: 16dvh;
+  left: var(--space-4);
+  max-width: min(74vw, 380px);
+  background: var(--color-parchment);
+  border-radius: var(--radius-chip);
+  box-shadow: var(--shadow-sheet);
+  padding: var(--space-4) var(--space-5);
+}
+
+.introCard h1 {
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-2);
+}
+
+.introCard p {
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.walkAway {
+  /* Tucked under your own dice pips, clear of the hand and the strip. */
+  position: absolute;
+  z-index: var(--z-hud);
+  left: var(--space-3);
+  top: clamp(56px, 13vw, 76px);
+  background: none;
+  border: none;
+  color: var(--color-parchment);
+  opacity: 0.45;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.walkAway:hover {
+  opacity: 0.9;
+}
+
+.errorToast {
+  position: absolute;
+  z-index: var(--z-overlay);
+  top: 12dvh;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 84vw;
+  background: var(--color-parchment);
+  color: var(--color-danger);
+  border: none;
+  border-radius: var(--radius-chip);
+  box-shadow: var(--shadow-sheet);
+  padding: var(--space-3) var(--space-5);
+  font-style: italic;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .conversation {
+    /* Desktop: the column sits between the two players; your bubbles hug
+     * its left edge, theirs the right, chronology top to bottom. */
+    left: 8%;
+    right: 42%;
+    bottom: calc(var(--table-h) + var(--space-8));
+  }
+
+  .youRow {
+    align-self: flex-start;
+  }
+
+  .npcRow {
+    align-self: flex-end;
+  }
+
+  .introCard {
+    left: 10%;
+    top: 20dvh;
+  }
+}

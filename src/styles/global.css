@@ -1,0 +1,38 @@
+/* Kept intentionally tiny: reset, fonts, body. Everything else is a CSS Module. */
+@import '@fontsource/sorts-mill-goudy/400.css';
+@import '@fontsource/sorts-mill-goudy/400-italic.css';
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  color: var(--color-ink);
+  background: var(--color-backdrop);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}

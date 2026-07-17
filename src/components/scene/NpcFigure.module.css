@@ -1,0 +1,10 @@
+.figure {
+  width: 100%;
+}
+
+.pose {
+  width: 100%;
+  display: block;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.45));
+  user-select: none;
+}
