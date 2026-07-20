@@ -1,6 +1,6 @@
 /* The rolling conversation window: bottom-anchored column above the table.
- * Mobile: every bubble's right edge lands on the same line (the gap is on
- * the left), clear of the opponent's face. */
+ * Your bubbles hug its left edge, theirs the right, at every breakpoint;
+ * text inside stays centered. */
 .conversation {
   position: absolute;
   left: var(--space-3);
@@ -9,7 +9,6 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  align-items: flex-end;
   gap: var(--space-3);
   max-height: calc(100dvh - var(--table-h) - 18dvh);
   overflow: hidden;
@@ -19,6 +18,14 @@
 .npcRow {
   display: flex;
   max-width: 100%;
+}
+
+.youRow {
+  align-self: flex-start;
+}
+
+.npcRow {
+  align-self: flex-end;
 }
 
 .bidLine {
@@ -93,19 +100,10 @@
 
 @media (min-width: 768px) {
   .conversation {
-    /* Desktop: the column sits between the two players; your bubbles hug
-     * its left edge, theirs the right, chronology top to bottom. */
+    /* Desktop: the column sits between the two players. */
     left: 8%;
     right: 42%;
     bottom: calc(var(--table-h) + var(--space-8));
-  }
-
-  .youRow {
-    align-self: flex-start;
-  }
-
-  .npcRow {
-    align-self: flex-end;
   }
 
   .introCard {
