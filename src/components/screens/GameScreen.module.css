@@ -142,7 +142,7 @@
     left: 8%;
     right: 42%;
     bottom: calc(29dvh + 2.5rem);
-    gap: var(--space-5);
+    gap: var(--space-3);
   }
 
   .introCard {

@@ -28,6 +28,11 @@
 }
 
 @media (min-width: 768px) {
+  .dice {
+    /* Further into the palm at desktop scale, where the hand art is wider. */
+    left: 14%;
+  }
+
   .dice > * + * {
     margin-left: -26px;
   }

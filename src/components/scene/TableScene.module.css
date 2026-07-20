@@ -70,13 +70,16 @@
 
   .npcLayer {
     /* The opponent dominates the right side; same table-line anchor and
-     * sink as mobile. */
-    right: 1%;
-    width: min(42vw, 74dvh);
+     * sink as mobile. Pulled in off the edge and trimmed ~7% at wide
+     * widths, where they otherwise crowded the frame. */
+    /* Kept clear of the conversation column, which ends at right: 42%. */
+    right: 10%;
+    width: min(39vw, 69dvh);
   }
 
   .handLayer {
     bottom: 0;
-    width: min(34vw, 480px);
+    /* Up the same ~7%, keeping the two sides of the table in scale. */
+    width: min(36vw, 515px);
   }
 }
