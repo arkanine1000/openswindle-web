@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  MAX_TALK_LENGTH,
   TABLE_TALK,
   markTalkUsed,
   pickTalk,
@@ -33,6 +34,14 @@ describe('TABLE_TALK', () => {
     expect(TABLE_TALK).toHaveLength(5);
     for (const phrases of TABLE_TALK) {
       expect(phrases.length).toBeGreaterThanOrEqual(8);
+    }
+  });
+
+  it('keeps every phrase within the mobile bubble budget', () => {
+    for (const phrases of TABLE_TALK) {
+      for (const phrase of phrases) {
+        expect(phrase.length, phrase).toBeLessThanOrEqual(MAX_TALK_LENGTH);
+      }
     }
   });
 });

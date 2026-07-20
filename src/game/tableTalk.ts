@@ -8,6 +8,10 @@
 
 export type TalkLevel = 0 | 1 | 2 | 3 | 4;
 
+/** The longest line the mobile bid bubble fits without wrapping badly —
+ * "Pray, if that's your habit." — sets the budget for every phrase. */
+export const MAX_TALK_LENGTH = 27;
+
 /** Eight short phrases per level, small talk through open taunting. */
 export const TABLE_TALK: readonly (readonly string[])[] = [
   [
@@ -15,49 +19,49 @@ export const TABLE_TALK: readonly (readonly string[])[] = [
     'Watered ale, this.',
     'Easy start.',
     'The night is long.',
-    'A gentle opening, nothing more.',
-    'Barely worth the breath, this one.',
+    'A gentle opening.',
+    'Barely worth the breath.',
     'Warm fire, low stakes.',
-    "We're just getting acquainted.",
+    'Just getting acquainted.',
   ],
   [
     'Just feeling the table.',
     'A friendly wager.',
     'Nothing reckless. Yet.',
     'Follow me up?',
-    "Let's see what you're made of.",
-    'A little pressure on the seams.',
-    "I've thrown bolder in my sleep.",
-    'Your move. Make it interesting.',
+    'What are you made of?',
+    'Testing the seams.',
+    'I bid bolder in my sleep.',
+    'Make it interesting.',
   ],
   [
     'The stones favour me.',
     'Start counting.',
     'Match that.',
     'You look pale, friend.',
-    "I'd fold now, while it's cheap.",
-    'The odds lean my way, and you know it.',
-    'That twitch of yours says plenty.',
-    'Getting steep for you, is it?',
+    "Fold now, while it's cheap.",
+    'The odds lean my way.',
+    'That twitch says plenty.',
+    'Getting steep, is it?',
   ],
   [
     'Push back, if you dare.',
     'Your luck thins.',
     'I smell doubt.',
     'Count and weep.',
-    "You've followed me too far already.",
-    'One more step and you drown.',
-    "Bold words won't save your stones.",
-    "I've buried better players than you.",
+    'You followed too far.',
+    'One more step, you drown.',
+    "Words won't save you.",
+    "I've buried better players.",
   ],
   [
     "You're bluffing.",
     'This is where you break.',
     'Call it, coward.',
     'No nerve for it.',
-    'Every stone on the table says you fold.',
-    'Look me in the eye and call it.',
-    'This ends with your cup empty.',
+    'Every stone says you fold.',
+    'Meet my eye and call it.',
+    'Your cup leaves here empty.',
     "Pray, if that's your habit.",
   ],
 ];
