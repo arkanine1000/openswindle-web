@@ -55,13 +55,15 @@
   /* Z-layers (documented scale; never use raw numbers).
    * The NPC sits in front of the table (their body overlaps its top edge,
    * shadow and all), and the player's hand is the foremost scenery — it
-   * overlaps even the bottom status strip. */
+   * overlaps even the bottom status strip, which is why it outranks the HUD
+   * despite coming before it in the reading order. The hand never takes
+   * pointer events, so the strip underneath stays tappable. */
   --z-backdrop: 0;
   --z-table: 20;
   --z-npc: 25;
   --z-bubbles: 40;
-  --z-hand: 45;
   --z-hud: 50;
+  --z-hand: 55;
   --z-overlay: 60;
 
   /* Motion */
