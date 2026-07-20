@@ -7,7 +7,8 @@ import styles from './PlayerHand.module.css';
 
 interface PlayerHandProps {
   dice: number[];
-  /** Hand slides away and the open palm shows: end-of-round reveal. */
+  /** Hand slides off-screen to the left, baring the dice: end-of-round
+   * reveal. */
   revealed: boolean;
   /** Remounts the dice so each new round tumbles in. */
   rollKey: number;
@@ -42,8 +43,12 @@ export function PlayerHand({ dice, revealed, rollKey, rolling }: PlayerHandProps
       <motion.img
         className={styles.hand}
         src={revealed ? assets.hand.open : assets.hand.cupped}
-        alt={revealed ? 'your open hand revealing your dice' : 'your hand cupped over your dice'}
-        animate={revealed ? { y: '52%', opacity: 0.95 } : { y: 0, opacity: 1 }}
+        alt={
+          revealed
+            ? 'your hand drawn aside, revealing your dice'
+            : 'your hand cupped over your dice'
+        }
+        animate={revealed ? { x: '-105%' } : { x: 0 }}
         transition={{ duration: 0.5, ease: 'easeInOut' }}
         draggable={false}
       />
