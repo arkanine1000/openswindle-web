@@ -1,5 +1,6 @@
 .die {
-  width: clamp(48px, 12vw, 88px);
+  /* The floor keeps phone-sized dice readable; the cap holds on desktop. */
+  width: clamp(64px, 17vw, 80px);
   height: auto;
   user-select: none;
 }

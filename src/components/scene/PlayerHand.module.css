@@ -23,5 +23,12 @@
 }
 
 .dice > * + * {
-  margin-left: calc(-1 * var(--space-3));
+  /* Softer overlap on phones where the dice render smaller. */
+  margin-left: calc(-1 * var(--space-4));
+}
+
+@media (min-width: 768px) {
+  .dice > * + * {
+    margin-left: -26px;
+  }
 }

@@ -20,7 +20,7 @@ export function PlayerHand({ dice, revealed, rollKey, rolling }: PlayerHandProps
       <div className={styles.dice}>
         {dice.map((face, i) => {
           // Deterministic per-slot stagger: a loose pile, not a parade.
-          const restRotate = ((i * 47) % 17) - 8;
+          const restRotate = ((i * 47) % 25) - 12;
           const restY = ((i * 31) % 9) - 2;
           return (
             <motion.div
