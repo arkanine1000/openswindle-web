@@ -8,6 +8,11 @@
  * The scene's other art (backdrop, table, opponent, hand) is hand-drawn and
  * lives beside these as .webp — this script must never emit those names, or
  * a run would bury them.
+ *
+ * Drawn to sit with that ink-and-wash art rather than beside it: flat fills
+ * instead of gradients, a heavy outline on a hexagon whose edges bow and
+ * whose corners sit slightly off-true, cross-hatching where a render would
+ * put a shadow, and pips with a real ink ring instead of a specular dot.
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -25,94 +30,95 @@ ${body}
 `;
 }
 
-/* --- Dice: octahedron (d8) renders, player (blue) and npc (red) colorways.
- * Faces run 1-4 — each value sits on two of the eight faces, so the odds
- * match a d4. Drawn face-on: hexagonal silhouette, pips on the front
- * triangular face, the three visible neighbours shaded by light from the
- * upper left. Pip layouts live inside that front face. --- */
+/* --- Dice: octahedron (d8) seen face-on, player (blue) and npc (red).
+ * Values run 1-4 — each sits on two of the eight faces, so the odds match a
+ * d4. Pips live on the front triangular face; the two facets away from the
+ * light are hatched, the one toward it stays clear. --- */
+const INK = '#151310';
+
+// Hand-drawn hexagon: bowed edges, corners a pixel or two off true.
+const OUTLINE = `M 100 20
+  Q 137 40 169 62
+  Q 172 103 167 144
+  Q 134 164 100 184
+  Q 66 163 32 142
+  Q 30 102 33 61
+  Q 67 41 100 20 Z`;
+const FRONT = 'M 100 20 Q 134 82 167 144 Q 100 145 33 142 Q 66 81 100 20 Z';
+const RIGHT = 'M 100 20 Q 137 40 169 62 L 167 144 Q 134 82 100 20 Z';
+const LEFT = 'M 100 20 Q 67 41 33 61 L 32 142 Q 66 81 100 20 Z';
+const BOTTOM = 'M 33 142 Q 100 145 167 144 L 100 184 Z';
+
+// Pip positions within the front face. The 4 is one pip at the incenter with
+// three equidistant satellites, echoing the face's own symmetry.
 const pipLayouts = {
-  1: [[100, 102]],
+  1: [[100, 104]],
+  // The 2 stacks vertically, sitting high: the front face narrows toward its
+  // apex, so the pair reads centred well above the arithmetic centre.
   2: [
-    [80, 108],
-    [120, 108],
+    [100, 74],
+    [100, 118],
   ],
   3: [
-    [100, 68],
-    [76, 116],
-    [124, 116],
+    [100, 70],
+    [76, 118],
+    [124, 118],
   ],
-  // 4: one pip at the face's incenter, three equidistant satellites echoing
-  // the face's own triangular symmetry (top, bottom-left, bottom-right).
   4: [
-    [100, 102],
-    [100, 66],
-    [69, 120],
-    [131, 120],
+    [100, 104],
+    [100, 68],
+    [69, 122],
+    [131, 122],
   ],
 };
-// Hexagon corners: T/LL/LR are the front face, UL/B/UR the back face's
-// projected points.
-const HEX = {
-  T: '100 22',
-  UR: '169 62',
-  LR: '169 142',
-  B: '100 182',
-  LL: '31 142',
-  UL: '31 62',
-};
-// Puffy stone look: gradient body, facet shading, speckled texture, dished
-// pips with a catchlight.
+
 const diceColors = {
-  player: { light: '#6e9fce', mid: '#4a7fb5', deep: '#2f5f92', dark: '#1f4166' },
-  npc: { light: '#c9707a', mid: '#b54a55', deep: '#8f2f3a', dark: '#611f27' },
+  player: { front: '#4a7fb5', right: '#2f5f92', bottom: '#24507d', left: '#6e9fce' },
+  npc: { front: '#b54a55', right: '#8f2f3a', bottom: '#75252f', left: '#c9707a' },
 };
-const SPECKLES = [
-  [72, 70],
-  [128, 82],
-  [96, 60],
-  [60, 128],
-  [142, 130],
-  [104, 150],
-  [82, 108],
-  [120, 116],
-];
+
 for (const [who, c] of Object.entries(diceColors)) {
   for (let face = 1; face <= 4; face++) {
     const pips = pipLayouts[face]
       .map(
-        ([x, y]) =>
-          `<circle cx="${x}" cy="${y}" r="13" fill="#f6f2e7"/>
-           <circle cx="${x}" cy="${y}" r="13" fill="none" stroke="${c.dark}" stroke-opacity="0.4" stroke-width="2.5"/>
-           <circle cx="${x - 4}" cy="${y - 4}" r="3.5" fill="#ffffff" opacity="0.85"/>`,
+        ([x, y], i) => `
+    <circle cx="${x}" cy="${y}" r="14" fill="#f6f2e7" stroke="${INK}" stroke-width="3"/>
+    <path d="M ${x - 9} ${y + 7} a 11 11 0 0 0 ${18 - i} -1" fill="none" stroke="${INK}"
+          stroke-width="2" opacity="0.5" stroke-linecap="round"/>`,
       )
-      .join('\n');
-    const speckles = SPECKLES.map(
-      ([x, y], i) =>
-        `<circle cx="${x}" cy="${y}" r="${1.6 + (i % 3) * 0.6}" fill="${i % 2 ? c.dark : '#f6f2e7'}" opacity="0.16"/>`,
-    ).join('\n');
+      .join('');
+
     svg(
       `die-${who}-${face}`,
       200,
       200,
-      `<defs>
-         <radialGradient id="body" cx="0.38" cy="0.3" r="1">
-           <stop offset="0%" stop-color="${c.light}"/>
-           <stop offset="55%" stop-color="${c.mid}"/>
-           <stop offset="100%" stop-color="${c.deep}"/>
-         </radialGradient>
-       </defs>
-       <ellipse cx="100" cy="188" rx="70" ry="10" fill="#000000" opacity="0.3"/>
-       <path d="M ${HEX.T} L ${HEX.UR} L ${HEX.LR} L ${HEX.B} L ${HEX.LL} L ${HEX.UL} Z"
-             fill="url(#body)" stroke="${c.dark}" stroke-width="5" stroke-linejoin="round"/>
-       <path d="M ${HEX.T} L ${HEX.UL} L ${HEX.LL} Z" fill="#ffffff" opacity="0.12"/>
-       <path d="M ${HEX.T} L ${HEX.UR} L ${HEX.LR} Z" fill="${c.deep}" opacity="0.55"/>
-       <path d="M ${HEX.LL} L ${HEX.B} L ${HEX.LR} Z" fill="${c.dark}" opacity="0.5"/>
-       <path d="M ${HEX.T} L ${HEX.LR} L ${HEX.LL} Z"
-             fill="none" stroke="${c.dark}" stroke-width="3.5" opacity="0.8" stroke-linejoin="round"/>
-       <path d="M 88 34 Q 100 22 112 34" stroke="#ffffff" stroke-width="6" opacity="0.35"
-             fill="none" stroke-linecap="round"/>
-       ${speckles}
-       ${pips}`,
+      `  <defs>
+    <pattern id="hatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+      <line x1="0" y1="0" x2="0" y2="9" stroke="${INK}" stroke-width="1.8" opacity="0.45"/>
+    </pattern>
+    <pattern id="hatchDeep" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="${INK}" stroke-width="1.8" opacity="0.5"/>
+    </pattern>
+  </defs>
+
+  <!-- No shadow here: the viewBox leaves only ~16px below the die, and the
+       6px outline eats most of that. It lives in Die.module.css instead,
+       where a CSS filter can paint outside the element's box. -->
+  <path d="${OUTLINE}" fill="${c.front}"/>
+  <path d="${LEFT}" fill="${c.left}"/>
+  <path d="${RIGHT}" fill="${c.right}"/>
+  <path d="${RIGHT}" fill="url(#hatch)"/>
+  <path d="${BOTTOM}" fill="${c.bottom}"/>
+  <path d="${BOTTOM}" fill="url(#hatchDeep)"/>
+  <path d="${FRONT}" fill="${c.front}"/>
+
+  <!-- A few strokes of form on the lit face, in place of a gradient. -->
+  <path d="M 52 132 q 12 -22 24 -44 M 62 137 q 10 -18 20 -36" stroke="${INK}" stroke-width="1.8"
+        opacity="0.28" fill="none" stroke-linecap="round"/>
+
+  <path d="${FRONT}" fill="none" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/>
+  <path d="${OUTLINE}" fill="none" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>
+  ${pips}`,
     );
   }
 }

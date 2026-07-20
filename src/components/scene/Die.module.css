@@ -3,6 +3,11 @@
   width: clamp(64px, 17vw, 80px);
   height: auto;
   user-select: none;
+  /* Soft and low, so it cradles each die rather than implying a floor the
+   * staggered pile doesn't share. A CSS filter, not an SVG one: it follows
+   * the die's silhouette and paints outside the element, where the art's
+   * own viewBox and heavy outline would otherwise swallow it. */
+  filter: drop-shadow(0 5px 5px rgba(21, 19, 16, 0.55));
 }
 
 .small {
@@ -10,4 +15,5 @@
   height: auto;
   vertical-align: middle;
   user-select: none;
+  filter: drop-shadow(0 3px 3px rgba(21, 19, 16, 0.4));
 }
