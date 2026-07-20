@@ -25,6 +25,25 @@
   max-width: 100%;
 }
 
+/* Mobile: the opponent's single utterance hugs the right edge, its tail on
+ * the top border pointing up into the figure looming above. Only 'right'
+ * is set so the slot shrink-wraps the bubble instead of stretching it. */
+.npcSlot {
+  position: absolute;
+  right: var(--space-3);
+  bottom: calc(var(--table-h) + var(--space-8));
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Mobile: the bid selection drops onto the felt, riding just above the
+ * player's hand. */
+.composerSlot {
+  position: absolute;
+  left: var(--space-3);
+  bottom: calc(var(--table-h) * 0.58);
+}
+
 .youRow {
   align-self: flex-start;
 }

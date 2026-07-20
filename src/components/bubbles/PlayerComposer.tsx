@@ -118,7 +118,7 @@ export function PlayerComposer({
             onKeyDown={(e) => {
               if (e.key === 'Enter') submit(armedItem);
             }}
-            placeholder={autoTalk ? '' : 'Say something… (optional)'}
+            placeholder={autoTalk ? '' : 'Say something…'}
             maxLength={280}
             disabled={autoTalk}
             data-testid="talk-input"

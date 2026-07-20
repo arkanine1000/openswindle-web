@@ -40,3 +40,13 @@
   bottom: 22%;
   border-right-color: var(--color-bubble);
 }
+
+/* Tail on the top border, pointing up into the figure above (mobile's
+ * right-aligned NPC bubble). Set left, not right: the bubble's width
+ * varies with its content, so anchoring from the fixed right edge would
+ * drift the tail's on-screen position as the text changes. */
+.tailUp::after {
+  top: -22px;
+  left: 20%;
+  border-bottom-color: var(--color-bubble);
+}

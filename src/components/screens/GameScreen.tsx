@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from 'motion/react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { HUMAN_SEAT, NPC_SEAT } from '../../api/types';
 import { npcArtForSeed } from '../../assets/manifest';
-import { useGameStore } from '../../game/store';
+import { useGameStore, type FeedEntry } from '../../game/store';
 import { describeReveal, revealEntry } from '../../game/transcript';
 import { BidChip } from '../bubbles/BidChip';
 import { PlayerComposer } from '../bubbles/PlayerComposer';
@@ -19,6 +19,20 @@ import styles from './GameScreen.module.css';
 
 /** The auto-talk toggle is a lasting preference, unlike the per-tab match. */
 const AUTO_TALK_KEY = 'openswindle-auto-talk';
+
+/** Mirrors the 768px CSS breakpoint. Desktop keeps the rolling
+ * three-bubble window; mobile pares down to one opponent utterance and a
+ * repositioned composer, so the two layouts render different trees. */
+function useIsDesktop(): boolean {
+  const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(min-width: 768px)').matches);
+  useEffect(() => {
+    const query = window.matchMedia('(min-width: 768px)');
+    const update = () => setIsDesktop(query.matches);
+    query.addEventListener('change', update);
+    return () => query.removeEventListener('change', update);
+  }, []);
+  return isDesktop;
+}
 
 export function GameScreen() {
   const phase = useGameStore((s) => s.phase);
@@ -39,6 +53,7 @@ export function GameScreen() {
   const walkAway = useGameStore((s) => s.walkAway);
   const dismissError = useGameStore((s) => s.dismissError);
 
+  const isDesktop = useIsDesktop();
   const [historyOpen, setHistoryOpen] = useState(false);
   // Lives here, not in the composer, so the choice survives across turns.
   const [autoTalk, setAutoTalk] = useState(() => localStorage.getItem(AUTO_TALK_KEY) === 'true');
@@ -58,83 +73,141 @@ export function GameScreen() {
   const lastUtterance = feed[feed.length - 1];
   const playerCalled = lastUtterance?.speaker === 'you' && lastUtterance.move.action === 'call';
 
-  /* The rolling conversation window: newest utterance holds the bottom
-   * slot; each arrival shifts the others up (motion layout animation) and
-   * the oldest roll out. The composer and the thinking placeholder occupy
-   * that same newest slot while active. */
   const spring = { type: 'spring', stiffness: 380, damping: 28 } as const;
-  const bubbles = (
-    <>
-      <div className={styles.conversation}>
-        <AnimatePresence mode="popLayout" initial={false}>
-          {feed.slice(-3).map((entry) => (
-            <motion.div
-              layout
-              key={entry.id}
-              className={entry.speaker === 'you' ? styles.youRow : styles.npcRow}
-              initial={{ opacity: 0, scale: 0.85, y: 16 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, y: -22, transition: { duration: 0.2 } }}
-              transition={spring}
+
+  const utterance = (entry: FeedEntry) =>
+    entry.move.action === 'bid' ? (
+      <span className={styles.bidLine}>
+        <BidChip bid={entry.move.bid} owner={entry.speaker === 'you' ? 'player' : 'npc'} />
+        {entry.talk && <span>{entry.talk}</span>}
+      </span>
+    ) : (
+      <>
+        {entry.talk && <span>{entry.talk}</span>}
+        <b className={styles.callShout}> Call!</b>
+      </>
+    );
+
+  const composer = phase === 'playerTurn' && view && (
+    <PlayerComposer
+      currentBid={currentBid}
+      startTotal={startTotal}
+      currentTotal={currentTotal}
+      autoTalk={autoTalk}
+      onToggleAutoTalk={toggleAutoTalk}
+      onMove={submitPlayerMove}
+    />
+  );
+
+  /* Desktop: the rolling conversation window — newest utterance holds the
+   * bottom slot; each arrival shifts the others up (motion layout
+   * animation) and the oldest dissolve under the HUD. The composer and the
+   * thinking placeholder occupy that same newest slot while active. */
+  const desktopConversation = (
+    <div className={styles.conversation}>
+      <AnimatePresence mode="popLayout" initial={false}>
+        {feed.slice(-3).map((entry) => (
+          <motion.div
+            layout
+            key={entry.id}
+            className={entry.speaker === 'you' ? styles.youRow : styles.npcRow}
+            initial={{ opacity: 0, scale: 0.85, y: 16 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, y: -22, transition: { duration: 0.2 } }}
+            transition={spring}
+          >
+            <SpeechBubble
+              tail={entry.speaker === 'you' ? 'player' : 'npc'}
+              testId={entry.speaker === 'you' ? 'player-bubble' : 'npc-bubble'}
             >
-              <SpeechBubble
-                tail={entry.speaker === 'you' ? 'player' : 'npc'}
-                testId={entry.speaker === 'you' ? 'player-bubble' : 'npc-bubble'}
-              >
-                {entry.move.action === 'bid' ? (
-                  <span className={styles.bidLine}>
-                    <BidChip
-                      bid={entry.move.bid}
-                      owner={entry.speaker === 'you' ? 'player' : 'npc'}
-                    />
-                    {entry.talk && <span>{entry.talk}</span>}
-                  </span>
-                ) : (
-                  <>
-                    {entry.talk && <span>{entry.talk}</span>}
-                    <b className={styles.callShout}> Call!</b>
-                  </>
-                )}
-              </SpeechBubble>
-            </motion.div>
-          ))}
-          {phase === 'awaitingNpc' && !playerCalled && (
+              {utterance(entry)}
+            </SpeechBubble>
+          </motion.div>
+        ))}
+        {phase === 'awaitingNpc' && !playerCalled && (
+          <motion.div
+            layout
+            key="thinking"
+            className={styles.npcRow}
+            initial={{ opacity: 0, scale: 0.85, y: 16 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, transition: { duration: 0.15 } }}
+            transition={spring}
+          >
+            <ThinkingBubble />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {/* Outside AnimatePresence on purpose: an input surface must vanish
+       * the instant the move is made — a lingering exit animation leaves a
+       * second live composer in the DOM racing the next turn's. */}
+      {composer && (
+        <motion.div
+          layout
+          key="composer"
+          className={styles.youRow}
+          initial={{ opacity: 0, scale: 0.9, y: 16 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={spring}
+        >
+          {composer}
+        </motion.div>
+      )}
+    </div>
+  );
+
+  /* Mobile: vertical space is scarce, so only two surfaces exist — the
+   * opponent's current utterance (or their thinking), seated left of the
+   * figure's face, and the composer dropped toward the player's hand. The
+   * full exchange lives in the history drawer, a swipe away. */
+  const lastNpc = [...feed].reverse().find((entry) => entry.speaker === 'npc');
+  const mobileBubbles = (
+    <>
+      <div className={styles.npcSlot}>
+        <AnimatePresence mode="popLayout" initial={false}>
+          {phase === 'awaitingNpc' && !playerCalled ? (
             <motion.div
-              layout
               key="thinking"
-              className={styles.npcRow}
               initial={{ opacity: 0, scale: 0.85, y: 16 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, transition: { duration: 0.15 } }}
               transition={spring}
             >
-              <ThinkingBubble />
+              <ThinkingBubble tail="up" />
             </motion.div>
-          )}
+          ) : lastNpc ? (
+            <motion.div
+              key={lastNpc.id}
+              initial={{ opacity: 0, scale: 0.85, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, transition: { duration: 0.2 } }}
+              transition={spring}
+            >
+              <SpeechBubble tail="up" testId="npc-bubble">
+                {utterance(lastNpc)}
+              </SpeechBubble>
+            </motion.div>
+          ) : null}
         </AnimatePresence>
-        {/* Outside AnimatePresence on purpose: an input surface must vanish
-         * the instant the move is made — a lingering exit animation leaves a
-         * second live composer in the DOM racing the next turn's. */}
-        {phase === 'playerTurn' && view && (
-          <motion.div
-            layout
-            key="composer"
-            className={styles.youRow}
-            initial={{ opacity: 0, scale: 0.9, y: 16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={spring}
-          >
-            <PlayerComposer
-              currentBid={currentBid}
-              startTotal={startTotal}
-              currentTotal={currentTotal}
-              autoTalk={autoTalk}
-              onToggleAutoTalk={toggleAutoTalk}
-              onMove={submitPlayerMove}
-            />
-          </motion.div>
-        )}
       </div>
+      {/* Same no-exit-animation rule as the desktop composer. */}
+      {composer && (
+        <motion.div
+          key="composer"
+          className={styles.composerSlot}
+          initial={{ opacity: 0, scale: 0.9, y: 16 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={spring}
+        >
+          {composer}
+        </motion.div>
+      )}
+    </>
+  );
+
+  const bubbles = (
+    <>
+      {isDesktop ? desktopConversation : mobileBubbles}
 
       {/* Beats owned by the scene, not a speaker. */}
       {phase === 'npcIntro' && (
@@ -165,8 +238,9 @@ export function GameScreen() {
 
   return (
     <div
-      // Scroll up (or swipe down from the top of the scene) unrolls the
-      // table-talk history, like paging back up through the reference's log.
+      // Scroll up (desktop) or swipe down from anywhere (touch) pulls down
+      // the table-talk history, like paging back through the reference's
+      // log. The dy > dx guard keeps carousel drags from opening it.
       onWheel={(e) => {
         if (!historyOpen && e.deltaY < -20) setHistoryOpen(true);
       }}
@@ -180,7 +254,7 @@ export function GameScreen() {
         if (historyOpen || !start || !t) return;
         const dy = t.clientY - start.y;
         const dx = Math.abs(t.clientX - start.x);
-        if (start.y < window.innerHeight * 0.35 && dy > 60 && dy > dx * 2) {
+        if (dy > 60 && dy > dx * 2) {
           touchStart.current = null;
           setHistoryOpen(true);
         }
