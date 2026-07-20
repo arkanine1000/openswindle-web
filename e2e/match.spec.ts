@@ -3,6 +3,15 @@ import { playToTheEnd, playTurn, rollDice, sitDown, waitForTurnOrEnd } from './h
 
 test.describe('a match against the scripted opponent', () => {
   test('plays from sit-down to the autopsy', async ({ page }) => {
+    // By far the longest test here — a whole match, dozens of round trips,
+    // each paced by the choreography queue. It ran 4.8s warm and 11.8s
+    // against a cold Vite optimizer, so the shared 90s budget is tightest
+    // exactly where the work is heaviest; on a loaded machine it has twice
+    // blown that budget while every other test passed. Triple it rather
+    // than let machine load read as a product bug. If this ever times out
+    // *again* with this much room, it is a real hang: keep test-results/
+    // before re-running, because a passing run wipes the trace.
+    test.slow();
     await sitDown(page);
     // The opponent introduces themselves before the roll — name only. The
     // bio is derived from their hidden parameters and must not leak here
