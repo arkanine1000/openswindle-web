@@ -4,9 +4,11 @@ import { defineConfig, devices } from '@playwright/test';
  * Runs against the real engine in mock-LLM mode (deterministic scripted NPC,
  * fully offline) — the engine repo is expected as a sibling directory.
  *
- * The suite runs on its own ports (engine 8001, client 5174) so it can never
+ * The suite runs on its own ports (engine 8001, client 5175) so it can never
  * reuse a dev server pair — in particular a real-LLM engine on :8000, which
- * would burn tokens and make matches non-deterministic.
+ * would burn tokens and make matches non-deterministic. Keep the client port
+ * off the dev server's 5174: reuseExistingServer would otherwise adopt a
+ * running dev server that talks to the wrong engine.
  */
 export default defineConfig({
   testDir: './e2e',
@@ -14,7 +16,7 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? 'github' : 'list',
   use: {
-    baseURL: 'http://localhost:5174',
+    baseURL: 'http://localhost:5175',
     trace: 'retain-on-failure',
   },
   projects: [
@@ -35,15 +37,15 @@ export default defineConfig({
       url: 'http://localhost:8001/healthz',
       env: {
         OPENSWINDLE_MOCK_LLM: 'true',
-        // The test client is served from 5174, not the engine's default 5173.
-        OPENSWINDLE_CORS_ORIGINS: 'http://localhost:5174',
+        // The test client is served from 5175, not the dev server's 5174.
+        OPENSWINDLE_CORS_ORIGINS: 'http://localhost:5175',
       },
       reuseExistingServer: !process.env.CI,
       timeout: 30_000,
     },
     {
-      command: 'pnpm dev --port 5174',
-      url: 'http://localhost:5174',
+      command: 'pnpm dev --port 5175',
+      url: 'http://localhost:5175',
       env: { VITE_API_BASE: 'http://localhost:8001' },
       reuseExistingServer: !process.env.CI,
       timeout: 30_000,

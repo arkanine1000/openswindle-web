@@ -9,7 +9,7 @@ your dice cupped under your hand, and every bid and barb exchanged in speech bub
 
 ```bash
 pnpm install
-pnpm dev          # http://localhost:5173
+pnpm dev          # http://localhost:5174
 ```
 
 The client expects the engine running locally (defaults to `http://localhost:8000`):
@@ -33,7 +33,7 @@ VITE_API_BASE=https://your-engine.example pnpm build
 
 | Command                     | Purpose                                                     |
 | --------------------------- | ----------------------------------------------------------- |
-| `pnpm dev`                  | Vite dev server (port 5173)                                 |
+| `pnpm dev`                  | Vite dev server (port 5174)                                 |
 | `pnpm build`                | Type-check + production build                               |
 | `pnpm preview`              | Serve the production build                                  |
 | `pnpm lint` / `pnpm format` | ESLint / Prettier                                           |

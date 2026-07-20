@@ -5,7 +5,9 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 5173,
+    // Not Vite's default 5173: another installed PWA there would share this
+    // origin, and with it the service worker registration and storage.
+    port: 5174,
     strictPort: true,
   },
   test: {
