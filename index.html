@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#17130e" />
 
-    <title>OpenSwindle — a game of dice and lies</title>
+    <title>OpenSwindle</title>
     <meta
       name="description"
       content="Play Swindlestones, the dice-bluffing game from inkle's Sorcery!, against an opponent who listens to every word you say. Open source, no account, no install."
     />
+
+    <link rel="canonical" href="https://openswindle-web.vercel.app/" />
 
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
@@ -19,14 +21,18 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="OpenSwindle" />
 
+    <!-- Absolute URLs, not paths: scrapers fetch these without a document
+         base, so a relative og:image simply fails to render a card. A fork
+         deployed elsewhere changes the origin on these four lines. -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="OpenSwindle" />
+    <meta property="og:url" content="https://openswindle-web.vercel.app/" />
     <meta property="og:title" content="OpenSwindle — a game of dice and lies" />
     <meta
       property="og:description"
       content="Bluff your way past an opponent who reads every word you say. An open-source take on Swindlestones."
     />
-    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:image" content="https://openswindle-web.vercel.app/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -35,7 +41,7 @@
       name="twitter:description"
       content="Bluff your way past an opponent who reads every word you say. An open-source take on Swindlestones."
     />
-    <meta name="twitter:image" content="/og-image.png" />
+    <meta name="twitter:image" content="https://openswindle-web.vercel.app/og-image.png" />
   </head>
   <body>
     <div id="root"></div>

@@ -6,6 +6,9 @@ _Sorcery!_. That repo (also MIT) is the authoritative game server; this one rend
 your opponent across it, your dice cupped under your hand, and every bid and barb exchanged in
 speech bubbles.
 
+**▶ Play it: [openswindle-web.vercel.app](https://openswindle-web.vercel.app)** — no account, no
+install, though it will offer to install itself.
+
 ## Quickstart
 
 ```bash
