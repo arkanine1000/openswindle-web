@@ -42,7 +42,7 @@ origin's service worker and storage. The engine's default CORS origin matches.
 
 ```
 public/         favicon, PWA manifest, service worker, social card (served at the root)
-scripts/        generate-placeholders.mjs (art stand-ins), generate-icons.mjs (brand mark)
+scripts/        generate-dice.mjs (dice + pips), generate-icons.mjs (brand mark, PWA icons)
 src/
   api/          types.ts (wire contract), client.ts (fetch wrapper)
   game/         pure logic: bids, transcript, choreography, pacing, tableTalk, store
@@ -77,9 +77,9 @@ Smaller things that aren't obvious from a file listing:
   breakpoint rather than CSS visibility because mounting both would duplicate live test ids and
   inputs.
 - **Art is never referenced by path.** Every graphic is a semantic slot in
-  `src/assets/manifest.ts`, so swapping a placeholder for real art is a one-line change (or a
-  1:1 file replacement at the same aspect). Stand-ins come from
-  `node scripts/generate-placeholders.mjs`; the brand mark and every icon derivative come from
+  `src/assets/manifest.ts`, so swapping one out is a one-line change (or a 1:1 file replacement
+  at the same aspect). The scene art is hand-drawn `.webp`; the dice and HUD pips are drawn by
+  `node scripts/generate-dice.mjs`, and the brand mark with every icon derivative by
   `node scripts/generate-icons.mjs`.
 - **Auto table talk** (`game/tableTalk.ts`) picks a canned line whose aggression tracks the
   bid's share of the dice still in play. Face is ignored — raising to a higher face at the same

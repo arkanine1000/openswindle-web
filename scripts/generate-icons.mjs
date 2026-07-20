@@ -132,8 +132,13 @@ const rasters = [
 try {
   for (const [from, to, w, h] of rasters) {
     execFileSync('rsvg-convert', [
-      '-w', String(w), '-h', String(h),
-      join(publicDir, from), '-o', join(publicDir, to),
+      '-w',
+      String(w),
+      '-h',
+      String(h),
+      join(publicDir, from),
+      '-o',
+      join(publicDir, to),
     ]);
   }
   console.log(`Wrote ${Object.keys(svgs).length} SVGs and ${rasters.length} PNGs to ${publicDir}`);
