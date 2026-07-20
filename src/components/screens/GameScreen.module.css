@@ -5,13 +5,18 @@
   position: absolute;
   left: var(--space-3);
   right: 25%;
+  /* Runs from just under the HUD (the history tab's clamp height) down to
+   * the table. The mask dissolves rising bubbles across the column's top
+   * strip instead of hard-clipping them against the HUD. */
+  top: calc(clamp(40px, 9vw, 60px) + var(--space-2));
   bottom: calc(var(--table-h) + var(--space-6));
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   gap: var(--space-3);
-  max-height: calc(100dvh - var(--table-h) - 18dvh);
   overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 72px);
+  mask-image: linear-gradient(to bottom, transparent, #000 72px);
 }
 
 .youRow,

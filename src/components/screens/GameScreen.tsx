@@ -2,7 +2,6 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useRef, useState } from 'react';
 import { HUMAN_SEAT, NPC_SEAT } from '../../api/types';
 import { npcArtForSeed } from '../../assets/manifest';
-import { spokenBid } from '../../game/bids';
 import { useGameStore } from '../../game/store';
 import { describeReveal, revealEntry } from '../../game/transcript';
 import { BidChip } from '../bubbles/BidChip';
@@ -156,12 +155,10 @@ export function GameScreen() {
           {describeReveal(revealEntry(activeReveal))}
         </StatusStrip>
       )}
-      {phase === 'awaitingNpc' && !activeReveal && (
-        <StatusStrip testId="npc-thinking-strip">
-          {playerCalled
-            ? 'The hands come open…'
-            : `${npcName} considers${currentBid ? ` your ${spokenBid(currentBid)}` : ''}…`}
-        </StatusStrip>
+      {/* Only the call-resolution beat gets a strip — while the NPC weighs
+       * a bid, the thinking bubble already says so. */}
+      {phase === 'awaitingNpc' && !activeReveal && playerCalled && (
+        <StatusStrip testId="npc-thinking-strip">The hands come open…</StatusStrip>
       )}
     </>
   );
