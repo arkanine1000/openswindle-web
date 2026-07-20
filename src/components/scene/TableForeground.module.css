@@ -1,10 +1,12 @@
 .table {
   position: absolute;
   z-index: var(--z-table);
-  left: 0;
-  right: 0;
+  /* Overscanned: the parallax drift must never pull an edge into frame. */
+  left: -3%;
+  right: -3%;
   bottom: 0;
   height: var(--table-h);
+  transition: transform var(--duration-base) ease-out;
 }
 
 .table::before {

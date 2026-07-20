@@ -22,7 +22,10 @@
   bottom: var(--table-h);
   right: -10%;
   width: min(94vw, 54dvh);
-  transform: translateY(var(--npc-sink));
+  /* Composes the pointer parallax (set inline by TableScene) with the sink;
+   * the sink stays a percentage so it keeps tracking the sprite's height. */
+  transform: translate3d(var(--drift-x, 0px), calc(var(--npc-sink) + var(--drift-y, 0px)), 0);
+  transition: transform var(--duration-base) ease-out;
   pointer-events: none;
 }
 
