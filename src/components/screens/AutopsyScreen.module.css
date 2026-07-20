@@ -47,7 +47,7 @@
 
 .section {
   margin-top: var(--space-6);
-  border-top: 2px dashed rgba(138, 109, 59, 0.35);
+  border-top: 2px dashed rgba(var(--color-accent-rgb), 0.35);
   padding-top: var(--space-4);
 }
 

@@ -101,7 +101,7 @@ function socialCard() {
   </g>
   <text x="440" y="300" font-family="Georgia, 'Times New Roman', serif" font-size="86" fill="#f4efe4">OpenSwindle</text>
   <text x="440" y="368" font-family="Georgia, 'Times New Roman', serif" font-size="40" font-style="italic" fill="#f4efe4" opacity="0.7">A game of dice and lies.</text>
-  <path d="M 440 410 L 1030 410" stroke="#8a6d3b" stroke-width="3"/>
+  <path d="M 440 410 L 1030 410" stroke="#e3b23c" stroke-width="3"/>
 </svg>
 `;
 }

@@ -17,7 +17,10 @@
   --color-npc: #b54a55; /* npc dice red */
   --color-npc-deep: #8f2f3a;
   --color-pip-lost: #2b2b2b;
-  --color-accent: #8a6d3b; /* brass/gold trim */
+  --color-accent: #e3b23c; /* bright gold trim */
+  /* Channels for the same gold, so every translucent rule tracks the token
+   * instead of freezing a stale rgba() of it. */
+  --color-accent-rgb: 227, 178, 60;
   --color-danger: #a33326;
   --color-success: #3f7d4e;
   --color-text-faint: rgba(29, 24, 18, 0.55);
