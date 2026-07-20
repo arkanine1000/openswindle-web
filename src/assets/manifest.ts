@@ -13,16 +13,9 @@ import diePlayer1 from './placeholders/die-player-1.svg';
 import diePlayer2 from './placeholders/die-player-2.svg';
 import diePlayer3 from './placeholders/die-player-3.svg';
 import diePlayer4 from './placeholders/die-player-4.svg';
-import handCupped from './placeholders/hand-cupped.svg';
-import handOpen from './placeholders/hand-open.svg';
-import npc0Accusing from './placeholders/npc-variant-0-accusing.svg';
-import npc0Seated from './placeholders/npc-variant-0-seated.svg';
-import npc1Accusing from './placeholders/npc-variant-1-accusing.svg';
-import npc1Seated from './placeholders/npc-variant-1-seated.svg';
-import npc2Accusing from './placeholders/npc-variant-2-accusing.svg';
-import npc2Seated from './placeholders/npc-variant-2-seated.svg';
-import npc3Accusing from './placeholders/npc-variant-3-accusing.svg';
-import npc3Seated from './placeholders/npc-variant-3-seated.svg';
+import handCupped from './placeholders/hand-cupped.webp';
+import npc0Accusing from './placeholders/npc-variant-0-accusing.webp';
+import npc0Seated from './placeholders/npc-variant-0-seated.webp';
 import pipLost from './placeholders/pip-lost.svg';
 import pipNpc from './placeholders/pip-npc.svg';
 import pipPlayer from './placeholders/pip-player.svg';
@@ -38,12 +31,18 @@ export interface NpcArt {
 export const assets = {
   backdrop: { wall: backdropWall },
   table: { surface: tableSurface },
-  hand: { cupped: handCupped, open: handOpen },
+  /* The cupped art serves both states: the reveal slides it clear of the
+   * dice, so a separate open pose was cut. */
+  hand: { cupped: handCupped, open: handCupped },
+  /* Variant 0's art stands in for every seat until its siblings are drawn —
+   * new sprites are one import + one line here. Art contract: 800×1000
+   * canvas, hands' contact line at the bottom edge (the scene anchors the
+   * sprite's bottom to the table line). */
   npcVariants: [
     { seated: npc0Seated, accusing: npc0Accusing },
-    { seated: npc1Seated, accusing: npc1Accusing },
-    { seated: npc2Seated, accusing: npc2Accusing },
-    { seated: npc3Seated, accusing: npc3Accusing },
+    { seated: npc0Seated, accusing: npc0Accusing },
+    { seated: npc0Seated, accusing: npc0Accusing },
+    { seated: npc0Seated, accusing: npc0Accusing },
   ] satisfies NpcArt[],
   dice: {
     player: { 1: diePlayer1, 2: diePlayer2, 3: diePlayer3, 4: diePlayer4 },

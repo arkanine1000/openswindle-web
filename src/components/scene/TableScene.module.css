@@ -5,23 +5,32 @@
   overflow: hidden;
   background: var(--color-backdrop);
   --table-h: 28dvh;
+  /* How far the opponent's forearms sink past the table's top edge, as a
+   * fraction of the sprite's own height — transform percentages resolve
+   * against the element, so the contact point tracks the art at any scale. */
+  --npc-sink: 20%;
 }
 
 .npcLayer {
-  /* Most of the mobile frame is theirs: the figure renders in front of the
-   * table's top edge (shadow included), asset drawn edge-to-edge.
+  /* Most of the mobile frame is theirs. The figure's bottom edge is anchored
+   * to the table's top line, then sunk by --npc-sink so the forearms rest on
+   * the felt. Relies on the art contract: every pose is exported on the same
+   * canvas with the hands' contact line at the bottom edge.
    * Scenery never intercepts input. */
   position: absolute;
   z-index: var(--z-npc);
-  bottom: calc(var(--table-h) * 0.85);
+  bottom: var(--table-h);
   right: -10%;
   width: min(94vw, 54dvh);
+  transform: translateY(var(--npc-sink));
   pointer-events: none;
 }
 
 .handLayer {
-  /* Pinned to the very corner; it overlaps the status strip slightly, so
-   * the strip tucks under the hand's shadow like the reference.
+  /* Pinned to the very corner at every breakpoint: the art draws the arm to
+   * the canvas's left edge, so left: 0 keeps it entering from off-screen
+   * instead of floating disembodied. It overlaps the status strip slightly,
+   * so the strip tucks under the hand's shadow like the reference.
    * Scenery never intercepts input — taps pass through to the strip. */
   position: absolute;
   z-index: var(--z-hand);
@@ -56,15 +65,13 @@
   }
 
   .npcLayer {
-    /* The opponent dominates the right side, table to top bar, arms sunk
-     * into the table edge like the reference. */
-    bottom: calc(var(--table-h) * 0.45);
+    /* The opponent dominates the right side; same table-line anchor and
+     * sink as mobile. */
     right: 1%;
     width: min(42vw, 74dvh);
   }
 
   .handLayer {
-    left: 2%;
     bottom: 0;
     width: min(34vw, 480px);
   }
