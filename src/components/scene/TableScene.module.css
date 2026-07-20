@@ -4,7 +4,7 @@
   height: 100dvh;
   overflow: hidden;
   background: var(--color-backdrop);
-  --table-h: 28dvh;
+  --table-h: 40dvh;
   /* How far the opponent's forearms sink past the table's top edge, as a
    * fraction of the sprite's own height — transform percentages resolve
    * against the element, so the contact point tracks the art at any scale. */
@@ -31,11 +31,12 @@
    * the canvas's left edge, so left: 0 keeps it entering from off-screen
    * instead of floating disembodied. It overlaps the status strip slightly,
    * so the strip tucks under the hand's shadow like the reference.
-   * Scenery never intercepts input — taps pass through to the strip. */
+   * Scenery never intercepts input — taps pass through to the strip.
+   * Mobile rides 90px up the taller table; desktop returns to the corner. */
   position: absolute;
   z-index: var(--z-hand);
   left: 0;
-  bottom: 0;
+  bottom: 90px;
   width: min(70vw, 400px);
   pointer-events: none;
 }

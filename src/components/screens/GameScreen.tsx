@@ -72,11 +72,19 @@ export function GameScreen() {
                 tail={entry.speaker === 'you' ? 'player' : 'npc'}
                 testId={entry.speaker === 'you' ? 'player-bubble' : 'npc-bubble'}
               >
-                {entry.talk && <span>{entry.talk}</span>}
                 {entry.move.action === 'bid' ? (
-                  <BidChip bid={entry.move.bid} owner={entry.speaker === 'you' ? 'player' : 'npc'} />
+                  <span className={styles.bidLine}>
+                    <BidChip
+                      bid={entry.move.bid}
+                      owner={entry.speaker === 'you' ? 'player' : 'npc'}
+                    />
+                    {entry.talk && <span>{entry.talk}</span>}
+                  </span>
                 ) : (
-                  <b className={styles.callShout}> Call!</b>
+                  <>
+                    {entry.talk && <span>{entry.talk}</span>}
+                    <b className={styles.callShout}> Call!</b>
+                  </>
                 )}
               </SpeechBubble>
             </motion.div>

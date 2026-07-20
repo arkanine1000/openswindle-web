@@ -1,12 +1,9 @@
 .chip {
-  /* Its own line beneath the table talk, centered — readability over the
-   * reference's inline placement. */
-  display: flex;
-  flex-direction: column;
+  /* One unbreakable token; the bubble decides where it sits. */
+  display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  width: fit-content;
-  margin: var(--space-2) auto 0;
+  flex-shrink: 0;
 }
 
 .count {

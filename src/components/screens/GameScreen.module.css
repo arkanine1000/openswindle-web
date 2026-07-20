@@ -21,6 +21,14 @@
   max-width: 100%;
 }
 
+.bidLine {
+  /* The bid chip seats left of the table talk on one line; long talk wraps
+   * beside the chip, not beneath it. */
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
 .callShout {
   font-size: var(--text-xl);
   letter-spacing: 0.08em;
