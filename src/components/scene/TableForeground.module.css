@@ -6,6 +6,9 @@
   right: -3%;
   bottom: 0;
   height: var(--table-h);
+  /* The inked line the art everywhere else has: the table's front edge was
+   * the one seam fading into its own shadow. */
+  border-top: 4px solid #000;
   transition: transform var(--duration-base) ease-out;
 }
 
