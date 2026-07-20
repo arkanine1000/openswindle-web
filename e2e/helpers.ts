@@ -26,10 +26,10 @@ export async function rollDice(page: Page): Promise<void> {
  * (centers) it, the second confirms. */
 export async function submitCall(page: Page): Promise<void> {
   const call = page.getByTestId('call-button');
-  if ((await call.getAttribute('data-armed')) !== 'true') {
-    await call.click();
+  if ((await call.getAttribute('data-armed', { timeout: 10_000 })) !== 'true') {
+    await call.click({ timeout: 10_000 });
   }
-  await call.click();
+  await call.click({ timeout: 10_000 });
 }
 
 /** One human turn: raise minimally when the strip offers a bid, else call. */
@@ -61,17 +61,44 @@ export async function waitForTurnOrEnd(page: Page): Promise<'turn' | 'end'> {
   return result;
 }
 
+/**
+ * One atomic look at the board.
+ *
+ * Sequential locator reads can straddle the moment a match ends, and that is
+ * how this loop used to deadlock: `waitForTurnOrEnd` would latch onto the
+ * composer of the turn just played, a beat before it unmounted, then the next
+ * read would wait forever for a `confirm-strip` the result screen had already
+ * replaced. One snapshot cannot disagree with itself.
+ */
+async function readBoard(page: Page) {
+  return page.evaluate(() => ({
+    ended: !!document.querySelector('[data-testid="result-screen"]'),
+    stripText: document.querySelector('[data-testid="confirm-strip"]')?.textContent ?? '',
+    canCall: !!document.querySelector('[data-testid="call-button"]'),
+  }));
+}
+
 /** Minimal-raise strategy until someone runs out of dice. */
 export async function playToTheEnd(page: Page): Promise<void> {
   for (let turn = 0; turn < 150; turn++) {
     if ((await waitForTurnOrEnd(page)) === 'end') return;
-    // Call every third opportunity to keep rounds ending.
-    const canCall = (await page.getByTestId('call-button').count()) > 0;
-    const stripText = (await page.getByTestId('confirm-strip').textContent()) ?? '';
-    if (canCall && (turn % 3 === 2 || !stripText.startsWith('Bid'))) {
-      await submitCall(page);
-    } else {
-      await page.getByTestId('confirm-strip').click();
+
+    const board = await readBoard(page);
+    if (board.ended) return;
+    // The turn moved on under us; go back and wait for whatever is next.
+    if (!board.stripText) continue;
+
+    // Call every third opportunity to keep rounds ending. Actions are
+    // bounded so a state change mid-click re-settles the loop instead of
+    // hanging it until the test budget runs out.
+    try {
+      if (board.canCall && (turn % 3 === 2 || !board.stripText.startsWith('Bid'))) {
+        await submitCall(page);
+      } else {
+        await page.getByTestId('confirm-strip').click({ timeout: 10_000 });
+      }
+    } catch {
+      continue;
     }
   }
   throw new Error('Match did not finish within 150 turns');
