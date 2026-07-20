@@ -35,11 +35,13 @@
    * instead of floating disembodied. It overlaps the status strip slightly,
    * so the strip tucks under the hand's shadow like the reference.
    * Scenery never intercepts input — taps pass through to the strip.
-   * Mobile rides 90px up the taller table; desktop returns to the corner. */
+   * Mobile rides up the taller table; desktop returns to the corner. The
+   * 3dvh comes off after seeing the live build on a handset, where browser
+   * chrome makes dvh resolve differently than emulation suggested. */
   position: absolute;
   z-index: var(--z-hand);
   left: 0;
-  bottom: 90px;
+  bottom: calc(90px - 3dvh);
   width: min(70vw, 400px);
   pointer-events: none;
 }

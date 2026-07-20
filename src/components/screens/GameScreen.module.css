@@ -31,7 +31,9 @@
 .npcSlot {
   position: absolute;
   right: var(--space-3);
-  bottom: calc(var(--table-h) + var(--space-8));
+  /* The +5dvh was tuned against the live build on a handset, where browser
+   * chrome makes dvh resolve differently than it does in emulation. */
+  bottom: calc(var(--table-h) + var(--space-8) + 5dvh);
   display: flex;
   justify-content: flex-end;
 }
@@ -41,7 +43,8 @@
 .composerSlot {
   position: absolute;
   left: var(--space-3);
-  bottom: calc(var(--table-h) * 0.58);
+  /* Same on-device tuning as .npcSlot: 5dvh higher than it sat in emulation. */
+  bottom: calc(var(--table-h) * 0.58 + 5dvh);
 }
 
 .youRow {
