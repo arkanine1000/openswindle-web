@@ -24,6 +24,35 @@ body {
   background: var(--color-backdrop);
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
+  /* This is a table, not a document: dragging across it should never leave a
+   * smear of highlighted text, and an I-beam over the scenery would promise
+   * something the cursor cannot do. */
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Selection earns its keep in two places: what you type, and the opponent
+ * seed the autopsy invites you to share. */
+input,
+textarea,
+code {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+input[type='text'],
+textarea {
+  cursor: text;
+}
+
+button,
+summary,
+select,
+label {
+  cursor: pointer;
 }
 
 button,
@@ -35,4 +64,6 @@ input {
 img {
   display: block;
   max-width: 100%;
+  /* Scenery is not draggable cargo. */
+  -webkit-user-drag: none;
 }
