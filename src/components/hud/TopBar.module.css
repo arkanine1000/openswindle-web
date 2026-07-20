@@ -9,8 +9,8 @@
   display: flex;
   gap: var(--space-1);
   padding: var(--space-1) var(--space-2) var(--space-2);
-  background: linear-gradient(#33322f, #191816);
-  border: 2px solid #050505;
+  background: linear-gradient(var(--color-plate-top), var(--color-plate-bottom));
+  border: 2px solid var(--color-plate-edge);
   border-top: none;
   border-radius: 0 0 12px 12px;
   box-shadow: var(--shadow-bubble);
@@ -24,7 +24,7 @@
 .historyTab {
   border: none;
   cursor: pointer;
-  background: #191816;
+  background: var(--color-plate-bottom);
   border-radius: 0 0 50% 50%;
   width: clamp(56px, 14vw, 88px);
   height: clamp(40px, 9vw, 60px);

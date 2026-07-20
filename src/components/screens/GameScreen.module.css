@@ -96,22 +96,25 @@
   z-index: var(--z-hud);
   left: var(--space-3);
   top: clamp(34px, calc(4.5vw + 18px), 46px);
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-  background: none;
-  border: none;
-  /* Ink, not parchment: the wall behind it is pale, so light-on-light left
-   * it all but invisible. */
-  color: var(--color-ink);
-  opacity: 0.6;
-  font-style: italic;
-  font-size: calc(var(--text-base) * 1.5);
+  display: grid;
+  place-items: center;
+  /* Same blackened fitting as the pip plate above it: no text tint survived
+   * against the pale wall, so the icon gets its own dark ground instead. */
+  width: clamp(34px, 9vw, 44px);
+  height: clamp(34px, 9vw, 44px);
+  padding: 0;
+  background: linear-gradient(var(--color-plate-top), var(--color-plate-bottom));
+  border: 2px solid var(--color-plate-edge);
+  border-radius: 10px;
+  box-shadow: var(--shadow-bubble);
+  color: var(--color-parchment);
+  opacity: 0.85;
   cursor: pointer;
 }
 
 .walkAway:hover {
   opacity: 1;
+  color: var(--color-danger);
 }
 
 .errorToast {

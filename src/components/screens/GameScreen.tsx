@@ -293,20 +293,22 @@ export function GameScreen() {
                 type="button"
                 className={styles.walkAway}
                 onClick={walkAway}
+                aria-label="Walk away from the table"
+                title="Walk away"
                 data-testid="walk-away"
               >
-                {/* em-sized so it scales with the doubled label text. */}
-                <svg viewBox="0 0 20 20" width="0.7em" height="0.7em" aria-hidden>
+                {/* A struck flag: forfeit, in the one shape that needs no
+                 * label. Sized in em so it tracks the chip. */}
+                <svg viewBox="0 0 20 20" width="1.1em" height="1.1em" aria-hidden>
                   <path
-                    d="M12 3.5 5.5 10l6.5 6.5M6.5 10h8"
+                    d="M5.6 3.2v13.6"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="1.8"
                     strokeLinecap="round"
-                    strokeLinejoin="round"
                   />
+                  <path d="M5.6 4.2h9.2l-2.5 3.1 2.5 3.1H5.6z" fill="currentColor" />
                 </svg>
-                walk away
               </button>
             )}
             <AnimatePresence>

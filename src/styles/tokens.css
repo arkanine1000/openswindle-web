@@ -21,6 +21,10 @@
   --color-danger: #a33326;
   --color-success: #3f7d4e;
   --color-text-faint: rgba(29, 24, 18, 0.55);
+  /* Blackened metal — the HUD fittings bolted to the frame's edge. */
+  --color-plate-top: #33322f;
+  --color-plate-bottom: #191816;
+  --color-plate-edge: #050505;
 
   /* Type */
   --font-serif: 'Sorts Mill Goudy', 'Iowan Old Style', Georgia, serif;
