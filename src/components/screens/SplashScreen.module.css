@@ -2,8 +2,17 @@
   position: relative;
   height: 100dvh;
   overflow: hidden;
-  display: grid;
-  place-items: center;
+}
+
+.scroll {
+  /* The scenery stays pinned to the screen while this layer scrolls, so
+   * opening the disclosure can't push the hint off the bottom — body has
+   * overflow: hidden, so the document itself will never scroll for us. */
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
 }
 
 .wall {
@@ -14,14 +23,29 @@
   object-fit: cover;
 }
 
-.vignette {
+.lamplight {
+  /* Anchored on the lamp painted into the backdrop's upper left: the room
+   * gets a direction to its light, and the wall stops reading as flat grey. */
   position: absolute;
   inset: 0;
   background: radial-gradient(
-    ellipse at 50% 42%,
-    rgba(0, 0, 0, 0.15) 30%,
-    rgba(0, 0, 0, 0.72) 100%
+    ellipse 55% 45% at 14% 20%,
+    rgba(255, 190, 110, 0.26),
+    transparent 62%
   );
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.vignette {
+  /* Tighter and deeper than the room's own shading, to seat the type in a
+   * pool of dark. */
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 45%, transparent 25%, rgba(0, 0, 0, 0.86) 100%),
+    linear-gradient(rgba(0, 0, 0, 0.35), transparent 30%, rgba(0, 0, 0, 0.45));
+  pointer-events: none;
 }
 
 .column {
@@ -30,28 +54,87 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-4);
-  padding: var(--space-5);
+  padding: var(--space-6) var(--space-5);
   max-width: 560px;
   width: 100%;
+  /* auto margins centre it while there is room and collapse to the top when
+   * there isn't — unlike align-items: center, which would strand the
+   * overflow above the scroll origin. */
+  margin: auto;
 }
 
 .mark {
-  /* The brand die, floating above the title — the same mark as the favicon
-   * and the installed app's icon. */
-  width: clamp(64px, 18vw, 96px);
-  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.7));
+  /* The brand die, dropping in above the title — the same mark as the
+   * favicon and the installed app's icon. */
+  width: clamp(72px, 19vw, 104px);
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.8));
 }
 
 .title {
-  width: min(86vw, 480px);
-  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.7));
+  /* Real type, not art: the gradient runs parchment to gold and the glyphs
+   * carry their own shadow, so the word stays crisp at any size and the
+   * placeholder image is gone for good. */
+  margin: calc(-1 * var(--space-2)) 0 0;
+  /* width: max-content is load-bearing. The gradient is painted into the
+   * element's box and clipped to the glyphs, so any letter sitting outside
+   * that box has no paint and vanishes — sizing the box to the word instead
+   * of to the column is what keeps the last letters visible. The 8.2vw
+   * ramp keeps the whole word inside the viewport at every width. */
+  width: max-content;
+  font-size: clamp(1.9rem, 8.2vw, 4.6rem);
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: center;
+  background: linear-gradient(
+    180deg,
+    #fffdf7 0%,
+    var(--color-parchment) 42%,
+    #d8c49a 74%,
+    var(--color-accent) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  /* drop-shadow, not text-shadow: it follows the clipped gradient glyphs. */
+  filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.85))
+    drop-shadow(0 0 42px rgba(var(--color-accent-rgb), 0.45));
+}
+
+.rule {
+  /* Gold hairline with a diamond at its centre — the trim that edges the
+   * rest of the game's chrome. */
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: min(72%, 340px);
+  margin-top: calc(-1 * var(--space-2));
+}
+
+.rule span {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-accent));
+}
+
+.rule span:last-child {
+  background: linear-gradient(90deg, var(--color-accent), transparent);
+}
+
+.rule i {
+  width: 7px;
+  height: 7px;
+  background: var(--color-accent);
+  transform: rotate(45deg);
 }
 
 .tagline {
   color: var(--color-parchment);
   font-style: italic;
-  font-size: var(--text-lg);
-  opacity: 0.85;
+  font-size: clamp(1.35rem, 5.2vw, 2.5rem);
+  opacity: 0.82;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
 .length {
@@ -60,29 +143,59 @@
   border: none;
   align-items: center;
   color: var(--color-parchment);
+  margin-top: var(--space-2);
 }
 
 .length legend {
-  float: left;
-  margin-right: var(--space-3);
-  font-style: italic;
-  opacity: 0.8;
+  /* The row of numbers explains itself; the label stays for screen readers,
+   * which have no picture to read it from. */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .diceChoice {
+  position: relative;
   display: grid;
   place-items: center;
-  width: 2.4rem;
-  height: 2.4rem;
-  border: 1px solid var(--color-accent);
+  width: clamp(3rem, 12vw, 3.6rem);
+  height: clamp(3rem, 12vw, 3.6rem);
+  font-size: clamp(1.35rem, 5.2vw, 1.7rem);
+  color: var(--color-parchment);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.5);
   border-radius: var(--radius-chip);
+  background: rgba(23, 19, 14, 0.5);
   cursor: pointer;
-  transition: background var(--duration-fast);
+  transition:
+    background var(--duration-fast),
+    border-color var(--duration-fast),
+    color var(--duration-fast),
+    transform var(--duration-fast);
+}
+
+.diceChoice:hover {
+  border-color: var(--color-accent);
+  color: #fffdf6;
+  transform: translateY(-2px);
 }
 
 .diceChoice[data-checked='true'] {
-  background: var(--color-accent);
+  /* Lit parchment against the unlit slots — the same material as the CTA,
+   * so the chosen number reads as struck rather than merely tinted. The
+   * gold ring keeps its edge legible on the pale wall. */
+  background: linear-gradient(180deg, #fffdf6, var(--color-parchment) 60%, #e8dcc2);
+  border-color: var(--color-accent);
   color: var(--color-ink);
+  box-shadow:
+    0 0 0 1px var(--color-accent),
+    0 0 22px rgba(var(--color-accent-rgb), 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transform: translateY(-1px);
 }
 
 .diceChoice input {
@@ -91,19 +204,34 @@
 }
 
 .cta {
-  margin-top: var(--space-2);
-  padding: var(--space-4) var(--space-6);
+  margin-top: var(--space-3);
+  padding: var(--space-4) var(--space-8);
   font-size: var(--text-xl);
-  background: var(--color-parchment);
+  color: var(--color-ink);
+  background: linear-gradient(180deg, #fffdf6, var(--color-parchment) 55%, #e2d7c0);
   border: none;
   border-radius: var(--radius-chip);
-  box-shadow: var(--shadow-sheet);
+  box-shadow:
+    var(--shadow-sheet),
+    0 0 0 1px rgba(var(--color-accent-rgb), 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
   cursor: pointer;
-  transition: transform var(--duration-fast);
+  transition:
+    transform var(--duration-fast),
+    box-shadow var(--duration-fast);
 }
 
 .cta:hover:not(:disabled) {
   transform: translateY(-2px);
+  box-shadow:
+    var(--shadow-sheet),
+    0 0 0 1px var(--color-accent),
+    0 0 28px rgba(var(--color-accent-rgb), 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.cta:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .cta:disabled {
@@ -114,37 +242,66 @@
 .advanced {
   color: var(--color-parchment);
   text-align: center;
-  opacity: 0.85;
+  opacity: 0.8;
+  max-width: 100%;
 }
 
 .advanced summary {
   cursor: pointer;
   font-style: italic;
+  font-size: clamp(1.05rem, 4vw, 1.4rem);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.advanced summary:hover {
+  color: var(--color-accent);
+}
+
+.advancedBody {
+  /* The disclosure's contents sit on their own dark ground, so the inputs
+   * read as a panel rather than loose fields on the wall. */
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  background: rgba(23, 19, 14, 0.55);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.35);
+  border-radius: var(--radius-chip);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--space-2);
   margin-top: var(--space-3);
-  font-size: var(--text-sm);
+  font-size: clamp(0.95rem, 3.6vw, 1.15rem);
+  width: 100%;
+  max-width: 24rem;
 }
 
 .field input,
 .field select {
-  padding: var(--space-2);
-  border: 1px solid var(--color-accent);
+  padding: var(--space-3);
+  font-size: clamp(1rem, 3.8vw, 1.2rem);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.55);
   border-radius: var(--radius-chip);
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.4);
   color: var(--color-parchment);
   text-align: center;
 }
 
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
 .hint {
-  margin-top: var(--space-2);
-  font-size: var(--text-sm);
+  margin-top: var(--space-3);
+  font-size: clamp(0.9rem, 3.4vw, 1.05rem);
   font-style: italic;
-  opacity: 0.6;
+  opacity: 0.65;
   max-width: 34ch;
 }
 

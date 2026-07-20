@@ -19,7 +19,6 @@ import npc0Seated from './placeholders/npc-variant-0-seated.webp';
 import pipLost from './placeholders/pip-lost.svg';
 import pipNpc from './placeholders/pip-npc.svg';
 import pipPlayer from './placeholders/pip-player.svg';
-import splashTitle from './placeholders/splash-title.svg';
 import tableSurface from './placeholders/table-surface.webp';
 import type { Face } from '../api/types';
 
@@ -54,7 +53,6 @@ export const assets = {
    * at a stable, unhashed URL, so the logo reuses that same file instead of
    * shipping a second copy. Regenerate with scripts/generate-icons.mjs. */
   brand: { mark: '/icon.svg' },
-  splash: { title: splashTitle },
 } as const;
 
 /** FNV-1a — stable, dependency-free portrait selection. Art variety only;

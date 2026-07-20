@@ -219,19 +219,6 @@ for (const [who, fill] of Object.entries(gemColors)) {
   );
 }
 
-/* --- Splash hero --- */
-svg(
-  'splash-title',
-  1200,
-  400,
-  `<rect width="1200" height="400" fill="none"/>
-   <text x="600" y="215" text-anchor="middle" font-family="Georgia, serif" font-size="120" fill="#f4efe4">SWINDLESTONES</text>
-   <path d="M 300 270 L 900 270" stroke="#8a6d3b" stroke-width="4"/>
-   <path d="M 560 60 L 585 105 L 535 105 Z" fill="#4a7fb5"/>
-   <path d="M 640 60 L 665 105 L 615 105 Z" fill="#b54a55"/>`,
-  'PLACEHOLDER · splash.title',
-);
-
 for (const [name, content] of Object.entries(files)) {
   writeFileSync(join(outDir, name), content);
 }
