@@ -3,6 +3,7 @@ import type { Face } from '../../api/types';
 import { assets } from '../../assets/manifest';
 import { PACING } from '../../game/pacing';
 import { Die } from './Die';
+import { dicePileStagger } from './dicePileStagger';
 import styles from './PlayerHand.module.css';
 
 interface PlayerHandProps {
@@ -20,9 +21,7 @@ export function PlayerHand({ dice, revealed, rollKey, rolling }: PlayerHandProps
     <div className={styles.wrap} data-testid="player-hand" data-revealed={revealed}>
       <div className={styles.dice}>
         {dice.map((face, i) => {
-          // Deterministic per-slot stagger: a loose pile, not a parade.
-          const restRotate = ((i * 47) % 25) - 12;
-          const restY = ((i * 31) % 9) - 2;
+          const { rotate: restRotate, y: restY } = dicePileStagger(i);
           return (
             <motion.div
               key={`${rollKey}-${i}`}

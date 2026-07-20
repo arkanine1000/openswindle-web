@@ -4,5 +4,16 @@
   right: 6%;
   bottom: calc(var(--table-h) * 0.45);
   display: flex;
-  gap: var(--space-1);
+}
+
+.row > * + * {
+  /* Same overlap as the player's pile — softer on phones, tighter on
+   * desktop where the dice render bigger. */
+  margin-left: calc(-1 * var(--space-4));
+}
+
+@media (min-width: 768px) {
+  .row > * + * {
+    margin-left: -26px;
+  }
 }

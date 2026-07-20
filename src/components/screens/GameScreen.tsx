@@ -295,6 +295,17 @@ export function GameScreen() {
                 onClick={walkAway}
                 data-testid="walk-away"
               >
+                {/* em-sized so it scales with the doubled label text. */}
+                <svg viewBox="0 0 20 20" width="0.7em" height="0.7em" aria-hidden>
+                  <path
+                    d="M12 3.5 5.5 10l6.5 6.5M6.5 10h8"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
                 walk away
               </button>
             )}

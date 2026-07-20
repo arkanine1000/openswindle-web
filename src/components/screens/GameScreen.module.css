@@ -88,16 +88,23 @@
 }
 
 .walkAway {
-  /* Tucked under your own dice pips, clear of the hand and the strip. */
+  /* Directly under the player's own pip plate (TopBar's .plate): its
+   * height is 4.5vw-scaled pip (clamp 16-28px) plus 4px top padding, 8px
+   * bottom padding and a 2px bottom border, so clamp(30,4.5vw+14,42)px of
+   * plate plus a small 4px gap gives the offset below. */
   position: absolute;
   z-index: var(--z-hud);
   left: var(--space-3);
-  top: clamp(56px, 13vw, 76px);
+  top: clamp(34px, calc(4.5vw + 18px), 46px);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
   background: none;
   border: none;
   color: var(--color-parchment);
   opacity: 0.45;
   font-style: italic;
+  font-size: calc(var(--text-base) * 1.5);
   cursor: pointer;
 }
 
@@ -124,10 +131,13 @@
 
 @media (min-width: 768px) {
   .conversation {
-    /* Desktop: the column sits between the two players. */
+    /* Desktop: the column sits between the two players. Anchor is ~15%
+     * lower than the table-height-relative default (34dvh + 3rem, each
+     * scaled by 0.85 and rounded: 29dvh + 2.5rem). */
     left: 8%;
     right: 42%;
-    bottom: calc(var(--table-h) + var(--space-8));
+    bottom: calc(29dvh + 2.5rem);
+    gap: var(--space-5);
   }
 
   .introCard {
