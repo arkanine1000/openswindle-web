@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import type { Bid, Move } from '../../api/types';
 import { enumerateBids, spokenBid } from '../../game/bids';
 import { itemSelectable, type CarouselItem } from '../../game/carousel';
-import { pickTalk, talkLevel } from '../../game/tableTalk';
+import { markTalkUsed, pickTalk, talkLevel } from '../../game/tableTalk';
 import { StatusStrip } from '../scene/StatusStrip';
 import { BidCarousel } from './BidCarousel';
 import { SpeechBubble } from './SpeechBubble';
@@ -68,8 +68,13 @@ export function PlayerComposer({
 
   const submit = (item: CarouselItem | undefined) => {
     if (!item || !itemSelectable(item)) return;
-    if (item.kind === 'call') onMove({ action: 'call' }, autoTalk ? null : talkOrNull);
-    else onMove({ action: 'bid', bid: item.option.bid }, talkOrNull);
+    if (item.kind === 'call') {
+      onMove({ action: 'call' }, autoTalk ? null : talkOrNull);
+    } else {
+      // Previews don't count as used — only a phrase that actually ships.
+      if (autoTalk && autoPhrase) markTalkUsed(autoPhrase);
+      onMove({ action: 'bid', bid: item.option.bid }, talkOrNull);
+    }
   };
 
   const stripLabel =

@@ -8,13 +8,58 @@
 
 export type TalkLevel = 0 | 1 | 2 | 3 | 4;
 
-/** Four-plus short phrases per level, small talk through open taunting. */
+/** Eight short phrases per level, small talk through open taunting. */
 export const TABLE_TALK: readonly (readonly string[])[] = [
-  ['Cold night for dice.', 'Watered ale, this.', 'Easy start.', 'The night is long.'],
-  ['Just feeling the table.', 'A friendly wager.', 'Nothing reckless. Yet.', 'Follow me up?'],
-  ['The stones favour me.', 'Start counting.', 'Match that.', 'You look pale, friend.'],
-  ['Push back, if you dare.', 'Your luck thins.', 'I smell doubt.', 'Count and weep.'],
-  ["You're bluffing.", 'This is where you break.', 'Call it, coward.', 'No nerve for it.'],
+  [
+    'Cold night for dice.',
+    'Watered ale, this.',
+    'Easy start.',
+    'The night is long.',
+    'A gentle opening, nothing more.',
+    'Barely worth the breath, this one.',
+    'Warm fire, low stakes.',
+    "We're just getting acquainted.",
+  ],
+  [
+    'Just feeling the table.',
+    'A friendly wager.',
+    'Nothing reckless. Yet.',
+    'Follow me up?',
+    "Let's see what you're made of.",
+    'A little pressure on the seams.',
+    "I've thrown bolder in my sleep.",
+    'Your move. Make it interesting.',
+  ],
+  [
+    'The stones favour me.',
+    'Start counting.',
+    'Match that.',
+    'You look pale, friend.',
+    "I'd fold now, while it's cheap.",
+    'The odds lean my way, and you know it.',
+    'That twitch of yours says plenty.',
+    'Getting steep for you, is it?',
+  ],
+  [
+    'Push back, if you dare.',
+    'Your luck thins.',
+    'I smell doubt.',
+    'Count and weep.',
+    "You've followed me too far already.",
+    'One more step and you drown.',
+    "Bold words won't save your stones.",
+    "I've buried better players than you.",
+  ],
+  [
+    "You're bluffing.",
+    'This is where you break.',
+    'Call it, coward.',
+    'No nerve for it.',
+    'Every stone on the table says you fold.',
+    'Look me in the eye and call it.',
+    'This ends with your cup empty.',
+    "Pray, if that's your habit.",
+  ],
 ];
 
 /** Which register a bid belongs to, by its share of the dice in play. */
@@ -27,14 +72,17 @@ export function talkLevel(quantity: number, diceInPlay: number): TalkLevel {
   return 4;
 }
 
-/* Remembered across picks so the same line never lands twice in a row. */
-const lastPick: Partial<Record<TalkLevel, number>> = {};
+/* The phrase that actually shipped with the last bid — not mere previews —
+ * so the table never hears the same line twice running. */
+let lastUsed: string | null = null;
 
-/** A phrase for the level, never the one used last time at that level. */
+/** Record the phrase submitted with a bid; the next pick won't offer it. */
+export function markTalkUsed(phrase: string): void {
+  lastUsed = phrase;
+}
+
+/** A phrase for the level, drawn from the pool minus the last-used line. */
 export function pickTalk(level: TalkLevel, random: () => number = Math.random): string {
-  const phrases = TABLE_TALK[level]!;
-  let index = Math.floor(random() * phrases.length) % phrases.length;
-  if (index === lastPick[level]) index = (index + 1) % phrases.length;
-  lastPick[level] = index;
-  return phrases[index]!;
+  const pool = TABLE_TALK[level]!.filter((phrase) => phrase !== lastUsed);
+  return pool[Math.floor(random() * pool.length) % pool.length]!;
 }

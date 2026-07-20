@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { TABLE_TALK, pickTalk, talkLevel, type TalkLevel } from '../src/game/tableTalk';
+import {
+  TABLE_TALK,
+  markTalkUsed,
+  pickTalk,
+  talkLevel,
+  type TalkLevel,
+} from '../src/game/tableTalk';
 
 describe('talkLevel', () => {
   it('scales with the bid quantity share of dice in play', () => {
@@ -23,10 +29,10 @@ describe('talkLevel', () => {
 });
 
 describe('TABLE_TALK', () => {
-  it('offers at least four phrases at every level', () => {
+  it('offers at least eight phrases at every level', () => {
     expect(TABLE_TALK).toHaveLength(5);
     for (const phrases of TABLE_TALK) {
-      expect(phrases.length).toBeGreaterThanOrEqual(4);
+      expect(phrases.length).toBeGreaterThanOrEqual(8);
     }
   });
 });
@@ -39,12 +45,20 @@ describe('pickTalk', () => {
     }
   });
 
-  it('never repeats the previous phrase back-to-back', () => {
-    let previous = pickTalk(2);
+  it('never offers the phrase used on the last bid', () => {
     for (let i = 0; i < 50; i++) {
-      const phrase = pickTalk(2);
-      expect(phrase).not.toBe(previous);
-      previous = phrase;
+      const used = pickTalk(2);
+      markTalkUsed(used);
+      expect(pickTalk(2)).not.toBe(used);
+    }
+  });
+
+  it('excludes the last-used phrase without consuming previews', () => {
+    const used = pickTalk(3);
+    markTalkUsed(used);
+    // Repeated previews (no markTalkUsed) keep excluding the same phrase.
+    for (let i = 0; i < 25; i++) {
+      expect(pickTalk(3)).not.toBe(used);
     }
   });
 });
