@@ -42,12 +42,14 @@ export function SplashScreen() {
         transition={{ duration: 0.9, ease: 'easeOut' }}
       >
         <motion.img
-          className={styles.title}
-          src={assets.splash.title}
-          alt="Swindlestones"
+          className={styles.mark}
+          src={assets.brand.mark}
+          alt=""
+          aria-hidden
           animate={{ y: [0, -6, 0] }}
           transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
         />
+        <img className={styles.title} src={assets.splash.title} alt="Swindlestones" />
         <p className={styles.tagline}>A game of dice and lies.</p>
 
         <fieldset className={styles.length}>

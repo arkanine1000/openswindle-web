@@ -49,6 +49,11 @@ export const assets = {
     npc: { 1: dieNpc1, 2: dieNpc2, 3: dieNpc3, 4: dieNpc4 },
   } satisfies Record<'player' | 'npc', Record<Face, string>>,
   pips: { player: pipPlayer, npc: pipNpc, lost: pipLost },
+  /* The brand mark is the one asset served from public/ rather than
+   * imported: the favicon, the web manifest and social scrapers all need it
+   * at a stable, unhashed URL, so the logo reuses that same file instead of
+   * shipping a second copy. Regenerate with scripts/generate-icons.mjs. */
+  brand: { mark: '/icon.svg' },
   splash: { title: splashTitle },
 } as const;
 

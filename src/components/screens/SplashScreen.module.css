@@ -35,6 +35,13 @@
   width: 100%;
 }
 
+.mark {
+  /* The brand die, floating above the title — the same mark as the favicon
+   * and the installed app's icon. */
+  width: clamp(64px, 18vw, 96px);
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.7));
+}
+
 .title {
   width: min(86vw, 480px);
   filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.7));

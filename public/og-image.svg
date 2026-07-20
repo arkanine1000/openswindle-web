@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="body" cx="0.38" cy="0.3" r="1">
+      <stop offset="0%" stop-color="#6e9fce"/>
+      <stop offset="55%" stop-color="#4a7fb5"/>
+      <stop offset="100%" stop-color="#2f5f92"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#17130e"/>
+  <g transform="translate(30.00 90.60) scale(2.2)">
+    <path d="M 100 22 L 169 62 L 169 142 L 100 182 L 31 142 L 31 62 Z"
+        fill="url(#body)" stroke="#1f4166" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M 100 22 L 31 62 L 31 142 Z" fill="#ffffff" opacity="0.12"/>
+  <path d="M 100 22 L 169 62 L 169 142 Z" fill="#2f5f92" opacity="0.55"/>
+  <path d="M 31 142 L 100 182 L 169 142 Z" fill="#1f4166" opacity="0.5"/>
+  <path d="M 100 22 L 169 142 L 31 142 Z"
+        fill="none" stroke="#1f4166" stroke-width="3.5" opacity="0.8" stroke-linejoin="round"/>
+  <path d="M 88 34 Q 100 22 112 34" stroke="#ffffff" stroke-width="6" opacity="0.35"
+        fill="none" stroke-linecap="round"/>
+  <circle cx="100" cy="102" r="13" fill="#f6f2e7"/>
+       <circle cx="100" cy="102" r="13" fill="none" stroke="#1f4166" stroke-opacity="0.4" stroke-width="2.5"/>
+       <circle cx="96" cy="98" r="3.5" fill="#ffffff" opacity="0.85"/>
+<circle cx="100" cy="66" r="13" fill="#f6f2e7"/>
+       <circle cx="100" cy="66" r="13" fill="none" stroke="#1f4166" stroke-opacity="0.4" stroke-width="2.5"/>
+       <circle cx="96" cy="62" r="3.5" fill="#ffffff" opacity="0.85"/>
+<circle cx="69" cy="120" r="13" fill="#f6f2e7"/>
+       <circle cx="69" cy="120" r="13" fill="none" stroke="#1f4166" stroke-opacity="0.4" stroke-width="2.5"/>
+       <circle cx="65" cy="116" r="3.5" fill="#ffffff" opacity="0.85"/>
+<circle cx="131" cy="120" r="13" fill="#f6f2e7"/>
+       <circle cx="131" cy="120" r="13" fill="none" stroke="#1f4166" stroke-opacity="0.4" stroke-width="2.5"/>
+       <circle cx="127" cy="116" r="3.5" fill="#ffffff" opacity="0.85"/>
+  </g>
+  <text x="440" y="300" font-family="Georgia, 'Times New Roman', serif" font-size="86" fill="#f4efe4">OpenSwindle</text>
+  <text x="440" y="368" font-family="Georgia, 'Times New Roman', serif" font-size="40" font-style="italic" fill="#f4efe4" opacity="0.7">A game of dice and lies.</text>
+  <path d="M 440 410 L 1030 410" stroke="#8a6d3b" stroke-width="3"/>
+</svg>
