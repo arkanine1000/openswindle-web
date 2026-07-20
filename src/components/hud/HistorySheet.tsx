@@ -24,6 +24,11 @@ function line(entry: TranscriptEntry): string {
 /** The stitched-linen table-talk log that unrolls over the scene. */
 export function HistorySheet({ open, entries, onClose }: HistorySheetProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const touchY = useRef<number | null>(null);
+
+  /** True once the last entry is on screen, so carrying on rolls the sheet
+   * back up rather than fighting the scroll. */
+  const pastTheEnd = (el: HTMLElement) => el.scrollTop + el.clientHeight >= el.scrollHeight - 2;
 
   // Open at the latest exchange, like the reference's live page bottom.
   useEffect(() => {
@@ -49,10 +54,25 @@ export function HistorySheet({ open, entries, onClose }: HistorySheetProps) {
             ref={scrollRef}
             onWheel={(e) => {
               // Scrolling on past the latest entry rolls the sheet back up.
-              const el = e.currentTarget;
-              if (e.deltaY > 20 && el.scrollTop + el.clientHeight >= el.scrollHeight - 2) {
+              if (e.deltaY > 20 && pastTheEnd(e.currentTarget)) onClose();
+            }}
+            onTouchStart={(e) => {
+              touchY.current = e.touches[0]?.clientY ?? null;
+            }}
+            onTouchMove={(e) => {
+              // The same gesture as the wheel handler, which touch never
+              // fires: at the end of the log, a finger still travelling up
+              // is asking for the next thing, and there isn't one.
+              const start = touchY.current;
+              const y = e.touches[0]?.clientY;
+              if (start == null || y == null) return;
+              if (start - y > 40 && pastTheEnd(e.currentTarget)) {
+                touchY.current = null;
                 onClose();
               }
+            }}
+            onTouchEnd={() => {
+              touchY.current = null;
             }}
           >
             {entries.map((entry, i) => (

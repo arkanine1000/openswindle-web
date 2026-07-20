@@ -43,7 +43,11 @@ export function TopBar({
         aria-expanded={historyOpen}
         data-testid="history-tab"
       >
-        <span className={historyOpen ? styles.arrowDown : styles.arrowUp} aria-hidden />
+        {/* Points the way the sheet will travel: down to unroll it, up to
+         * send it back. The open state matches the arrow on the sheet's own
+         * tab, which slides down over this one — mismatched arrows showed as
+         * a flicker at the start of the animation. */}
+        <span className={historyOpen ? styles.arrowUp : styles.arrowDown} aria-hidden />
         <span className={styles.visuallyHidden}>
           {historyOpen ? 'Close the table-talk history' : 'Read the table-talk history'}
         </span>
