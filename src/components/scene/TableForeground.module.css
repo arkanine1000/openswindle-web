@@ -13,11 +13,11 @@
   /* Soft edge where the table meets the room. */
   content: '';
   position: absolute;
-  top: -18px;
+  top: -40px;
   left: 0;
   right: 0;
-  height: 18px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent);
+  height: 40px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.35), transparent);
   pointer-events: none;
 }
 
