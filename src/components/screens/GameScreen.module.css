@@ -101,15 +101,17 @@
   gap: var(--space-1);
   background: none;
   border: none;
-  color: var(--color-parchment);
-  opacity: 0.45;
+  /* Ink, not parchment: the wall behind it is pale, so light-on-light left
+   * it all but invisible. */
+  color: var(--color-ink);
+  opacity: 0.6;
   font-style: italic;
   font-size: calc(var(--text-base) * 1.5);
   cursor: pointer;
 }
 
 .walkAway:hover {
-  opacity: 0.9;
+  opacity: 1;
 }
 
 .errorToast {
