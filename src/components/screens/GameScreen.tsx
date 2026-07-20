@@ -18,6 +18,9 @@ import { StatusStrip } from '../scene/StatusStrip';
 import { TableScene } from '../scene/TableScene';
 import styles from './GameScreen.module.css';
 
+/** The auto-talk toggle is a lasting preference, unlike the per-tab match. */
+const AUTO_TALK_KEY = 'openswindle-auto-talk';
+
 export function GameScreen() {
   const phase = useGameStore((s) => s.phase);
   const view = useGameStore((s) => s.view);
@@ -38,6 +41,13 @@ export function GameScreen() {
   const dismissError = useGameStore((s) => s.dismissError);
 
   const [historyOpen, setHistoryOpen] = useState(false);
+  // Lives here, not in the composer, so the choice survives across turns.
+  const [autoTalk, setAutoTalk] = useState(() => localStorage.getItem(AUTO_TALK_KEY) === 'true');
+  const toggleAutoTalk = () => {
+    const next = !autoTalk;
+    localStorage.setItem(AUTO_TALK_KEY, String(next));
+    setAutoTalk(next);
+  };
   const touchStart = useRef<{ x: number; y: number } | null>(null);
 
   const perPlayer = startTotal / 2;
@@ -119,6 +129,8 @@ export function GameScreen() {
               currentBid={currentBid}
               startTotal={startTotal}
               currentTotal={currentTotal}
+              autoTalk={autoTalk}
+              onToggleAutoTalk={toggleAutoTalk}
               onMove={submitPlayerMove}
             />
           </motion.div>
