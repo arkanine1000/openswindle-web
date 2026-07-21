@@ -9,7 +9,7 @@ export async function sitDown(
 ): Promise<void> {
   // ?choreo=fast collapses presentation pauses so tests aren't theatrical.
   await page.goto('/?choreo=fast');
-  await page.getByText('Choose your opponent').click();
+  await page.getByText('Advanced Settings').click();
   await page.getByTestId('seed-input').fill(seed);
   await page.getByTestId('engine-select').selectOption('scripted');
   await page.locator(`input[name="dice"][value="${dice}"]`).check();

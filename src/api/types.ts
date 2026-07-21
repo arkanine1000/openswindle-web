@@ -39,6 +39,9 @@ export interface RoundReveal {
   actual_count: number;
   bid_met: boolean;
   loser: Seat;
+  /** The caller's parting words. A call isn't a bid, so it never rides in
+   * bid_history — the reveal is where the opponent gets to read it. */
+  table_talk: string | null;
 }
 
 export type Phase = 'bidding' | 'finished';
@@ -55,6 +58,8 @@ export interface PublicMatchView {
   commitments: Record<Seat, string>;
   bid_history: BidRecord[];
   reveals: RoundReveal[];
+  /** False only while a human match still awaits seat B; always true vs an NPC. */
+  opponent_present: boolean;
 }
 
 export interface CreateMatchResponse {
@@ -62,6 +67,14 @@ export interface CreateMatchResponse {
   tokens: Record<Seat, string>;
   npc_name: string | null;
   npc_bio: string | null;
+  view: PublicMatchView;
+}
+
+/** Claiming seat B of a human-vs-human match via POST /matches/{id}/join. */
+export interface JoinMatchResponse {
+  match_id: string;
+  token: string;
+  seat: Seat;
   view: PublicMatchView;
 }
 

@@ -16,7 +16,7 @@ test.describe('splash screen', () => {
   test('advanced disclosure exposes seed and opponent engine', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByTestId('seed-input')).toBeHidden();
-    await page.getByText('Choose your opponent').click();
+    await page.getByText('Advanced Settings').click();
     await expect(page.getByTestId('seed-input')).toBeVisible();
     await expect(page.getByTestId('engine-select')).toHaveValue('llm');
   });

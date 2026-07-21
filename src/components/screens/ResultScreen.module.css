@@ -77,26 +77,6 @@
   margin-top: var(--space-4);
 }
 
-.primary,
-.secondary {
-  padding: var(--space-3) var(--space-6);
-  border-radius: var(--radius-chip);
-  font-size: var(--text-lg);
-  cursor: pointer;
-}
-
-.primary {
-  background: var(--color-parchment);
-  border: none;
-  box-shadow: var(--shadow-sheet);
-}
-
-.secondary {
-  background: none;
-  border: 1px solid var(--color-accent);
-  color: var(--color-parchment);
-}
-
 .footnote {
   color: var(--color-parchment);
   opacity: 0.45;

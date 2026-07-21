@@ -1,6 +1,7 @@
 import type {
   Autopsy,
   CreateMatchResponse,
+  JoinMatchResponse,
   MatchConfig,
   Move,
   MoveResponse,
@@ -55,6 +56,11 @@ export function createMatch(config: Partial<MatchConfig>): Promise<CreateMatchRe
 
 export function getMatch(matchId: string, token: string): Promise<PublicMatchView> {
   return request(`/matches/${matchId}`, { headers: authed(token) });
+}
+
+/** Claim seat B of a human-vs-human match (only the creator held a token before). */
+export function joinMatch(matchId: string): Promise<JoinMatchResponse> {
+  return request(`/matches/${matchId}/join`, { method: 'POST' });
 }
 
 export function submitMove(

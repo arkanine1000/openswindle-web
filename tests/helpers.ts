@@ -22,6 +22,7 @@ export function view(overrides: Partial<PublicMatchView> = {}): PublicMatchView 
     commitments: { a: 'ca', b: 'cb' },
     bid_history: [],
     reveals: [],
+    opponent_present: true,
     ...overrides,
   };
 }
@@ -37,6 +38,7 @@ export function reveal(overrides: Partial<RoundReveal> = {}): RoundReveal {
     actual_count: 3,
     bid_met: true,
     loser: 'a',
+    table_talk: null,
     ...overrides,
   };
 }

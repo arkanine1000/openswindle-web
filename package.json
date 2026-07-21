@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@fontsource/sorts-mill-goudy": "^5.2.5",
+    "lucide-react": "^1.25.0",
     "motion": "^12.23.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

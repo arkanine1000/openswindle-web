@@ -239,6 +239,113 @@
   cursor: wait;
 }
 
+/* Anchors the absolutely-placed advanced block below the CTA, so that block's
+ * appear/collapse never changes this area's height — and the centred column
+ * above it never shifts. */
+.playArea {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* The single CTA: fixed box, the play button filling it and the reel-toggle
+ * chevron flush to the right edge so the whole thing reads as one pill. */
+.playControl {
+  position: relative;
+  margin-top: var(--space-3);
+  width: min(82vw, 17rem);
+  height: 3.6rem;
+  /* A vertical drag turns the reel; it must not scroll the splash behind it. */
+  touch-action: none;
+}
+
+.play {
+  margin-top: 0;
+  width: 100%;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3em;
+  padding: 0 var(--space-8);
+}
+
+.playText {
+  white-space: nowrap;
+}
+
+/* The flipping word rides in the same line as "Play a" — no panel, no seam.
+ * Overflow-hidden is what clips the off-screen reel position. */
+.wordSlot {
+  position: relative;
+  display: inline-block;
+  width: 3ch;
+  height: 1.5em;
+  overflow: hidden;
+  text-align: left;
+}
+
+.word {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  will-change: transform;
+}
+
+.toggle {
+  position: absolute;
+  top: 50%;
+  right: var(--space-3);
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-1);
+  color: var(--color-text-faint);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-chip);
+  transition:
+    color var(--duration-fast),
+    transform var(--duration-fast);
+}
+
+.toggle:hover:not(:disabled) {
+  color: var(--color-ink);
+}
+
+/* Ride the play button's -2px hover lift (and settle on its active press) so
+ * the chevron never detaches from the pill. */
+.play:hover:not(:disabled) ~ .toggle {
+  transform: translateY(calc(-50% - 2px));
+}
+
+.play:active:not(:disabled) ~ .toggle {
+  transform: translateY(-50%);
+}
+
+.toggle:disabled {
+  opacity: 0.5;
+}
+
+/* Collapsible advanced block. Absolutely placed beneath the CTA and out of
+ * flow, so animating its height to/from 0 leaves the column height untouched. */
+.advancedWrap {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
 .advanced {
   color: var(--color-parchment);
   text-align: center;

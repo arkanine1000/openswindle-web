@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import type { Face, RoundReveal } from '../../api/types';
-import { NPC_SEAT } from '../../api/types';
+import { otherSeat } from '../../api/types';
+import { useGameStore } from '../../game/store';
 import { Die } from './Die';
 import { dicePileStagger } from './dicePileStagger';
 import styles from './NpcDiceReveal.module.css';
@@ -8,9 +9,10 @@ import styles from './NpcDiceReveal.module.css';
 /** The opponent's dice hitting the table when a round ends, in the same
  * loose scatter as the player's hand. */
 export function NpcDiceReveal({ reveal }: { reveal: RoundReveal }) {
+  const opponentSeat = otherSeat(useGameStore((s) => s.mySeat));
   return (
     <div className={styles.row} data-testid="npc-dice-reveal">
-      {reveal.hands[NPC_SEAT].map((face, i) => {
+      {reveal.hands[opponentSeat].map((face, i) => {
         const { rotate: restRotate, y: restY } = dicePileStagger(i);
         return (
           <motion.div

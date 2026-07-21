@@ -29,12 +29,20 @@ describe('describeMove', () => {
 
 describe('revealEntry / describeReveal', () => {
   it('frames the loss from the viewer side', () => {
-    const lost = revealEntry(reveal({ loser: 'a', bid_met: true, actual_count: 3 }));
+    const lost = revealEntry(reveal({ loser: 'a', bid_met: true, actual_count: 3 }), 'a');
     expect(lost).toMatchObject({ youLost: true });
     expect(describeReveal(lost)).toContain('You lose a die.');
 
-    const won = revealEntry(reveal({ loser: 'b', bid_met: false, actual_count: 1 }));
+    const won = revealEntry(reveal({ loser: 'b', bid_met: false, actual_count: 1 }), 'a');
     expect(won).toMatchObject({ youLost: false });
     expect(describeReveal(won)).toContain('Your opponent loses a die.');
+  });
+
+  it('frames the same reveal from seat B', () => {
+    // Seat B loses when the loser is 'b'.
+    const lost = revealEntry(reveal({ loser: 'b' }), 'b');
+    expect(lost).toMatchObject({ youLost: true });
+    const won = revealEntry(reveal({ loser: 'a' }), 'b');
+    expect(won).toMatchObject({ youLost: false });
   });
 });

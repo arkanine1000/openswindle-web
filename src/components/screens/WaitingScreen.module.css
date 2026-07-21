@@ -1,0 +1,76 @@
+/* The same gilded treatment as the splash logo, but a multi-word phrase that
+ * must wrap on narrow screens — so width is content-capped in ch, not the
+ * logo's non-wrapping max-content. */
+.title {
+  margin: 0;
+  max-width: min(92vw, 18ch);
+  font-size: clamp(1.7rem, 7vw, 3.4rem);
+  font-weight: 400;
+  line-height: 1.08;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+  background: linear-gradient(
+    180deg,
+    #fffdf7 0%,
+    var(--color-parchment) 42%,
+    #d8c49a 74%,
+    var(--color-accent) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.85))
+    drop-shadow(0 0 42px rgba(var(--color-accent-rgb), 0.45));
+}
+
+.blurb {
+  max-width: 32ch;
+  margin-top: var(--space-3);
+  color: var(--color-parchment);
+  text-align: center;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.linkRow {
+  display: flex;
+  gap: var(--space-2);
+  width: min(90vw, 30rem);
+  margin-top: var(--space-5);
+}
+
+.linkField {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-base);
+  color: var(--color-ink);
+  background: var(--color-parchment);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.5);
+  border-radius: var(--radius-chip);
+}
+
+.copyIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3);
+  color: var(--color-ink);
+  background: linear-gradient(180deg, #fffdf6, var(--color-parchment) 55%, #e2d7c0);
+  border: none;
+  border-radius: var(--radius-chip);
+  box-shadow: 0 0 0 1px rgba(var(--color-accent-rgb), 0.5);
+  cursor: pointer;
+  transition: box-shadow var(--duration-fast);
+}
+
+.copyIcon:hover {
+  box-shadow: 0 0 0 1px var(--color-accent);
+}
+
+.hourglass {
+  display: inline-flex;
+  margin-top: var(--space-6);
+  color: var(--color-parchment);
+}

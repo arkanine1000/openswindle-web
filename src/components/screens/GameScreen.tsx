@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
-import { HUMAN_SEAT, NPC_SEAT } from '../../api/types';
+import { otherSeat } from '../../api/types';
 import { npcArtForSeed } from '../../assets/manifest';
 import { useGameStore, type FeedEntry } from '../../game/store';
 import { describeReveal, revealEntry } from '../../game/transcript';
@@ -37,6 +37,7 @@ function useIsDesktop(): boolean {
 export function GameScreen() {
   const phase = useGameStore((s) => s.phase);
   const view = useGameStore((s) => s.view);
+  const mySeat = useGameStore((s) => s.mySeat);
   const npcName = useGameStore((s) => s.npcName);
   const npcSeed = useGameStore((s) => s.npcSeed);
   const npcPose = useGameStore((s) => s.npcPose);
@@ -64,9 +65,10 @@ export function GameScreen() {
   };
   const touchStart = useRef<{ x: number; y: number } | null>(null);
 
+  const opponentSeat = otherSeat(mySeat);
   const perPlayer = startTotal / 2;
   const currentTotal = displayedDiceCounts
-    ? displayedDiceCounts[HUMAN_SEAT] + displayedDiceCounts[NPC_SEAT]
+    ? displayedDiceCounts[mySeat] + displayedDiceCounts[opponentSeat]
     : 0;
   const art = npcArtForSeed(npcSeed);
   // After a call there is nothing to "think" about — the hands come open.
@@ -124,7 +126,7 @@ export function GameScreen() {
             </SpeechBubble>
           </motion.div>
         ))}
-        {phase === 'awaitingNpc' && !playerCalled && (
+        {phase === 'awaitingOpponent' && !playerCalled && (
           <motion.div
             layout
             key="thinking"
@@ -165,7 +167,7 @@ export function GameScreen() {
     <>
       <div className={styles.npcSlot}>
         <AnimatePresence mode="popLayout" initial={false}>
-          {phase === 'awaitingNpc' && !playerCalled ? (
+          {phase === 'awaitingOpponent' && !playerCalled ? (
             <motion.div
               key="thinking"
               initial={{ opacity: 0, scale: 0.85, y: 16 }}
@@ -225,12 +227,12 @@ export function GameScreen() {
       )}
       {activeReveal && (
         <StatusStrip placement="top" testId="reveal-outcome">
-          {describeReveal(revealEntry(activeReveal))}
+          {describeReveal(revealEntry(activeReveal, mySeat))}
         </StatusStrip>
       )}
       {/* Only the call-resolution beat gets a strip — while the NPC weighs
        * a bid, the thinking bubble already says so. */}
-      {phase === 'awaitingNpc' && !activeReveal && playerCalled && (
+      {phase === 'awaitingOpponent' && !activeReveal && playerCalled && (
         <StatusStrip testId="npc-thinking-strip">The hands come open…</StatusStrip>
       )}
     </>
@@ -264,8 +266,8 @@ export function GameScreen() {
         hud={
           <TopBar
             perPlayer={perPlayer}
-            playerCount={displayedDiceCounts?.[HUMAN_SEAT] ?? perPlayer}
-            npcCount={displayedDiceCounts?.[NPC_SEAT] ?? perPlayer}
+            playerCount={displayedDiceCounts?.[mySeat] ?? perPlayer}
+            npcCount={displayedDiceCounts?.[opponentSeat] ?? perPlayer}
             onHistoryToggle={() => setHistoryOpen((open) => !open)}
             historyOpen={historyOpen}
           />

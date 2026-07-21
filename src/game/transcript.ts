@@ -1,5 +1,4 @@
-import type { Move, RoundReveal } from '../api/types';
-import { HUMAN_SEAT } from '../api/types';
+import type { Move, RoundReveal, Seat } from '../api/types';
 import { spokenBid } from './bids';
 
 export type Speaker = 'you' | 'npc';
@@ -23,12 +22,12 @@ export function moveEntry(
   return { kind: 'move', roundNo, speaker, move, talk: talk || null };
 }
 
-export function revealEntry(reveal: RoundReveal): RevealTranscriptEntry {
+export function revealEntry(reveal: RoundReveal, mySeat: Seat): RevealTranscriptEntry {
   return {
     kind: 'reveal',
     roundNo: reveal.round_no,
     reveal,
-    youLost: reveal.loser === HUMAN_SEAT,
+    youLost: reveal.loser === mySeat,
   };
 }
 

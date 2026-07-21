@@ -1,9 +1,10 @@
 import { motion } from 'motion/react';
 import type { Face } from '../../api/types';
-import { HUMAN_SEAT, NPC_SEAT } from '../../api/types';
+import { otherSeat } from '../../api/types';
 import { spokenBid } from '../../game/bids';
 import { useGameStore } from '../../game/store';
 import { Die } from '../scene/Die';
+import { Button } from '../ui/Button';
 import styles from './ResultScreen.module.css';
 
 const COPY = {
@@ -16,10 +17,16 @@ export function ResultScreen() {
   const outcome = useGameStore((s) => s.outcome) ?? 'abandoned';
   const npcName = useGameStore((s) => s.npcName);
   const view = useGameStore((s) => s.view);
+  const mySeat = useGameStore((s) => s.mySeat);
+  const isHuman = useGameStore((s) => s.isHuman);
   const showAutopsy = useGameStore((s) => s.showAutopsy);
   const playAgain = useGameStore((s) => s.playAgain);
   const copy = COPY[outcome];
   const lastReveal = view?.reveals.at(-1) ?? null;
+  const opponentSeat = otherSeat(mySeat);
+  // Only NPC matches can be autopsied — there's no hidden policy to unmask
+  // between two humans.
+  const canAutopsy = !isHuman;
 
   return (
     <div className={styles.screen} data-testid="result-screen" data-outcome={outcome}>
@@ -56,7 +63,7 @@ export function ResultScreen() {
             <div className={styles.handRow}>
               <span>You</span>
               <div className={styles.diceRow}>
-                {lastReveal.hands[HUMAN_SEAT].map((face, i) => (
+                {lastReveal.hands[mySeat].map((face, i) => (
                   <Die key={i} face={face as Face} owner="player" small />
                 ))}
               </div>
@@ -64,7 +71,7 @@ export function ResultScreen() {
             <div className={styles.handRow}>
               <span>{npcName || 'They'}</span>
               <div className={styles.diceRow}>
-                {lastReveal.hands[NPC_SEAT].map((face, i) => (
+                {lastReveal.hands[opponentSeat].map((face, i) => (
                   <Die key={i} face={face as Face} owner="npc" small />
                 ))}
               </div>
@@ -79,24 +86,22 @@ export function ResultScreen() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.0 }}
       >
-        <button
-          type="button"
-          className={styles.primary}
-          onClick={showAutopsy}
-          data-testid="continue"
-        >
-          Continue
-        </button>
-        <button
-          type="button"
-          className={styles.secondary}
+        {canAutopsy && (
+          <Button onClick={showAutopsy} data-testid="continue">
+            Continue
+          </Button>
+        )}
+        <Button
+          variant={canAutopsy ? 'secondary' : 'primary'}
           onClick={playAgain}
           data-testid="play-again"
         >
           Play again
-        </button>
+        </Button>
       </motion.div>
-      <p className={styles.footnote}>The autopsy lays {npcName || 'your opponent'} bare.</p>
+      {canAutopsy && (
+        <p className={styles.footnote}>The autopsy lays {npcName || 'your opponent'} bare.</p>
+      )}
     </div>
   );
 }
