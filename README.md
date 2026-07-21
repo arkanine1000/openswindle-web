@@ -30,6 +30,18 @@ your opponent_ on the splash screen).
 The dev server sits on 5174, not Vite's default, so an installed PWA on 5173 can't share this
 origin's service worker and storage. The engine's default CORS origin matches.
 
+## Play a friend (invite matches)
+
+"Play a friend" on the splash creates a human-vs-human match and drops you on a waiting
+screen with a shareable link (`?match=<id>`). Open that link in another tab or browser and
+it claims the empty seat and deals you in — sessionStorage is per-tab, so two tabs are two
+players. No lobby, no matchmaking; a private invite is the only way in.
+
+There's no push channel: your opponent is a person, so their move can't ride back in your
+own request. The waiting seat **polls `GET /matches/{id}`** (every ~1.6s, only while it's
+their turn, paused when the tab is hidden) and diffs the view into the same choreography the
+NPC path uses. A backend restart drops a live match — it's in-memory by design.
+
 ## Scripts
 
 | Command                     | Purpose                                                     |
@@ -65,7 +77,9 @@ Two ideas carry the architecture:
   and their opening bid of the next round. The response is converted into an ordered list of
   presentation steps that the store plays out with paced delays. Sequencing is correct by
   construction and unit-testable without a DOM. While the request is in flight the opponent
-  "thinks" out loud, which is exactly the window an LLM opponent needs.
+  "thinks" out loud, which is exactly the window an LLM opponent needs. A human opponent's move
+  arrives out-of-band via the poll loop instead, so `buildRemoteSteps` reconstructs it from a
+  view-diff and feeds the very same step queue.
 - **Presentation state vs. authoritative state** (`game/store.ts`). The server view is applied
   between beats, never mid-play, so the HUD can't leak a round's outcome before its reveal has
   played.
