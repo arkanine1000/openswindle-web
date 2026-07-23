@@ -1,3 +1,4 @@
+import { HelpCircle } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import { otherSeat } from '../../api/types';
@@ -9,6 +10,7 @@ import { PlayerComposer } from '../bubbles/PlayerComposer';
 import { SpeechBubble } from '../bubbles/SpeechBubble';
 import { ThinkingBubble } from '../bubbles/ThinkingBubble';
 import { HistorySheet } from '../hud/HistorySheet';
+import { RulesModal } from '../hud/RulesModal';
 import { TopBar } from '../hud/TopBar';
 import { NpcDiceReveal } from '../scene/NpcDiceReveal';
 import { NpcFigure } from '../scene/NpcFigure';
@@ -56,6 +58,7 @@ export function GameScreen() {
 
   const isDesktop = useIsDesktop();
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [rulesOpen, setRulesOpen] = useState(false);
   // Lives here, not in the composer, so the choice survives across turns.
   const [autoTalk, setAutoTalk] = useState(() => localStorage.getItem(AUTO_TALK_KEY) === 'true');
   const toggleAutoTalk = () => {
@@ -290,6 +293,19 @@ export function GameScreen() {
               entries={transcript}
               onClose={() => setHistoryOpen(false)}
             />
+            {/* Mirrors the surrender flag, under the opponent's pips: a way to
+             * learn the rules without leaving the table. */}
+            <button
+              type="button"
+              className={styles.help}
+              onClick={() => setRulesOpen(true)}
+              aria-label="How to play"
+              title="How to play"
+              data-testid="help"
+            >
+              <HelpCircle size="1.15em" aria-hidden />
+            </button>
+            <RulesModal open={rulesOpen} onClose={() => setRulesOpen(false)} />
             {phase === 'playerTurn' && (
               <button
                 type="button"

@@ -120,6 +120,31 @@
   color: var(--color-danger);
 }
 
+/* The surrender flag's twin, under the opponent's pip plate on the right. */
+.help {
+  position: absolute;
+  z-index: var(--z-hud);
+  right: var(--space-3);
+  top: clamp(34px, calc(4.5vw + 18px), 46px);
+  display: grid;
+  place-items: center;
+  width: clamp(34px, 9vw, 44px);
+  height: clamp(34px, 9vw, 44px);
+  padding: 0;
+  background: linear-gradient(var(--color-plate-top), var(--color-plate-bottom));
+  border: 2px solid var(--color-plate-edge);
+  border-radius: 10px;
+  box-shadow: var(--shadow-bubble);
+  color: var(--color-parchment);
+  opacity: 0.85;
+  cursor: pointer;
+}
+
+.help:hover {
+  opacity: 1;
+  color: var(--color-accent);
+}
+
 .errorToast {
   position: absolute;
   z-index: var(--z-overlay);
