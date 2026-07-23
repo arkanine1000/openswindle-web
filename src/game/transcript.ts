@@ -53,8 +53,6 @@ export function describeMove(entry: MoveTranscriptEntry): string {
 export function describeReveal(entry: RevealTranscriptEntry): string {
   const { reveal, youLost } = entry;
   const bid = spokenBid(reveal.final_bid);
-  const stood = reveal.bid_met
-    ? `the bid of ${bid} stood — ${reveal.actual_count} on the table`
-    : `the bid of ${bid} fell short — only ${reveal.actual_count} on the table`;
-  return `Hands shown: ${stood}. ${youLost ? 'You lose a die.' : 'Your opponent loses a die.'}`;
+  const call = reveal.bid_met ? `The bid of ${bid} held.` : `${bid} was a bluff.`;
+  return `${call} ${youLost ? 'You lose a die.' : 'Your opponent loses a die.'}`;
 }
