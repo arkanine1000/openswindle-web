@@ -12,6 +12,8 @@ import { ThinkingBubble } from '../bubbles/ThinkingBubble';
 import { HistorySheet } from '../hud/HistorySheet';
 import { RulesModal } from '../hud/RulesModal';
 import { TopBar } from '../hud/TopBar';
+import { Button } from '../ui/Button';
+import { Modal } from '../ui/Modal';
 import { NpcDiceReveal } from '../scene/NpcDiceReveal';
 import { NpcFigure } from '../scene/NpcFigure';
 import { PlayerHand } from '../scene/PlayerHand';
@@ -59,6 +61,7 @@ export function GameScreen() {
   const isDesktop = useIsDesktop();
   const [historyOpen, setHistoryOpen] = useState(false);
   const [rulesOpen, setRulesOpen] = useState(false);
+  const [forfeitOpen, setForfeitOpen] = useState(false);
   // Lives here, not in the composer, so the choice survives across turns.
   const [autoTalk, setAutoTalk] = useState(() => localStorage.getItem(AUTO_TALK_KEY) === 'true');
   const toggleAutoTalk = () => {
@@ -306,11 +309,37 @@ export function GameScreen() {
               <HelpCircle size="1.15em" aria-hidden />
             </button>
             <RulesModal open={rulesOpen} onClose={() => setRulesOpen(false)} />
+            {/* A forfeit is irreversible; guard it behind a quick yes/no. */}
+            <Modal
+              open={forfeitOpen}
+              onClose={() => setForfeitOpen(false)}
+              title="Walk away?"
+              testId="forfeit-modal"
+            >
+              <div className={styles.forfeitActions}>
+                <Button
+                  variant="secondary"
+                  onClick={() => setForfeitOpen(false)}
+                  data-testid="confirm-cancel"
+                >
+                  No
+                </Button>
+                <Button
+                  onClick={() => {
+                    setForfeitOpen(false);
+                    void walkAway();
+                  }}
+                  data-testid="confirm-accept"
+                >
+                  Yes
+                </Button>
+              </div>
+            </Modal>
             {phase === 'playerTurn' && (
               <button
                 type="button"
                 className={styles.walkAway}
-                onClick={walkAway}
+                onClick={() => setForfeitOpen(true)}
                 aria-label="Walk away from the table"
                 title="Walk away"
                 data-testid="walk-away"

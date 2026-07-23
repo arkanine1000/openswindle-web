@@ -67,7 +67,10 @@ test.describe('a match against the scripted opponent', () => {
   test('walking away aborts the match and still grants an autopsy', async ({ page }) => {
     await sitDown(page);
     await rollDice(page);
+    // Forfeiting is guarded: the flag opens a confirmation, not an instant abort.
     await page.getByTestId('walk-away').click();
+    await expect(page.getByTestId('forfeit-modal')).toBeVisible();
+    await page.getByTestId('confirm-accept').click();
     await expect(page.getByTestId('result-screen')).toHaveAttribute('data-outcome', 'abandoned', {
       timeout: 30_000,
     });

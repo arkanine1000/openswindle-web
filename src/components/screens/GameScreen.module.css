@@ -1,3 +1,10 @@
+/* The forfeit confirmation's yes/no row. */
+.forfeitActions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
 /* The rolling conversation window: bottom-anchored column above the table.
  * Your bubbles hug its left edge, theirs the right, at every breakpoint;
  * text inside stays centered. */
