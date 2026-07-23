@@ -31,6 +31,10 @@ test.describe('a match against the scripted opponent', () => {
 
     await page.getByTestId('continue').click();
     await expect(page.getByTestId('autopsy-screen')).toBeVisible();
+    // The post-mortem leads with a player-centric, round-by-round recap.
+    await expect(page.getByTestId('round-card').first()).toBeVisible();
+    // The benchmark figures survive, demoted into a fold.
+    await page.getByTestId('numbers-toggle').click();
     await expect(page.getByTestId('ledger-row').first()).toBeVisible();
     await expect(page.getByTestId('total-deviation')).toHaveText(/\d+\.\d{3}/);
     await page.screenshot({

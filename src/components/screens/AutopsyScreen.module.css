@@ -17,48 +17,245 @@
   padding: var(--space-6) var(--space-5) var(--space-8);
 }
 
+/* ── Header / summary ─────────────────────────────────────────── */
 .header {
   text-align: center;
-  margin-bottom: var(--space-6);
 }
 
-.kicker {
+.eyebrow {
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   font-size: var(--text-sm);
   color: var(--color-text-faint);
 }
 
-.header h1 {
+.eyebrow[data-outcome='win'] {
+  color: var(--color-success);
+}
+
+.eyebrow[data-outcome='defeat'] {
+  color: var(--color-danger);
+}
+
+.title {
+  font-size: var(--text-hero);
+  font-weight: 400;
+  line-height: 1.05;
+  margin: var(--space-1) 0 var(--space-3);
+}
+
+.recap {
+  max-width: 46ch;
+  margin: 0 auto;
+  font-size: var(--text-lg);
+  line-height: 1.5;
+  color: rgba(29, 24, 18, 0.85);
+}
+
+/* ── At a glance ──────────────────────────────────────────────── */
+.glance {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-2);
+  background: var(--color-parchment-shade);
+  border-radius: var(--radius-chip);
+}
+
+.tileValue {
   font-size: var(--text-xl);
-  margin: var(--space-2) 0;
+  line-height: 1;
 }
 
-.bio {
-  font-style: italic;
-  max-width: 48ch;
-  margin: 0 auto var(--space-2);
-}
-
-.seed {
+.tileLabel {
   font-size: var(--text-sm);
+  text-align: center;
   color: var(--color-text-faint);
 }
 
+@media (max-width: 30rem) {
+  .glance {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── Sections ─────────────────────────────────────────────────── */
 .section {
   margin-top: var(--space-6);
   border-top: 2px dashed rgba(var(--color-accent-rgb), 0.35);
   padding-top: var(--space-4);
 }
 
-.section h2 {
+.h2 {
   font-size: var(--text-lg);
+  margin-bottom: var(--space-2);
+}
+
+.hint {
+  font-size: var(--text-sm);
+  color: var(--color-text-faint);
   margin-bottom: var(--space-3);
 }
 
-.explain {
-  margin-bottom: var(--space-3);
+/* ── Round timeline ───────────────────────────────────────────── */
+.rounds {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.round {
+  border: 1px solid var(--color-parchment-shade);
+  border-radius: var(--radius-chip);
+  overflow: hidden;
+}
+
+.roundHead {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  list-style: none;
+}
+
+.roundHead::-webkit-details-marker {
+  display: none;
+}
+
+.roundNo {
+  flex: none;
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-faint);
+}
+
+.roundLine {
+  line-height: 1.4;
+}
+
+.roundBody {
+  padding: 0 var(--space-4) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.exchange {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.exYou,
+.exNpc {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-chip);
+}
+
+.exYou {
+  background: rgba(74, 127, 181, 0.12);
+}
+
+.exNpc {
+  background: rgba(181, 74, 85, 0.12);
+}
+
+.who {
+  flex: none;
+  min-width: 3.5em;
+  font-size: var(--text-sm);
+  color: var(--color-text-faint);
+}
+
+.deed {
+  font-weight: 400;
+}
+
+.talk {
+  font-style: italic;
+  color: rgba(29, 24, 18, 0.75);
+}
+
+/* ── Revealed hands ───────────────────────────────────────────── */
+.hands {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--color-parchment-shade);
+  border-radius: var(--radius-chip);
+}
+
+.handRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.handLabel {
+  flex: none;
+  min-width: 5em;
+  font-size: var(--text-sm);
+  color: var(--color-text-faint);
+}
+
+.diceRow {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.verdict {
+  font-style: italic;
   line-height: 1.5;
+}
+
+/* ── Opponent's thoughts (NPC only) ───────────────────────────── */
+.think {
+  border-top: 1px dashed rgba(var(--color-accent-rgb), 0.35);
+  padding-top: var(--space-2);
+}
+
+.think summary {
+  cursor: pointer;
+  font-style: italic;
+  color: var(--color-npc-deep);
+}
+
+.thought {
+  padding: var(--space-2) 0 0;
+}
+
+.thought p {
+  font-style: italic;
+  line-height: 1.5;
+  color: rgba(29, 24, 18, 0.8);
+}
+
+.heard {
+  color: var(--color-player-deep);
+}
+
+/* ── Unmasked traits ──────────────────────────────────────────── */
+.bio {
+  font-style: italic;
+  line-height: 1.5;
+  margin-bottom: var(--space-4);
 }
 
 .traits {
@@ -97,6 +294,19 @@
   color: var(--color-text-faint);
 }
 
+/* ── The numbers (demoted benchmark data) ─────────────────────── */
+.numbers summary {
+  cursor: pointer;
+  font-size: var(--text-lg);
+}
+
+.explain {
+  margin: var(--space-3) 0;
+  line-height: 1.5;
+  font-size: var(--text-sm);
+  color: rgba(29, 24, 18, 0.8);
+}
+
 .ledger {
   width: 100%;
   border-collapse: collapse;
@@ -105,7 +315,7 @@
 .ledger th,
 .ledger td {
   text-align: left;
-  padding: var(--space-2) var(--space-2);
+  padding: var(--space-2);
   border-bottom: 1px solid var(--color-parchment-shade);
 }
 
@@ -121,41 +331,9 @@
   font-size: var(--text-sm);
 }
 
-.scratchpad {
-  margin-bottom: var(--space-2);
-}
-
-.scratchpad summary {
-  cursor: pointer;
-  padding: var(--space-2) 0;
-}
-
-.scratchpad p {
-  padding: var(--space-2) var(--space-4);
-  font-style: italic;
-  line-height: 1.5;
-  color: rgba(29, 24, 18, 0.8);
-}
-
-.heard {
-  color: var(--color-player-deep);
-}
-
-.again {
-  display: block;
-  margin: var(--space-8) auto 0;
-  padding: var(--space-3) var(--space-6);
-  background: var(--color-ink);
-  color: var(--color-parchment);
-  border: none;
-  border-radius: var(--radius-chip);
-  font-size: var(--text-lg);
-  cursor: pointer;
-}
-
-.loading,
-.error {
-  color: var(--color-parchment);
-  font-style: italic;
-  margin: auto;
+/* ── Actions ──────────────────────────────────────────────────── */
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-8);
 }

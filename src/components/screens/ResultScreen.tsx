@@ -24,9 +24,6 @@ export function ResultScreen() {
   const copy = COPY[outcome];
   const lastReveal = view?.reveals.at(-1) ?? null;
   const opponentSeat = otherSeat(mySeat);
-  // Only NPC matches can be autopsied — there's no hidden policy to unmask
-  // between two humans.
-  const canAutopsy = !isHuman;
 
   return (
     <div className={styles.screen} data-testid="result-screen" data-outcome={outcome}>
@@ -86,22 +83,18 @@ export function ResultScreen() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.0 }}
       >
-        {canAutopsy && (
-          <Button onClick={showAutopsy} data-testid="continue">
-            Continue
-          </Button>
-        )}
-        <Button
-          variant={canAutopsy ? 'secondary' : 'primary'}
-          onClick={playAgain}
-          data-testid="play-again"
-        >
+        <Button onClick={showAutopsy} data-testid="continue">
+          Review the game
+        </Button>
+        <Button variant="secondary" onClick={playAgain} data-testid="play-again">
           Play again
         </Button>
       </motion.div>
-      {canAutopsy && (
-        <p className={styles.footnote}>The autopsy lays {npcName || 'your opponent'} bare.</p>
-      )}
+      <p className={styles.footnote}>
+        {isHuman
+          ? 'The reckoning replays every round, both hands shown.'
+          : `The reckoning replays the game and lays ${npcName || 'your opponent'} bare.`}
+      </p>
     </div>
   );
 }
