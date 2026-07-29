@@ -176,12 +176,12 @@ export function AutopsyScreen() {
                         <summary>{t('autopsy.thinking', { opponent })}</summary>
                         {scratch.map((d, i) => (
                           <div key={i} className={styles.thought}>
-                            <p>{d.scratchpad || t('autopsy.scriptedNoVoice')}</p>
                             {d.human_table_talk_seen && (
                               <p className={styles.heard}>
                                 {t('autopsy.heardFromYou', { talk: d.human_table_talk_seen })}
                               </p>
                             )}
+                            <p>{d.scratchpad || t('autopsy.scriptedNoVoice')}</p>
                           </div>
                         ))}
                       </details>
