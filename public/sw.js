@@ -64,22 +64,21 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Static assets: serve from cache, refreshing in the background.
+  // Static assets: network first, falling back to cache offline.
   event.respondWith(
     (async () => {
-      const cached = await caches.match(request);
-      const network = fetch(request)
-        .then(async (response) => {
-          if (response.ok) {
-            const cache = await caches.open(CACHE);
-            cache.put(request, response.clone());
-          }
-          return response;
-        })
-        .catch(() => undefined);
-      const response = cached ?? (await network);
-      if (!response) throw new Error(`offline and uncached: ${url.pathname}`);
-      return response;
+      try {
+        const response = await fetch(request);
+        if (response.ok) {
+          const cache = await caches.open(CACHE);
+          cache.put(request, response.clone());
+        }
+        return response;
+      } catch {
+        const cached = await caches.match(request);
+        if (cached) return cached;
+        throw new Error(`offline and uncached: ${url.pathname}`);
+      }
     })(),
   );
 });
