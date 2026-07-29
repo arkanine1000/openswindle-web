@@ -209,6 +209,7 @@ export const en = {
   waiting: {
     title: 'Waiting for a challenger',
     ariaLink: 'Invite link',
+    ariaQr: 'QR code to join game',
     copy: 'Copy invite link',
     copied: 'Copied',
     neverMind: 'Never mind',

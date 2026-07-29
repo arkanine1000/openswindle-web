@@ -1,6 +1,7 @@
 import { Check, Copy, Hourglass } from 'lucide-react';
 import { motion } from 'motion/react';
-import { useState } from 'react';
+import QRCode from 'qrcode';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { assets } from '../../assets/manifest';
 import { useGameStore } from '../../game/store';
@@ -32,7 +33,34 @@ export function WaitingScreen() {
   const matchId = useGameStore((s) => s.matchId);
   const playAgain = useGameStore((s) => s.playAgain);
   const [copied, setCopied] = useState(false);
+  const [qrSvg, setQrSvg] = useState<string>('');
   const url = matchId ? inviteUrl(matchId) : '';
+
+  useEffect(() => {
+    if (!url) {
+      setQrSvg('');
+      return;
+    }
+    let active = true;
+    QRCode.toString(url, {
+      type: 'svg',
+      margin: 1,
+      color: {
+        dark: '#1d1812',
+        light: '#00000000',
+      },
+    })
+      .then((svg) => {
+        if (active) setQrSvg(svg);
+      })
+      .catch((err) => {
+        console.error('Failed to generate QR code SVG:', err);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [url]);
 
   const copy = async () => {
     try {
@@ -50,6 +78,18 @@ export function WaitingScreen() {
       <div className={splash.scroll}>
         <div className={splash.column}>
           <h1 className={styles.title}>{t('waiting.title')}</h1>
+          {url && (
+            <div className={styles.qrCard} data-testid="qr-code" aria-label={t('waiting.ariaQr')}>
+              <div className={styles.qrCornerTopLeft} aria-hidden />
+              <div className={styles.qrCornerTopRight} aria-hidden />
+              <div className={styles.qrCornerBottomLeft} aria-hidden />
+              <div className={styles.qrCornerBottomRight} aria-hidden />
+              <div
+                className={styles.qrCode}
+                dangerouslySetInnerHTML={{ __html: qrSvg }}
+              />
+            </div>
+          )}
           <div className={styles.linkRow}>
             <input
               className={styles.linkField}

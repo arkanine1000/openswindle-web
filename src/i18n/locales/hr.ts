@@ -217,6 +217,7 @@ export const hr = {
   waiting: {
     title: 'Čeka se izazivač',
     ariaLink: 'Poveznica za poziv',
+    ariaQr: 'QR kôd za pridruživanje igri',
     copy: 'Kopiraj poveznicu',
     copied: 'Kopirano',
     neverMind: 'Odustani',
