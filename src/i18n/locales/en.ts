@@ -1,0 +1,295 @@
+/**
+ * English (US) — the source-of-truth message shape. Every other locale mirrors
+ * these keys (a parity test enforces it). Dynamic strings use {{interpolation}}
+ * and i18next plural suffixes (_one/_other here; locales add _few/_many as their
+ * grammar needs). Keep whole sentences here — never concatenate in components.
+ */
+export const en = {
+  lang: {
+    menu: 'Language',
+  },
+
+  splash: {
+    // "Swindlestones" is a proper noun / the logo mark — not translated.
+    title: 'Swindlestones',
+    tagline: 'A game of dice and lies.',
+    diceApiece: 'Dice apiece',
+    cta: {
+      prefix: 'Play a',
+      bot: 'bot',
+      pal: 'pal',
+      ariaBot: 'Play a bot',
+      ariaPal: 'Play a friend',
+      switchToBot: 'Switch to playing a bot',
+      switchToPal: 'Switch to playing a friend',
+    },
+    advanced: {
+      summary: 'Advanced Settings',
+      seedLabel: 'Opponent seed',
+      seedPlaceholder: 'leave blank for a stranger',
+      mindLabel: 'Opponent mind',
+      mindLlm: 'Language model',
+      mindScripted: 'Scripted (practice)',
+    },
+  },
+
+  game: {
+    callShout: 'Call!',
+    npcIntro: 'They stack their dice and size you up in silence.',
+    rollDice: 'Roll dice',
+    handsOpen: 'The hands come open…',
+    ariaHelp: 'How to play',
+    ariaWalkAway: 'Walk away from the table',
+    walkAwayTitle: 'Walk away',
+    forfeit: {
+      title: 'Walk away?',
+      yes: 'Yes',
+      no: 'No',
+    },
+  },
+
+  result: {
+    winTitle: 'WIN!',
+    winLine: 'Your opponent pushes their last die across the table.',
+    defeatTitle: 'DEFEAT!',
+    defeatLine: 'Your last die is gone, and so is your welcome.',
+    abandonedTitle: 'YOU WALK AWAY',
+    abandonedLine: 'The dice are shown, the game unfinished.',
+    lastHand: 'The last hand: {{bid}} was {{verdict}}. {{count}} showing.',
+    verdictTrue: 'on the table',
+    verdictLie: 'a lie',
+    handYou: 'You',
+    theyFallback: 'They',
+    review: 'Review the game',
+    playAgain: 'Play again',
+    footnoteHuman: 'The reckoning replays every round, both hands shown.',
+    footnoteBot: 'The reckoning replays the game and lays {{opponent}} bare.',
+  },
+
+  autopsy: {
+    outcomeWin: 'Victory',
+    outcomeDefeat: 'Defeat',
+    outcomeAbandoned: 'Walked away',
+    title: 'The Reckoning',
+    glance: 'At a glance',
+    quoted: '“{{text}}”',
+    roundByRound: 'Round by round',
+    roundHint: 'Open a round to see the exchange and the hands it hid.',
+    round: 'Round {{n}}',
+    you: 'You',
+    verdict: 'Final bid {{bid}}, {{count}} on the table ({{held}}).',
+    verdictHeld: 'the bid held',
+    verdictBluff: 'a bluff',
+    thinking: 'What {{opponent}} was thinking',
+    scriptedNoVoice: '(scripted, no inner voice)',
+    heardFromYou: 'Heard from you: “{{talk}}”',
+    unmasked: '{{name}}, unmasked',
+    numbers: 'The numbers',
+    numbersExplain:
+      'Each decision priced against the safest single-ply move, not the game-theoretic optimum, so a shrewd bluff still reads as a "deviation." Total: ',
+    ledgerRd: 'Rd',
+    ledgerPlayed: 'Played',
+    ledgerSafest: 'Safest',
+    ledgerPrice: 'Price',
+    fallbackTag: ' (fallback)',
+    acctDecisions_one: '{{count}} decision',
+    acctDecisions_other: '{{count}} decisions',
+    acctReprompts_one: '{{count}} reprompt',
+    acctReprompts_other: '{{count}} reprompts',
+    acctFallbacks_one: '{{count}} scripted fallback',
+    acctFallbacks_other: '{{count}} scripted fallbacks',
+    acctTokens: '{{prompt}} prompt ({{cached}} cached) · {{completion}} completion tokens',
+    playAnother: 'Play another game',
+    statRounds: 'Rounds',
+    statDiceTaken: 'Dice you took',
+    statDiceLost: 'Dice you lost',
+    statBluffsCaught: 'Bluffs you caught',
+    traitDeception: 'deception',
+    traitSkepticism: 'skepticism',
+    traitAggression: 'aggression',
+    traitChattiness: 'chattiness',
+  },
+
+  postmortem: {
+    recapWin_one: 'You outlasted {{opponent}} over {{count}} round. Their last die is yours.',
+    recapWin_other: 'You outlasted {{opponent}} over {{count}} rounds. Their last die is yours.',
+    recapDefeat_one:
+      '{{opponent}} bled you dry in {{count}} round, down to {{theirs}} against your none.',
+    recapDefeat_other:
+      '{{opponent}} bled you dry in {{count}} rounds, down to {{theirs}} against your none.',
+    recapAbandoned_one: 'You pushed back your chair and walked, {{count}} round in.',
+    recapAbandoned_other: 'You pushed back your chair and walked, {{count}} rounds in.',
+    headlineHeldYou: 'You doubted {{bid}}. It held, and you lose a die.',
+    headlineHeldNpc: '{{opponent}} doubted your {{bid}}. It held, and they lose a die.',
+    headlineBluffYou: 'You caught the bluff on {{bid}}. {{opponent}} loses a die.',
+    headlineBluffNpc: '{{opponent}} caught your bluff on {{bid}}. You lose a die.',
+    headlineAbandoned: 'You walked from the table; the hands were shown.',
+  },
+
+  transcript: {
+    moveYouSay: "'{{talk}} {{deed}}.' you say.",
+    moveNpcSay: "'{{talk}} {{deed}}.'",
+    moveYouCall: 'You call!',
+    moveNpcCall: 'Your opponent calls!',
+    moveYouBid: 'You bid {{deed}}.',
+    moveNpcBid: 'The reply comes: {{deed}}.',
+    revealHeld: 'The bid of {{bid}} held.',
+    revealBluff: '{{bid}} was a bluff.',
+    revealYouLose: 'You lose a die.',
+    revealOppLose: 'Your opponent loses a die.',
+  },
+
+  // spokenBid: t('bid.face' + face, { count }). "2 fours", "1 three".
+  bid: {
+    face1_one: '{{count}} one',
+    face1_other: '{{count}} ones',
+    face2_one: '{{count}} two',
+    face2_other: '{{count}} twos',
+    face3_one: '{{count}} three',
+    face3_other: '{{count}} threes',
+    face4_one: '{{count}} four',
+    face4_other: '{{count}} fours',
+  },
+
+  hud: {
+    ariaYourDie: 'your die',
+    ariaOppDie: "opponent's die",
+    ariaLostDie: 'lost die',
+    historyOpen: 'Close the table-talk history',
+    historyClosed: 'Read the table-talk history',
+    historySheet: 'Table-talk history',
+    historyClose: 'Close history',
+  },
+
+  rules: {
+    title: 'How to Swindle',
+    lede: "A liar's game of four-sided bones. You and your opponent each hide a handful of dice (faces 1–4). Nobody sees the other's hand.",
+    step1: 'Bid a claim like <bid>3 × four</bid> — that at least three fours lie across <i>both</i> hands, yours and theirs together.',
+    step2: 'Raise or beat every bid: a higher count, or the same count on a higher face.',
+    step3: "Call instead, if you smell a lie. Both hands come open — if the bid holds, the caller loses a die; if it was a bluff, the bidder does.",
+    step4: "Survive. Lose your last die and you're out. Take theirs and the table is yours.",
+    aside: 'Talk is part of the game. Bluff, needle, or hold your tongue.',
+  },
+
+  composer: {
+    ariaAuto: 'Let the game talk for you',
+    autoTitle: 'Auto table talk',
+    sayPlaceholder: 'Say something…',
+    bidStrip: 'Bid {{bid}}',
+    callStrip: 'Call!',
+    noBid: 'No bid left to make, call!',
+    chooseOpening: 'Choose your opening bid',
+  },
+
+  carousel: {
+    call: 'Call!',
+    ariaCall: 'call the last bid',
+    ariaBid: 'bid {{quantity}} of face {{face}}',
+    ariaBidImpossible: 'bid {{quantity}} of face {{face}} (not possible with the dice left)',
+  },
+
+  thinking: {
+    aria: 'opponent is thinking',
+    fillers: ['Well…', 'Hmm…', 'Maybe…', 'Let me see…', 'Mm.', 'Now then…', 'Hah…'],
+  },
+
+  modal: {
+    close: 'Close',
+  },
+
+  scene: {
+    dieYou: 'your die showing {{face}}',
+    dieOpp: "opponent's die showing {{face}}",
+    npcSeated: '{{name}}, seated at the table',
+    npcAccusing: '{{name}}, standing to accuse',
+    handRevealed: 'your hand drawn aside, revealing your dice',
+    handCupped: 'your hand cupped over your dice',
+  },
+
+  waiting: {
+    title: 'Waiting for a challenger',
+    ariaLink: 'Invite link',
+    copy: 'Copy invite link',
+    copied: 'Copied',
+    neverMind: 'Never mind',
+    joining: 'Taking your seat…',
+    joiningSub: 'The dice are being dealt.',
+  },
+
+  narration: {
+    roundOpenYou: 'Round {{n}}: you lost the last, so you open.',
+    roundOpenNpc: 'Round {{n}}: your opponent opens.',
+    npcSits: '{{name}} sits down across from you.',
+    diceEach_one: '{{count}} die each. You take first bid.',
+    diceEach_other: '{{count}} dice each. You take first bid.',
+    humanOpponent: 'Your challenger',
+    waitInvite: 'Send the invite link and wait for a challenger.',
+    takeSeat: 'You take the empty seat across the table.',
+    walkAway: 'You push back your chair and walk away.',
+    returnHuman: 'You return to the table. Your challenger waits.',
+    returnNpc: 'You return to the table. {{name}} waits.',
+  },
+
+  errors: {
+    joinFailed: 'Could not join that match.',
+    moveFailed: 'Something went wrong. Try again.',
+    leaveFailed: 'Could not leave the table.',
+  },
+
+  // Auto-talk corpus: 5 aggression levels × 8 phrases. Keep each short (the
+  // mobile bid bubble budget is ~27 chars).
+  tableTalk: [
+    [
+      'Cold night for dice.',
+      'Watered ale, this.',
+      'Easy start.',
+      'The night is long.',
+      'A gentle opening.',
+      'Barely worth the breath.',
+      'Warm fire, low stakes.',
+      'Just getting acquainted.',
+    ],
+    [
+      'Just feeling the table.',
+      'A friendly wager.',
+      'Nothing reckless. Yet.',
+      'Follow me up?',
+      'What are you made of?',
+      'Testing the seams.',
+      'I bid bolder in my sleep.',
+      'Make it interesting.',
+    ],
+    [
+      'The stones favour me.',
+      'Start counting.',
+      'Match that.',
+      'You look pale, friend.',
+      "Fold now, while it's cheap.",
+      'The odds lean my way.',
+      'That twitch says plenty.',
+      'Getting steep, is it?',
+    ],
+    [
+      'Push back, if you dare.',
+      'Your luck thins.',
+      'I smell doubt.',
+      'Count and weep.',
+      'You followed too far.',
+      'One more step, you drown.',
+      "Words won't save you.",
+      "I've buried better players.",
+    ],
+    [
+      "You're bluffing.",
+      'This is where you break.',
+      'Call it, coward.',
+      'No nerve for it.',
+      'Every stone says you fold.',
+      'Meet my eye and call it.',
+      'Your cup leaves here empty.',
+      "Pray, if that's your habit.",
+    ],
+  ],
+} as const;
+
+export type Messages = typeof en;

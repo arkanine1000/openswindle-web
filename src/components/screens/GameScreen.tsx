@@ -1,6 +1,7 @@
 import { HelpCircle } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { otherSeat } from '../../api/types';
 import { npcArtForSeed } from '../../assets/manifest';
 import { useGameStore, type FeedEntry } from '../../game/store';
@@ -39,6 +40,7 @@ function useIsDesktop(): boolean {
 }
 
 export function GameScreen() {
+  const { t } = useTranslation();
   const phase = useGameStore((s) => s.phase);
   const view = useGameStore((s) => s.view);
   const mySeat = useGameStore((s) => s.mySeat);
@@ -92,7 +94,7 @@ export function GameScreen() {
     ) : (
       <>
         {entry.talk && <span>{entry.talk}</span>}
-        <b className={styles.callShout}> Call!</b>
+        <b className={styles.callShout}> {t('game.callShout')}</b>
       </>
     );
 
@@ -224,10 +226,10 @@ export function GameScreen() {
            * would tip their play style. The autopsy unmasks them after. */}
           <div className={styles.introCard} data-testid="npc-intro">
             <h1>{npcName}</h1>
-            <p>They stack their dice and size you up in silence.</p>
+            <p>{t('game.npcIntro')}</p>
           </div>
           <StatusStrip onClick={rollDice} testId="roll-dice">
-            Roll dice
+            {t('game.rollDice')}
           </StatusStrip>
         </>
       )}
@@ -239,7 +241,7 @@ export function GameScreen() {
       {/* Only the call-resolution beat gets a strip — while the NPC weighs
        * a bid, the thinking bubble already says so. */}
       {phase === 'awaitingOpponent' && !activeReveal && playerCalled && (
-        <StatusStrip testId="npc-thinking-strip">The hands come open…</StatusStrip>
+        <StatusStrip testId="npc-thinking-strip">{t('game.handsOpen')}</StatusStrip>
       )}
     </>
   );
@@ -302,8 +304,8 @@ export function GameScreen() {
               type="button"
               className={styles.help}
               onClick={() => setRulesOpen(true)}
-              aria-label="How to play"
-              title="How to play"
+              aria-label={t('game.ariaHelp')}
+              title={t('game.ariaHelp')}
               data-testid="help"
             >
               <HelpCircle size="1.15em" aria-hidden />
@@ -313,7 +315,7 @@ export function GameScreen() {
             <Modal
               open={forfeitOpen}
               onClose={() => setForfeitOpen(false)}
-              title="Walk away?"
+              title={t('game.forfeit.title')}
               testId="forfeit-modal"
             >
               <div className={styles.forfeitActions}>
@@ -322,7 +324,7 @@ export function GameScreen() {
                   onClick={() => setForfeitOpen(false)}
                   data-testid="confirm-cancel"
                 >
-                  No
+                  {t('game.forfeit.no')}
                 </Button>
                 <Button
                   onClick={() => {
@@ -331,7 +333,7 @@ export function GameScreen() {
                   }}
                   data-testid="confirm-accept"
                 >
-                  Yes
+                  {t('game.forfeit.yes')}
                 </Button>
               </div>
             </Modal>
@@ -340,8 +342,8 @@ export function GameScreen() {
                 type="button"
                 className={styles.walkAway}
                 onClick={() => setForfeitOpen(true)}
-                aria-label="Walk away from the table"
-                title="Walk away"
+                aria-label={t('game.ariaWalkAway')}
+                title={t('game.walkAwayTitle')}
                 data-testid="walk-away"
               >
                 {/* A struck flag: forfeit, in the one shape that needs no

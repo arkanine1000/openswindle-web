@@ -1,5 +1,6 @@
 import { animate, motion, useMotionValue } from 'motion/react';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { itemKey, itemSelectable, type CarouselItem } from '../../game/carousel';
 import { Die } from '../scene/Die';
 import styles from './BidCarousel.module.css';
@@ -20,6 +21,7 @@ interface BidCarouselProps {
  * whose quantity exceeds the dice still on the board — visible, dead.
  */
 export function BidCarousel({ items, armedIndex, onArm, onSubmit }: BidCarouselProps) {
+  const { t } = useTranslation();
   const viewportRef = useRef<HTMLDivElement>(null);
   const [viewportW, setViewportW] = useState(0);
   const x = useMotionValue(0);
@@ -85,12 +87,15 @@ export function BidCarousel({ items, armedIndex, onArm, onSubmit }: BidCarouselP
               aria-disabled={!selectable}
               aria-label={
                 item.kind === 'call'
-                  ? 'call the last bid'
-                  : `bid ${item.option.bid.quantity} of face ${item.option.bid.face}${selectable ? '' : ' (not possible with the dice left)'}`
+                  ? t('carousel.ariaCall')
+                  : t(selectable ? 'carousel.ariaBid' : 'carousel.ariaBidImpossible', {
+                      quantity: item.option.bid.quantity,
+                      face: item.option.bid.face,
+                    })
               }
             >
               {item.kind === 'call' ? (
-                <span className={styles.callLabel}>Call!</span>
+                <span className={styles.callLabel}>{t('carousel.call')}</span>
               ) : (
                 <>
                   <Die face={item.option.bid.face} owner="player" small />

@@ -1,6 +1,7 @@
 import { X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { type ReactNode, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './Modal.module.css';
 
 interface ModalProps {
@@ -15,6 +16,7 @@ interface ModalProps {
 /** A centred parchment dialog over a dimmed table. Closes on the backdrop,
  * the ✕, or Escape. */
 export function Modal({ open, onClose, title, children, testId }: ModalProps) {
+  const { t } = useTranslation();
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -53,7 +55,7 @@ export function Modal({ open, onClose, title, children, testId }: ModalProps) {
                 type="button"
                 className={styles.close}
                 onClick={onClose}
-                aria-label="Close"
+                aria-label={t('modal.close')}
                 data-testid="modal-close"
               >
                 <X size={18} aria-hidden />

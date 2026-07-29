@@ -1,9 +1,11 @@
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 import { SpeechBubble } from './SpeechBubble';
 import styles from './ThinkingBubble.module.css';
 
-const FILLERS = ['Well…', 'Hmm…', 'Maybe…', 'Let me see…', 'Mm.', 'Now then…', 'Hah…'];
+const fillers = () => i18n.t('thinking.fillers', { returnObjects: true }) as unknown as string[];
 
 interface ThinkingBubbleProps {
   /** Matches whichever NPC bubble this stands in for — sideways on
@@ -16,7 +18,11 @@ interface ThinkingBubbleProps {
  * never looks frozen: filler phrases rotate on a jittered clock and the
  * ellipsis pulses continuously. */
 export function ThinkingBubble({ tail = 'npc' }: ThinkingBubbleProps) {
-  const [filler, setFiller] = useState(() => FILLERS[Math.floor(Math.random() * FILLERS.length)]);
+  const { t } = useTranslation();
+  const [filler, setFiller] = useState(() => {
+    const pool = fillers();
+    return pool[Math.floor(Math.random() * pool.length)];
+  });
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
@@ -24,7 +30,7 @@ export function ThinkingBubble({ tail = 'npc' }: ThinkingBubbleProps) {
       timer = setTimeout(
         () => {
           setFiller((prev) => {
-            const next = FILLERS.filter((f) => f !== prev);
+            const next = fillers().filter((f) => f !== prev);
             return next[Math.floor(Math.random() * next.length)];
           });
           tick();
@@ -39,7 +45,7 @@ export function ThinkingBubble({ tail = 'npc' }: ThinkingBubbleProps) {
   return (
     <SpeechBubble tail={tail} testId="thinking-bubble">
       <span className={styles.filler}>{filler}</span>
-      <span className={styles.dots} aria-label="opponent is thinking">
+      <span className={styles.dots} aria-label={t('thinking.aria')}>
         {[0, 1, 2].map((i) => (
           <motion.span
             key={i}

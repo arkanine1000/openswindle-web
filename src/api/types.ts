@@ -21,6 +21,8 @@ export interface MatchConfig {
   opponent_type: OpponentType;
   npc_seed: string;
   channel_susceptibility: boolean;
+  /** Language the NPC reasons and speaks in; defaults to 'en' server-side. */
+  locale: 'en' | 'hr';
 }
 
 export interface BidRecord {

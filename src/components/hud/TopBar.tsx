@@ -1,6 +1,8 @@
 import { motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { assets } from '../../assets/manifest';
+import i18n from '../../i18n';
 import styles from './TopBar.module.css';
 
 interface TopBarProps {
@@ -41,7 +43,7 @@ function PipStrip({ total, alive, who }: { total: number; alive: number; who: 'p
             key={i}
             className={styles.pip}
             src={shown ? assets.pips[who] : assets.pips.lost}
-            alt={shown ? `${who === 'player' ? 'your' : "opponent's"} die` : 'lost die'}
+            alt={i18n.t(shown ? (who === 'player' ? 'hud.ariaYourDie' : 'hud.ariaOppDie') : 'hud.ariaLostDie')}
             animate={
               flashing
                 ? { opacity: [1, 0.12, 1, 0.12, 0.9], scale: [1, 1.22, 1, 1.16, 1] }
@@ -67,6 +69,7 @@ export function TopBar({
   onHistoryToggle,
   historyOpen,
 }: TopBarProps) {
+  const { t } = useTranslation();
   return (
     <div className={styles.bar}>
       <PipStrip total={perPlayer} alive={playerCount} who="player" />
@@ -83,7 +86,7 @@ export function TopBar({
          * a flicker at the start of the animation. */}
         <span className={historyOpen ? styles.arrowUp : styles.arrowDown} aria-hidden />
         <span className={styles.visuallyHidden}>
-          {historyOpen ? 'Close the table-talk history' : 'Read the table-talk history'}
+          {t(historyOpen ? 'hud.historyOpen' : 'hud.historyClosed')}
         </span>
       </button>
       <PipStrip total={perPlayer} alive={npcCount} who="npc" />

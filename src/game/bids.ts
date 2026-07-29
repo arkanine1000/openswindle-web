@@ -1,4 +1,5 @@
 import type { Bid, Face } from '../api/types';
+import i18n from '../i18n';
 
 export const FACES: readonly Face[] = [1, 2, 3, 4];
 
@@ -43,14 +44,9 @@ export function parseBid(text: string): Bid {
   return { quantity: Number(match[1]), face: Number(match[2]) as Face };
 }
 
-const FACE_WORDS: Record<Face, [string, string]> = {
-  1: ['one', 'ones'],
-  2: ['two', 'twos'],
-  3: ['three', 'threes'],
-  4: ['four', 'fours'],
-};
-
-/** "2 fours", "1 three" — the reference UI's spoken bid form. */
+/** "2 fours", "1 three" — the spoken bid form, localised. The face word and
+ * its plural (one/few/other) live in the message layer, so each locale owns its
+ * own grammar. */
 export function spokenBid(bid: Bid): string {
-  return `${bid.quantity} ${FACE_WORDS[bid.face][bid.quantity === 1 ? 0 : 1]}`;
+  return i18n.t(`bid.face${bid.face}` as 'bid.face1', { count: bid.quantity });
 }

@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'motion/react';
 import type { NpcArt } from '../../assets/manifest';
 import type { NpcPose } from '../../game/store';
+import i18n from '../../i18n';
 import styles from './NpcFigure.module.css';
 
 interface NpcFigureProps {
@@ -26,7 +27,7 @@ export function NpcFigure({ art, pose, name }: NpcFigureProps) {
           key={pose}
           className={styles.pose}
           src={pose === 'seated' ? art.seated : art.accusing}
-          alt={`${name}, ${pose === 'seated' ? 'seated at the table' : 'standing to accuse'}`}
+          alt={i18n.t(pose === 'seated' ? 'scene.npcSeated' : 'scene.npcAccusing', { name })}
           initial={{ opacity: 0, y: pose === 'accusing' ? 24 : 0 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}

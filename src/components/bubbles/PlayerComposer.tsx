@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Bid, Move } from '../../api/types';
 import { enumerateBids, spokenBid } from '../../game/bids';
 import { itemSelectable, type CarouselItem } from '../../game/carousel';
@@ -33,6 +34,7 @@ export function PlayerComposer({
   onToggleAutoTalk,
   onMove,
 }: PlayerComposerProps) {
+  const { t } = useTranslation();
   const items = useMemo<CarouselItem[]>(() => {
     const bids = enumerateBids(currentBid, startTotal, currentTotal).map(
       (option): CarouselItem => ({ kind: 'bid', option }),
@@ -79,9 +81,9 @@ export function PlayerComposer({
 
   const stripLabel =
     armedItem?.kind === 'call'
-      ? 'Call!'
+      ? t('composer.callStrip')
       : armedItem?.kind === 'bid' && armedItem.option.selectable
-        ? `Bid ${spokenBid(armedItem.option.bid)}`
+        ? t('composer.bidStrip', { bid: spokenBid(armedItem.option.bid) })
         : null;
 
   return (
@@ -93,8 +95,8 @@ export function PlayerComposer({
             className={styles.talkToggle}
             onClick={onToggleAutoTalk}
             aria-pressed={autoTalk}
-            aria-label="Let the game talk for you"
-            title="Auto table talk"
+            aria-label={t('composer.ariaAuto')}
+            title={t('composer.autoTitle')}
             data-testid="talk-toggle"
           >
             <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden>
@@ -118,7 +120,7 @@ export function PlayerComposer({
             onKeyDown={(e) => {
               if (e.key === 'Enter') submit(armedItem);
             }}
-            placeholder={autoTalk ? '' : 'Say something…'}
+            placeholder={autoTalk ? '' : t('composer.sayPlaceholder')}
             maxLength={280}
             disabled={autoTalk}
             data-testid="talk-input"
@@ -132,7 +134,7 @@ export function PlayerComposer({
         </StatusStrip>
       ) : (
         <StatusStrip testId="confirm-strip">
-          {currentBid ? 'No bid left to make — call!' : 'Choose your opening bid'}
+          {currentBid ? t('composer.noBid') : t('composer.chooseOpening')}
         </StatusStrip>
       )}
     </>

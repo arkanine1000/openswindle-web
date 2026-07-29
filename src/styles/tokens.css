@@ -71,3 +71,8 @@
   --duration-base: 300ms;
   --duration-slow: 600ms;
 }
+
+/* The active language is stamped on <html lang> by the i18n layer, so any
+ * locale-specific design metric can be overridden here with a :lang() block
+ * — no component JS. (Nothing needs it right now; the CTA reel centres its
+ * words in a fixed slot instead.) */

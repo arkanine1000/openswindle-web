@@ -1,4 +1,5 @@
 import type { RoundReveal, Seat } from '../api/types';
+import i18n from '../i18n';
 import { spokenBid } from './bids';
 import type { Outcome } from './store';
 import type { MoveTranscriptEntry, TranscriptEntry } from './transcript';
@@ -34,14 +35,12 @@ function roundHeadline(reveal: RoundReveal, mySeat: Seat, opponent: string): str
   const bid = spokenBid(reveal.final_bid);
   if (reveal.bid_met) {
     // The bid held; the caller was wrong to doubt it.
-    return youCalled
-      ? `You doubted ${bid}. It held, and you lose a die.`
-      : `${opponent} doubted your ${bid}. It held, and they lose a die.`;
+    const key = youCalled ? 'postmortem.headlineHeldYou' : 'postmortem.headlineHeldNpc';
+    return i18n.t(key, { bid, opponent });
   }
   // A bluff, called out; the bidder was lying.
-  return youCalled
-    ? `You caught the bluff on ${bid}. ${opponent} loses a die.`
-    : `${opponent} caught your bluff on ${bid}. You lose a die.`;
+  const key = youCalled ? 'postmortem.headlineBluffYou' : 'postmortem.headlineBluffNpc';
+  return i18n.t(key, { bid, opponent });
 }
 
 function recapLine(
@@ -51,12 +50,12 @@ function recapLine(
   finalCounts: { yours: number; theirs: number },
 ): string {
   if (outcome === 'win') {
-    return `You outlasted ${opponent} over ${rounds} ${rounds === 1 ? 'round' : 'rounds'}. Their last die is yours.`;
+    return i18n.t('postmortem.recapWin', { count: rounds, opponent });
   }
   if (outcome === 'defeat') {
-    return `${opponent} bled you dry in ${rounds} ${rounds === 1 ? 'round' : 'rounds'}, down to ${finalCounts.theirs} dice against your none.`;
+    return i18n.t('postmortem.recapDefeat', { count: rounds, opponent, theirs: finalCounts.theirs });
   }
-  return `You pushed back your chair and walked, ${rounds} ${rounds === 1 ? 'round' : 'rounds'} in.`;
+  return i18n.t('postmortem.recapAbandoned', { count: rounds });
 }
 
 export function buildPostmortem(
@@ -85,7 +84,7 @@ export function buildPostmortem(
   // A walk-away's final reveal is a forfeit, not a real call — relabel it.
   const lastRound = rounds.at(-1);
   if (outcome === 'abandoned' && lastRound) {
-    lastRound.headline = 'You walked from the table; the hands were shown.';
+    lastRound.headline = i18n.t('postmortem.headlineAbandoned');
   }
 
   const diceTaken = reveals.filter((r) => r.loser !== mySeat).length;
@@ -102,10 +101,10 @@ export function buildPostmortem(
   return {
     recap: recapLine(outcome, opponent, reveals.length, finalCounts),
     stats: [
-      { label: 'Rounds', value: reveals.length },
-      { label: 'Dice you took', value: diceTaken },
-      { label: 'Dice you lost', value: diceLost },
-      { label: 'Bluffs you caught', value: bluffsCaught },
+      { label: i18n.t('autopsy.statRounds'), value: reveals.length },
+      { label: i18n.t('autopsy.statDiceTaken'), value: diceTaken },
+      { label: i18n.t('autopsy.statDiceLost'), value: diceLost },
+      { label: i18n.t('autopsy.statBluffsCaught'), value: bluffsCaught },
     ],
     rounds,
   };

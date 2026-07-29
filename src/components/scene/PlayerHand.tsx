@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import type { Face } from '../../api/types';
 import { assets } from '../../assets/manifest';
+import i18n from '../../i18n';
 import { PACING } from '../../game/pacing';
 import { Die } from './Die';
 import { dicePileStagger } from './dicePileStagger';
@@ -42,11 +43,7 @@ export function PlayerHand({ dice, revealed, rollKey, rolling }: PlayerHandProps
       <motion.img
         className={styles.hand}
         src={revealed ? assets.hand.open : assets.hand.cupped}
-        alt={
-          revealed
-            ? 'your hand drawn aside, revealing your dice'
-            : 'your hand cupped over your dice'
-        }
+        alt={i18n.t(revealed ? 'scene.handRevealed' : 'scene.handCupped')}
         animate={revealed ? { x: '-105%' } : { x: 0 }}
         transition={{ duration: 0.5, ease: 'easeInOut' }}
         draggable={false}

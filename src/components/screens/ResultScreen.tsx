@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { useTranslation } from 'react-i18next';
 import type { Face } from '../../api/types';
 import { otherSeat } from '../../api/types';
 import { spokenBid } from '../../game/bids';
@@ -7,13 +8,8 @@ import { Die } from '../scene/Die';
 import { Button } from '../ui/Button';
 import styles from './ResultScreen.module.css';
 
-const COPY = {
-  win: { title: 'WIN!', line: 'Your opponent pushes their last die across the table.' },
-  defeat: { title: 'DEFEAT!', line: 'Your last die is gone, and so is your welcome.' },
-  abandoned: { title: 'YOU WALK AWAY', line: 'The dice are shown, the game unfinished.' },
-} as const;
-
 export function ResultScreen() {
+  const { t } = useTranslation();
   const outcome = useGameStore((s) => s.outcome) ?? 'abandoned';
   const npcName = useGameStore((s) => s.npcName);
   const view = useGameStore((s) => s.view);
@@ -21,7 +17,11 @@ export function ResultScreen() {
   const isHuman = useGameStore((s) => s.isHuman);
   const showAutopsy = useGameStore((s) => s.showAutopsy);
   const playAgain = useGameStore((s) => s.playAgain);
-  const copy = COPY[outcome];
+  const copy = {
+    win: { title: t('result.winTitle'), line: t('result.winLine') },
+    defeat: { title: t('result.defeatTitle'), line: t('result.defeatLine') },
+    abandoned: { title: t('result.abandonedTitle'), line: t('result.abandonedLine') },
+  }[outcome];
   const lastReveal = view?.reveals.at(-1) ?? null;
   const opponentSeat = otherSeat(mySeat);
 
@@ -53,12 +53,15 @@ export function ResultScreen() {
           transition={{ delay: 0.7 }}
         >
           <p className={styles.recapLine}>
-            The last hand: {spokenBid(lastReveal.final_bid)} was{' '}
-            {lastReveal.bid_met ? 'on the table' : 'a lie'} — {lastReveal.actual_count} showing.
+            {t('result.lastHand', {
+              bid: spokenBid(lastReveal.final_bid),
+              verdict: lastReveal.bid_met ? t('result.verdictTrue') : t('result.verdictLie'),
+              count: lastReveal.actual_count,
+            })}
           </p>
           <div className={styles.hands}>
             <div className={styles.handRow}>
-              <span>You</span>
+              <span>{t('result.handYou')}</span>
               <div className={styles.diceRow}>
                 {lastReveal.hands[mySeat].map((face, i) => (
                   <Die key={i} face={face as Face} owner="player" small />
@@ -66,7 +69,7 @@ export function ResultScreen() {
               </div>
             </div>
             <div className={styles.handRow}>
-              <span>{npcName || 'They'}</span>
+              <span>{npcName || t('result.theyFallback')}</span>
               <div className={styles.diceRow}>
                 {lastReveal.hands[opponentSeat].map((face, i) => (
                   <Die key={i} face={face as Face} owner="npc" small />
@@ -84,16 +87,16 @@ export function ResultScreen() {
         transition={{ delay: 1.0 }}
       >
         <Button onClick={showAutopsy} data-testid="continue">
-          Review the game
+          {t('result.review')}
         </Button>
         <Button variant="secondary" onClick={playAgain} data-testid="play-again">
-          Play again
+          {t('result.playAgain')}
         </Button>
       </motion.div>
       <p className={styles.footnote}>
         {isHuman
-          ? 'The reckoning replays every round, both hands shown.'
-          : `The reckoning replays the game and lays ${npcName || 'your opponent'} bare.`}
+          ? t('result.footnoteHuman')
+          : t('result.footnoteBot', { opponent: npcName })}
       </p>
     </div>
   );

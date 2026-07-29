@@ -1,12 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import {
   MAX_TALK_LENGTH,
-  TABLE_TALK,
   markTalkUsed,
   pickTalk,
   talkLevel,
+  talkPool,
   type TalkLevel,
 } from '../src/game/tableTalk';
+
+// Tests run in the default (English) locale; talkPool() returns the en corpus.
+const TABLE_TALK = talkPool();
 
 describe('talkLevel', () => {
   it('scales with the bid quantity share of dice in play', () => {

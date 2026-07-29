@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { TranscriptEntry } from '../../game/transcript';
 import { describeMove, describeReveal } from '../../game/transcript';
 import styles from './HistorySheet.module.css';
@@ -23,6 +24,7 @@ function line(entry: TranscriptEntry): string {
 
 /** The stitched-linen table-talk log that unrolls over the scene. */
 export function HistorySheet({ open, entries, onClose }: HistorySheetProps) {
+  const { t } = useTranslation();
   const scrollRef = useRef<HTMLDivElement>(null);
   const touchY = useRef<number | null>(null);
 
@@ -47,7 +49,7 @@ export function HistorySheet({ open, entries, onClose }: HistorySheetProps) {
           animate={{ y: 0 }}
           exit={{ y: '-105%' }}
           transition={{ type: 'spring', stiffness: 260, damping: 30 }}
-          aria-label="Table-talk history"
+          aria-label={t('hud.historySheet')}
         >
           <div
             className={styles.scroll}
@@ -89,7 +91,7 @@ export function HistorySheet({ open, entries, onClose }: HistorySheetProps) {
             type="button"
             className={styles.closeTab}
             onClick={onClose}
-            aria-label="Close history"
+            aria-label={t('hud.historyClose')}
           >
             <span className={styles.arrowUp} aria-hidden />
           </button>

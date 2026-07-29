@@ -1,6 +1,7 @@
 import { Check, Copy, Hourglass } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { assets } from '../../assets/manifest';
 import { useGameStore } from '../../game/store';
 import { Button } from '../ui/Button';
@@ -27,6 +28,7 @@ function Backdrop() {
 /** Seat A after creating an invite match: share the link, wait for a challenger.
  * The store polls in the background and flips the phase the moment they join. */
 export function WaitingScreen() {
+  const { t } = useTranslation();
   const matchId = useGameStore((s) => s.matchId);
   const playAgain = useGameStore((s) => s.playAgain);
   const [copied, setCopied] = useState(false);
@@ -47,7 +49,7 @@ export function WaitingScreen() {
       <Backdrop />
       <div className={splash.scroll}>
         <div className={splash.column}>
-          <h1 className={styles.title}>Waiting for a challenger</h1>
+          <h1 className={styles.title}>{t('waiting.title')}</h1>
           <div className={styles.linkRow}>
             <input
               className={styles.linkField}
@@ -55,14 +57,14 @@ export function WaitingScreen() {
               readOnly
               value={url}
               onFocus={(e) => e.currentTarget.select()}
-              aria-label="Invite link"
+              aria-label={t('waiting.ariaLink')}
               data-testid="invite-link"
             />
             <button
               type="button"
               className={styles.copyIcon}
               onClick={copy}
-              aria-label={copied ? 'Copied' : 'Copy invite link'}
+              aria-label={copied ? t('waiting.copied') : t('waiting.copy')}
               data-testid="copy-invite"
             >
               {copied ? <Check size={18} aria-hidden /> : <Copy size={18} aria-hidden />}
@@ -82,7 +84,7 @@ export function WaitingScreen() {
             <Hourglass size={28} />
           </motion.div>
           <Button variant="secondary" onClick={playAgain} data-testid="leave-waiting">
-            Never mind
+            {t('waiting.neverMind')}
           </Button>
         </div>
       </div>
@@ -92,13 +94,14 @@ export function WaitingScreen() {
 
 /** Seat B, mid-join: a brief holding screen while the seat is claimed. */
 export function JoiningScreen() {
+  const { t } = useTranslation();
   return (
     <div className={splash.screen} data-testid="joining-screen">
       <Backdrop />
       <div className={splash.scroll}>
         <div className={splash.column}>
-          <h1 className={styles.title}>Taking your seat…</h1>
-          <p className={styles.blurb}>The dice are being dealt.</p>
+          <h1 className={styles.title}>{t('waiting.joining')}</h1>
+          <p className={styles.blurb}>{t('waiting.joiningSub')}</p>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import type { Face } from '../../api/types';
 import { assets } from '../../assets/manifest';
+import i18n from '../../i18n';
 import styles from './Die.module.css';
 
 export type DieOwner = 'player' | 'npc';
@@ -16,7 +17,7 @@ export function Die({ face, owner, small = false }: DieProps) {
     <img
       className={small ? styles.small : styles.die}
       src={assets.dice[owner][face]}
-      alt={`${owner === 'player' ? 'your' : "opponent's"} die showing ${face}`}
+      alt={i18n.t(owner === 'player' ? 'scene.dieYou' : 'scene.dieOpp', { face })}
       draggable={false}
     />
   );

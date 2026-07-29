@@ -1,3 +1,4 @@
+import { Trans, useTranslation } from 'react-i18next';
 import { Modal } from '../ui/Modal';
 import styles from './RulesModal.module.css';
 
@@ -6,34 +7,30 @@ interface RulesModalProps {
   onClose: () => void;
 }
 
-/** A brief, in-fiction rules primer for a stranger to the table. */
+/** A brief, in-fiction rules primer for a stranger to the table. The step
+ * strings carry inline <bid>/<i> markup, rendered by <Trans>. */
 export function RulesModal({ open, onClose }: RulesModalProps) {
+  const { t } = useTranslation();
+  const components = { bid: <span className={styles.bid} />, i: <i /> };
   return (
-    <Modal open={open} onClose={onClose} title="How to Swindle" testId="rules-modal">
+    <Modal open={open} onClose={onClose} title={t('rules.title')} testId="rules-modal">
       <div className={styles.rules}>
-        <p className={styles.lede}>
-          A liar's game of four-sided bones. You and your opponent each hide a handful of dice
-          (faces 1–4). Nobody sees the other's hand.
-        </p>
+        <p className={styles.lede}>{t('rules.lede')}</p>
         <ol className={styles.steps}>
           <li>
-            <b>Bid</b> a claim like <span className={styles.bid}>3 × four</span> — that at least
-            three fours lie across <i>both</i> hands, yours and theirs together.
+            <Trans i18nKey="rules.step1" components={components} />
           </li>
           <li>
-            <b>Raise</b> or beat every bid: a higher count, or the same count on a higher face.
+            <Trans i18nKey="rules.step2" components={components} />
           </li>
           <li>
-            <b>Call</b> instead, if you smell a lie. Both hands come open — if the bid holds, the
-            caller loses a die; if it was a bluff, the bidder does.
+            <Trans i18nKey="rules.step3" components={components} />
           </li>
           <li>
-            <b>Survive.</b> Lose your last die and you're out. Take theirs and the table is yours.
+            <Trans i18nKey="rules.step4" components={components} />
           </li>
         </ol>
-        <p className={styles.aside}>
-          Talk is part of the game. Bluff, needle, or hold your tongue.
-        </p>
+        <p className={styles.aside}>{t('rules.aside')}</p>
       </div>
     </Modal>
   );

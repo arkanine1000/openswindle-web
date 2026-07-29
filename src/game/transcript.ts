@@ -1,4 +1,5 @@
 import type { Move, RoundReveal, Seat } from '../api/types';
+import i18n from '../i18n';
 import { spokenBid } from './bids';
 
 export type Speaker = 'you' | 'npc';
@@ -38,21 +39,25 @@ export function narrationEntry(roundNo: number, text: string): TranscriptEntry {
 /** History-sheet line for a move: the reference renders talk with the bid
  * folded into the quote ("'So do you live in Kharé? 1 three.' you ask."). */
 export function describeMove(entry: MoveTranscriptEntry): string {
-  const deed = entry.move.action === 'bid' ? spokenBid(entry.move.bid) : 'Call!';
+  const deed = entry.move.action === 'bid' ? spokenBid(entry.move.bid) : i18n.t('game.callShout');
   if (entry.talk) {
-    return entry.speaker === 'you'
-      ? `'${entry.talk} ${deed}.' you say.`
-      : `'${entry.talk} ${deed}.'`;
+    const key = entry.speaker === 'you' ? 'transcript.moveYouSay' : 'transcript.moveNpcSay';
+    return i18n.t(key, { talk: entry.talk, deed });
   }
   if (entry.move.action === 'call') {
-    return entry.speaker === 'you' ? 'You call!' : 'Your opponent calls!';
+    return i18n.t(entry.speaker === 'you' ? 'transcript.moveYouCall' : 'transcript.moveNpcCall');
   }
-  return entry.speaker === 'you' ? `You bid ${deed}.` : `The reply comes: ${deed}.`;
+  return i18n.t(entry.speaker === 'you' ? 'transcript.moveYouBid' : 'transcript.moveNpcBid', {
+    deed,
+  });
 }
 
 export function describeReveal(entry: RevealTranscriptEntry): string {
   const { reveal, youLost } = entry;
   const bid = spokenBid(reveal.final_bid);
-  const call = reveal.bid_met ? `The bid of ${bid} held.` : `${bid} was a bluff.`;
-  return `${call} ${youLost ? 'You lose a die.' : 'Your opponent loses a die.'}`;
+  const call = reveal.bid_met
+    ? i18n.t('transcript.revealHeld', { bid })
+    : i18n.t('transcript.revealBluff', { bid });
+  const who = youLost ? i18n.t('transcript.revealYouLose') : i18n.t('transcript.revealOppLose');
+  return `${call} ${who}`;
 }

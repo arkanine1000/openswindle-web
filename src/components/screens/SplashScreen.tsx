@@ -1,9 +1,11 @@
 import { ChevronsUpDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { OpponentType } from '../../api/types';
 import { assets } from '../../assets/manifest';
 import { useGameStore } from '../../game/store';
+import { LanguageMenu } from '../hud/LanguageMenu';
 import styles from './SplashScreen.module.css';
 
 const DICE_CHOICES = [2, 3, 4, 5, 6];
@@ -32,6 +34,7 @@ const wordVariants = {
 };
 
 export function SplashScreen() {
+  const { t } = useTranslation();
   const startMatch = useGameStore((s) => s.startMatch);
   const startHumanMatch = useGameStore((s) => s.startHumanMatch);
   const error = useGameStore((s) => s.error);
@@ -99,6 +102,12 @@ export function SplashScreen() {
     drag.current.active = false;
   };
 
+  // The reel slot is sized to THIS locale's longest carousel word and centres
+  // both options within it — so a new language auto-sizes from its own words,
+  // with no per-locale CSS and no cross-locale width clash.
+  const ctaWords: Record<Mode, string> = { bot: t('splash.cta.bot'), pal: t('splash.cta.pal') };
+  const ctaSlotCh = Math.max(ctaWords.bot.length, ctaWords.pal.length);
+
   return (
     <div className={styles.screen} data-testid="splash-screen">
       <img className={styles.wall} src={assets.backdrop.wall} alt="" aria-hidden />
@@ -106,6 +115,8 @@ export function SplashScreen() {
        * so the light in the room has a source. */}
       <div className={styles.lamplight} aria-hidden />
       <div className={styles.vignette} aria-hidden />
+
+      <LanguageMenu />
 
       <div className={styles.scroll}>
         <motion.div
@@ -127,7 +138,7 @@ export function SplashScreen() {
           />
 
           <motion.h1 className={styles.title} variants={rise} transition={stagger}>
-            Swindlestones
+            {t('splash.title')}
           </motion.h1>
 
           <motion.div className={styles.rule} variants={rise} transition={stagger} aria-hidden>
@@ -137,11 +148,11 @@ export function SplashScreen() {
           </motion.div>
 
           <motion.p className={styles.tagline} variants={rise} transition={stagger}>
-            A game of dice and lies.
+            {t('splash.tagline')}
           </motion.p>
 
           <motion.fieldset className={styles.length} variants={rise} transition={stagger}>
-            <legend>Dice apiece</legend>
+            <legend>{t('splash.diceApiece')}</legend>
             {DICE_CHOICES.map((n) => (
               <label key={n} className={styles.diceChoice} data-checked={dice === n}>
                 <input
@@ -170,10 +181,10 @@ export function SplashScreen() {
                 onClick={play}
                 disabled={starting}
                 data-testid="sit-down"
-                aria-label={`Play a ${mode === 'bot' ? 'bot' : 'friend'}`}
+                aria-label={mode === 'bot' ? t('splash.cta.ariaBot') : t('splash.cta.ariaPal')}
               >
-                <span className={styles.playText}>Play a</span>
-                <span className={styles.wordSlot} aria-hidden>
+                <span className={styles.playText}>{t('splash.cta.prefix')}</span>
+                <span className={styles.wordSlot} style={{ width: `${ctaSlotCh}ch` }} aria-hidden>
                   <AnimatePresence initial={false} custom={dir}>
                     <motion.span
                       key={mode}
@@ -185,7 +196,7 @@ export function SplashScreen() {
                       exit="exit"
                       transition={{ type: 'spring', stiffness: 480, damping: 40 }}
                     >
-                      {mode}
+                      {ctaWords[mode]}
                     </motion.span>
                   </AnimatePresence>
                 </span>
@@ -195,7 +206,9 @@ export function SplashScreen() {
                 className={styles.toggle}
                 onClick={() => cycle(1)}
                 disabled={starting}
-                aria-label={`Switch to playing a ${mode === 'bot' ? 'friend' : 'bot'}`}
+                aria-label={
+                  mode === 'bot' ? t('splash.cta.switchToPal') : t('splash.cta.switchToBot')
+                }
                 data-testid="opponent-toggle"
               >
                 <ChevronsUpDown size={18} aria-hidden />
@@ -215,27 +228,27 @@ export function SplashScreen() {
                   transition={{ duration: 0.3, ease: 'easeOut' }}
                 >
                   <details className={styles.advanced}>
-                    <summary>Advanced Settings</summary>
+                    <summary>{t('splash.advanced.summary')}</summary>
                     <div className={styles.advancedBody}>
                       <label className={styles.field}>
-                        Opponent seed
+                        {t('splash.advanced.seedLabel')}
                         <input
                           type="text"
                           value={seed}
                           onChange={(e) => setSeed(e.target.value)}
-                          placeholder="leave blank for a stranger"
+                          placeholder={t('splash.advanced.seedPlaceholder')}
                           data-testid="seed-input"
                         />
                       </label>
                       <label className={styles.field}>
-                        Opponent mind
+                        {t('splash.advanced.mindLabel')}
                         <select
                           value={engine}
                           onChange={(e) => setEngine(e.target.value as OpponentType)}
                           data-testid="engine-select"
                         >
-                          <option value="llm">Language model</option>
-                          <option value="scripted">Scripted (practice)</option>
+                          <option value="llm">{t('splash.advanced.mindLlm')}</option>
+                          <option value="scripted">{t('splash.advanced.mindScripted')}</option>
                         </select>
                       </label>
                     </div>

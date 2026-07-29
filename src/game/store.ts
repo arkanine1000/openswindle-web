@@ -9,6 +9,7 @@ import {
 } from '../api/client';
 import type { Bid, MatchConfig, Move, PublicMatchView, RoundReveal, Seat } from '../api/types';
 import { otherSeat } from '../api/types';
+import i18n, { currentLocale } from '../i18n';
 import type { Step } from './choreography';
 import { buildRemoteSteps, buildSteps } from './choreography';
 import { PACING, sleep } from './pacing';
@@ -117,7 +118,7 @@ function talkLinger(talk: string): number {
 }
 
 /** The generic label for a human opponent — no bio, no seed-driven persona. */
-const HUMAN_OPPONENT_NAME = 'Your challenger';
+const humanOpponentName = () => i18n.t('narration.humanOpponent');
 
 export const useGameStore = create<GameState>((set, get) => {
   function clearPollInterval(): void {
@@ -194,10 +195,10 @@ export const useGameStore = create<GameState>((set, get) => {
           break;
         }
         case 'roundStart': {
-          const opensText =
-            step.opener === mySeat
-              ? `Round ${step.roundNo} — you lost the last, so you open.`
-              : `Round ${step.roundNo} — your opponent opens.`;
+          const opensText = i18n.t(
+            step.opener === mySeat ? 'narration.roundOpenYou' : 'narration.roundOpenNpc',
+            { n: step.roundNo },
+          );
           set((s) => ({
             phase: 'dealing',
             activeReveal: null,
@@ -337,7 +338,7 @@ export const useGameStore = create<GameState>((set, get) => {
       runId += 1;
       stopPolling();
       try {
-        const res = await createMatch(config);
+        const res = await createMatch({ ...config, locale: currentLocale() });
         const token = res.tokens.a;
         const startTotal = Object.values(res.view.dice_counts).reduce((a, b) => a + b, 0);
         const npcName = res.npc_name ?? 'A stranger';
@@ -371,8 +372,8 @@ export const useGameStore = create<GameState>((set, get) => {
           // The bio stays out of the transcript too — it's derived from the
           // NPC's hidden parameters and would tip their play style.
           transcript: [
-            narrationEntry(1, `${npcName} sits down across from you.`),
-            narrationEntry(1, `${startTotal / 2} dice each. You take first bid.`),
+            narrationEntry(1, i18n.t('narration.npcSits', { name: npcName })),
+            narrationEntry(1, i18n.t('narration.diceEach', { count: startTotal / 2 })),
           ],
           displayedHand: [],
           displayedDiceCounts: res.view.dice_counts,
@@ -392,7 +393,7 @@ export const useGameStore = create<GameState>((set, get) => {
       runId += 1;
       stopPolling();
       try {
-        const res = await createMatch({ ...config, opponent_type: 'human' });
+        const res = await createMatch({ ...config, opponent_type: 'human', locale: currentLocale() });
         const token = res.tokens.a;
         const startTotal = Object.values(res.view.dice_counts).reduce((a, b) => a + b, 0);
         sessionStorage.setItem(
@@ -402,7 +403,7 @@ export const useGameStore = create<GameState>((set, get) => {
             token,
             mySeat: 'a',
             isHuman: true,
-            npcName: HUMAN_OPPONENT_NAME,
+            npcName: humanOpponentName(),
             npcBio: '',
             npcSeed: '',
             startTotal,
@@ -415,12 +416,12 @@ export const useGameStore = create<GameState>((set, get) => {
           mySeat: 'a',
           isHuman: true,
           opponentPresent: false,
-          npcName: HUMAN_OPPONENT_NAME,
+          npcName: humanOpponentName(),
           npcBio: '',
           npcSeed: '',
           startTotal,
           view: res.view,
-          transcript: [narrationEntry(1, 'Send the invite link and wait for a challenger.')],
+          transcript: [narrationEntry(1, i18n.t('narration.waitInvite'))],
           displayedHand: [],
           displayedDiceCounts: res.view.dice_counts,
           currentBid: null,
@@ -450,7 +451,7 @@ export const useGameStore = create<GameState>((set, get) => {
             token: res.token,
             mySeat: res.seat,
             isHuman: true,
-            npcName: HUMAN_OPPONENT_NAME,
+            npcName: humanOpponentName(),
             npcBio: '',
             npcSeed: '',
             startTotal,
@@ -462,12 +463,12 @@ export const useGameStore = create<GameState>((set, get) => {
           mySeat: res.seat,
           isHuman: true,
           opponentPresent: true,
-          npcName: HUMAN_OPPONENT_NAME,
+          npcName: humanOpponentName(),
           npcBio: '',
           npcSeed: '',
           startTotal,
           view,
-          transcript: [narrationEntry(1, 'You take the empty seat across the table.')],
+          transcript: [narrationEntry(1, i18n.t('narration.takeSeat'))],
           displayedHand: [],
           displayedDiceCounts: view.dice_counts,
           currentBid: null,
@@ -479,7 +480,7 @@ export const useGameStore = create<GameState>((set, get) => {
         });
         await beginHumanPlay(view);
       } catch (err) {
-        set({ error: err instanceof ApiError ? err.detail : 'Could not join that match.' });
+        set({ error: err instanceof ApiError ? err.detail : i18n.t('errors.joinFailed') });
       }
     },
 
@@ -519,7 +520,7 @@ export const useGameStore = create<GameState>((set, get) => {
           currentBid: view.bid_history.length
             ? (view.bid_history[view.bid_history.length - 1]?.bid ?? null)
             : null,
-          error: err instanceof ApiError ? err.detail : 'Something went wrong. Try again.',
+          error: err instanceof ApiError ? err.detail : i18n.t('errors.moveFailed'),
         });
       }
     },
@@ -532,12 +533,12 @@ export const useGameStore = create<GameState>((set, get) => {
         set((s) => ({
           transcript: [
             ...s.transcript,
-            narrationEntry(res.view.round_no, 'You push back your chair and walk away.'),
+            narrationEntry(res.view.round_no, i18n.t('narration.walkAway')),
           ],
         }));
         await playSteps(buildSteps(null, res), res.view);
       } catch (err) {
-        set({ error: err instanceof ApiError ? err.detail : 'Could not leave the table.' });
+        set({ error: err instanceof ApiError ? err.detail : i18n.t('errors.leaveFailed') });
       }
     },
 
@@ -624,8 +625,8 @@ export const useGameStore = create<GameState>((set, get) => {
             narrationEntry(
               view.round_no,
               stored.isHuman
-                ? 'You return to the table. Your challenger waits.'
-                : `You return to the table. ${stored.npcName} waits.`,
+                ? i18n.t('narration.returnHuman')
+                : i18n.t('narration.returnNpc', { name: stored.npcName }),
             ),
             ...view.bid_history.map((b) =>
               moveEntry(
