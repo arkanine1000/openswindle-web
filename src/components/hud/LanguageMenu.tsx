@@ -4,29 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { LOCALES, LOCALE_META, type Locale } from '../../i18n/localeMeta';
 import styles from './LanguageMenu.module.css';
 
-/** Tiny, cross-platform flags (emoji flags render as letters on Windows). */
-function Flag({ locale }: { locale: Locale }) {
-  if (locale === 'hr') {
-    return (
-      <svg className={styles.flag} viewBox="0 0 24 16" aria-hidden>
-        <rect width="24" height="16" fill="#ffffff" />
-        <rect width="24" height="5.34" fill="#ff0000" />
-        <rect width="24" height="5.34" y="10.66" fill="#171796" />
-        <rect x="9" y="4" width="6" height="6" fill="#ffffff" stroke="#ff0000" strokeWidth="0.9" />
-      </svg>
-    );
-  }
-  return (
-    <svg className={styles.flag} viewBox="0 0 24 16" aria-hidden>
-      <rect width="24" height="16" fill="#b22234" />
-      <rect width="24" height="2.29" y="2.29" fill="#ffffff" />
-      <rect width="24" height="2.29" y="6.86" fill="#ffffff" />
-      <rect width="24" height="2.29" y="11.43" fill="#ffffff" />
-      <rect width="10" height="8.6" fill="#3c3b6e" />
-    </svg>
-  );
-}
-
 /** Flag + chevron dropdown, pinned to the splash's top-right. Switching locale
  * is persisted by the language detector's localStorage cache. */
 export function LanguageMenu() {
@@ -61,7 +38,7 @@ export function LanguageMenu() {
         aria-label={t('lang.menu')}
         data-testid="language-menu"
       >
-        <Flag locale={current} />
+        <span className={styles.flag} aria-hidden>{LOCALE_META[current].flag}</span>
         <ChevronDown size={14} aria-hidden />
       </button>
       {open && (
@@ -76,7 +53,7 @@ export function LanguageMenu() {
                 onClick={() => pick(lng)}
                 data-testid={`lang-${lng}`}
               >
-                <Flag locale={lng} />
+                <span className={styles.flag} aria-hidden>{LOCALE_META[lng].flag}</span>
                 <span>{LOCALE_META[lng].label}</span>
               </button>
             </li>

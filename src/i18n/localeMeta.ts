@@ -9,6 +9,8 @@ export const FALLBACK_LOCALE: Locale = 'en';
 export interface LocaleInfo {
   /** Endonym shown in the language menu. */
   label: string;
+  /** Flag emoji for language selector. */
+  flag: string;
   /** JS-only design metric: the auto-talk bubble's character budget. Anything
    * CSS can express (the CTA slot width, per-locale font nudges) lives in
    * tokens.css behind :lang() instead of here. */
@@ -16,6 +18,7 @@ export interface LocaleInfo {
 }
 
 export const LOCALE_META: Record<Locale, LocaleInfo> = {
-  en: { label: 'English', maxTalkLength: 27 },
-  hr: { label: 'Hrvatski', maxTalkLength: 30 },
+  en: { label: 'English', flag: '🇺🇸', maxTalkLength: 27 },
+  hr: { label: 'Hrvatski', flag: '🇭🇷', maxTalkLength: 30 },
 };
+
