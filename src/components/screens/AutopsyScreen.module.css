@@ -141,6 +141,19 @@
 
 .roundLine {
   line-height: 1.4;
+  flex: 1;
+}
+
+.chevron {
+  flex: none;
+  align-self: center;
+  margin-left: auto;
+  color: var(--color-text-faint);
+  transition: transform 0.2s ease;
+}
+
+.round[open] .chevron {
+  transform: rotate(180deg);
 }
 
 .roundBody {

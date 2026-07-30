@@ -1,3 +1,4 @@
+import { ChevronDown } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -124,6 +125,7 @@ export function AutopsyScreen() {
                   <summary className={styles.roundHead}>
                     <span className={styles.roundNo}>{t('autopsy.round', { n: round.roundNo })}</span>
                     <span className={styles.roundLine}>{round.headline}</span>
+                    <ChevronDown className={styles.chevron} size="1.1em" aria-hidden />
                   </summary>
 
                   <div className={styles.roundBody}>
