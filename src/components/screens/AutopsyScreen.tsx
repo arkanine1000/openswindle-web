@@ -1,4 +1,4 @@
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Download } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -6,6 +6,8 @@ import { getAutopsy } from '../../api/client';
 import type { Autopsy, DecisionRecord, Move } from '../../api/types';
 import { otherSeat } from '../../api/types';
 import { spokenBid } from '../../game/bids';
+import { autopsyReportHtml, printAutopsyReport } from '../../game/exportAutopsy';
+import { MODEL_META } from '../../game/models';
 import { buildPostmortem } from '../../game/postmortem';
 import { useGameStore } from '../../game/store';
 import { formatFixed, formatNumber } from '../../i18n/format';
@@ -88,6 +90,37 @@ export function AutopsyScreen() {
     t('autopsy.acctReprompts', { count: reprompts }),
     t('autopsy.acctFallbacks', { count: fallbacks }),
   ].join(' · ');
+  const fullAccounting =
+    tokens.prompt > 0
+      ? `${accounting} · ${t('autopsy.acctTokens', {
+          prompt: formatNumber(tokens.prompt),
+          cached: formatNumber(tokens.cached),
+          completion: formatNumber(tokens.completion),
+        })}`
+      : accounting;
+
+  const modelLabel = autopsy?.llm_model
+    ? (MODEL_META[autopsy.llm_model as keyof typeof MODEL_META]?.label ?? autopsy.llm_model)
+    : null;
+
+  const exportPdf = () => {
+    if (!autopsy) return;
+    const html = autopsyReportHtml({
+      autopsy,
+      opponent,
+      outcomeLabel,
+      recap: post.recap,
+      stats: post.stats,
+      rounds: post.rounds,
+      scratchByRound,
+      mySeat,
+      opponentSeat,
+      modelLabel,
+      accounting: fullAccounting,
+      moveText: (m) => moveText(m, t),
+    });
+    printAutopsyReport(html);
+  };
 
   return (
     <div className={styles.page} data-testid="autopsy-screen">
@@ -97,6 +130,18 @@ export function AutopsyScreen() {
         animate="shown"
         transition={{ staggerChildren: 0.08 }}
       >
+        {autopsy && (
+          <Button
+            variant="secondary"
+            className={styles.exportButton}
+            onClick={exportPdf}
+            data-testid="export-pdf"
+          >
+            <Download size={16} aria-hidden />
+            {t('autopsy.exportPdf')}
+          </Button>
+        )}
+
         <motion.header className={styles.header} variants={rise}>
           <p className={styles.eyebrow} data-outcome={outcome}>
             {outcomeLabel}
@@ -226,6 +271,11 @@ export function AutopsyScreen() {
           <motion.section className={styles.section} variants={rise}>
             <details className={styles.numbers}>
               <summary data-testid="numbers-toggle">{t('autopsy.numbers')}</summary>
+              {modelLabel && (
+                <p className={styles.explain} data-testid="autopsy-model">
+                  {t('autopsy.model', { model: modelLabel })}
+                </p>
+              )}
               <p className={styles.explain}>
                 {t('autopsy.numbersExplain')}
                 <b data-testid="total-deviation">{formatFixed(autopsy.total_deviation_price, 3)}</b>
@@ -257,15 +307,7 @@ export function AutopsyScreen() {
                   </tbody>
                 </table>
               </div>
-              <p className={styles.explain}>
-                {accounting}
-                {tokens.prompt > 0 &&
-                  ` · ${t('autopsy.acctTokens', {
-                    prompt: formatNumber(tokens.prompt),
-                    cached: formatNumber(tokens.cached),
-                    completion: formatNumber(tokens.completion),
-                  })}`}
-              </p>
+              <p className={styles.explain}>{fullAccounting}</p>
             </details>
           </motion.section>
         )}

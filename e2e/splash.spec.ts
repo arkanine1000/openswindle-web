@@ -20,4 +20,12 @@ test.describe('splash screen', () => {
     await expect(page.getByTestId('seed-input')).toBeVisible();
     await expect(page.getByTestId('engine-select')).toHaveValue('llm');
   });
+
+  test('difficulty picker only applies to an llm opponent', async ({ page }) => {
+    await page.goto('/');
+    await page.getByText('Advanced Settings').click();
+    await expect(page.getByTestId('model-select')).toHaveValue('deepseek/deepseek-v4-flash');
+    await page.getByTestId('engine-select').selectOption('scripted');
+    await expect(page.getByTestId('model-select')).toBeHidden();
+  });
 });

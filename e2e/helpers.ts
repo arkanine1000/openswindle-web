@@ -12,6 +12,9 @@ export async function sitDown(
   await page.getByText('Advanced Settings').click();
   await page.getByTestId('seed-input').fill(seed);
   await page.getByTestId('engine-select').selectOption('scripted');
+  // Advanced settings live in a full-screen modal; close it before the dice
+  // radios and sit-down button (behind the backdrop) can be clicked.
+  await page.getByTestId('modal-close').click();
   await page.locator(`input[name="dice"][value="${dice}"]`).check();
   await page.getByTestId('sit-down').click();
   await page.getByTestId('npc-intro').waitFor();

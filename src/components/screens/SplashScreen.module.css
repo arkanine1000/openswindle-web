@@ -334,8 +334,8 @@
   opacity: 0.5;
 }
 
-/* Collapsible advanced block. Absolutely placed beneath the CTA and out of
- * flow, so animating its height to/from 0 leaves the column height untouched. */
+/* The advanced-settings modal trigger. Absolutely placed beneath the CTA and
+ * out of flow, so its fade in/out never re-centers the column. */
 .advancedWrap {
   position: absolute;
   top: 100%;
@@ -345,58 +345,58 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden;
 }
 
-.advanced {
-  color: var(--color-parchment);
-  text-align: center;
-  opacity: 0.8;
-  max-width: 100%;
-}
-
-.advanced summary {
+.advancedTrigger {
+  background: none;
+  border: none;
   cursor: pointer;
+  color: var(--color-parchment);
+  opacity: 0.8;
   font-style: italic;
   font-size: clamp(1.05rem, 4vw, 1.4rem);
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
-.advanced summary:hover {
+.advancedTrigger:hover {
   color: var(--color-accent);
+  opacity: 1;
 }
 
-.advancedBody {
-  /* The disclosure's contents sit on their own dark ground, so the inputs
-   * read as a panel rather than loose fields on the wall. */
-  margin-top: var(--space-3);
-  padding: var(--space-3) var(--space-4) var(--space-4);
-  background: rgba(23, 19, 14, 0.55);
-  border: 1px solid rgba(var(--color-accent-rgb), 0.35);
-  border-radius: var(--radius-chip);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
+/* Fields inside the advanced-settings Modal, which sits on the light
+ * parchment panel — so these read against --color-ink, not the dark wall
+ * behind the splash screen. Each field is a full-width row, divided by
+ * hairlines, rather than a stack of separately floating controls. */
 .field {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  margin-top: var(--space-3);
+  padding: var(--space-3) 0;
   font-size: clamp(0.95rem, 3.6vw, 1.15rem);
-  width: 100%;
-  max-width: 24rem;
+}
+
+.field + .field {
+  border-top: 1px solid rgba(var(--color-accent-rgb), 0.25);
+}
+
+.fieldLabel {
+  /* A quiet caption above the control, not a competing headline — the
+   * control itself is what the player is scanning for. */
+  font-size: clamp(0.75rem, 2.6vw, 0.85rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.65;
+  color: var(--color-ink);
 }
 
 .field input,
 .field select {
   padding: var(--space-3);
   font-size: clamp(1rem, 3.8vw, 1.2rem);
-  border: 1px solid rgba(var(--color-accent-rgb), 0.55);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.5);
   border-radius: var(--radius-chip);
-  background: rgba(0, 0, 0, 0.4);
-  color: var(--color-parchment);
+  background: var(--color-parchment-shade);
+  color: var(--color-ink);
   text-align: center;
 }
 

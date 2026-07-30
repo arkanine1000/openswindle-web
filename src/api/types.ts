@@ -23,6 +23,9 @@ export interface MatchConfig {
   channel_susceptibility: boolean;
   /** Language the NPC reasons and speaks in; defaults to 'en' server-side. */
   locale: 'en' | 'hr';
+  /** OpenRouter model slug; must be one of game/models.ts's LLM_MODELS or the
+   * server rejects it with a 422. Omit to use the server's default. */
+  llm_model?: string;
 }
 
 export interface BidRecord {
@@ -136,6 +139,8 @@ export interface Autopsy {
   npc_profile: NPCProfile;
   decisions: DecisionRecord[];
   total_deviation_price: number;
+  /** The model that actually played this match; null for a scripted opponent. */
+  llm_model: string | null;
 }
 
 export const HUMAN_SEAT: Seat = 'a';

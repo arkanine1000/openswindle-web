@@ -4,11 +4,30 @@ import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { OpponentType } from '../../api/types';
 import { assets } from '../../assets/manifest';
+import {
+  DEFAULT_MODEL,
+  DIFFICULTIES,
+  type LlmModel,
+  MODEL_META,
+  MODELS_BY_DIFFICULTY,
+} from '../../game/models';
 import { useGameStore } from '../../game/store';
 import { LanguageMenu } from '../hud/LanguageMenu';
+import { Modal } from '../ui/Modal';
 import styles from './SplashScreen.module.css';
 
 const DICE_CHOICES = [2, 3, 4, 5, 6];
+
+// A lasting preference, unlike the per-tab match — mirrors GameScreen's
+// AUTO_TALK_KEY idiom.
+const MODEL_KEY = 'openswindle-llm-model';
+function isLlmModel(value: string | null): value is LlmModel {
+  return value !== null && value in MODEL_META;
+}
+function loadStoredModel(): LlmModel {
+  const stored = localStorage.getItem(MODEL_KEY);
+  return isLlmModel(stored) ? stored : DEFAULT_MODEL;
+}
 
 /** Opponent kind, worn as the tail of "Play a ___". */
 type Mode = 'bot' | 'pal';
@@ -42,7 +61,14 @@ export function SplashScreen() {
   const [dice, setDice] = useState(4);
   const [seed, setSeed] = useState('');
   const [engine, setEngine] = useState<OpponentType>('llm');
+  const [model, setModel] = useState<LlmModel>(loadStoredModel);
   const [starting, setStarting] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  const chooseModel = (next: LlmModel) => {
+    localStorage.setItem(MODEL_KEY, next);
+    setModel(next);
+  };
 
   const sitDown = async () => {
     setStarting(true);
@@ -51,6 +77,7 @@ export function SplashScreen() {
       dice_per_player: dice,
       opponent_type: engine,
       npc_seed: seed.trim() || randomSeed(),
+      llm_model: model,
     });
     setStarting(false);
   };
@@ -215,44 +242,25 @@ export function SplashScreen() {
               </button>
             </div>
 
-            {/* Seed and engine only matter against a bot; they slide away for a pal.
-              Absolutely placed so its expand/collapse never re-centers the column. */}
+            {/* The trigger only matters against a bot; it fades away for a pal.
+              Absolutely placed so its appearance never re-centers the column. */}
             <AnimatePresence initial={false}>
               {mode === 'bot' && (
                 <motion.div
                   key="advanced"
                   className={styles.advancedWrap}
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                   transition={{ duration: 0.3, ease: 'easeOut' }}
                 >
-                  <details className={styles.advanced}>
-                    <summary>{t('splash.advanced.summary')}</summary>
-                    <div className={styles.advancedBody}>
-                      <label className={styles.field}>
-                        {t('splash.advanced.seedLabel')}
-                        <input
-                          type="text"
-                          value={seed}
-                          onChange={(e) => setSeed(e.target.value)}
-                          placeholder={t('splash.advanced.seedPlaceholder')}
-                          data-testid="seed-input"
-                        />
-                      </label>
-                      <label className={styles.field}>
-                        {t('splash.advanced.mindLabel')}
-                        <select
-                          value={engine}
-                          onChange={(e) => setEngine(e.target.value as OpponentType)}
-                          data-testid="engine-select"
-                        >
-                          <option value="llm">{t('splash.advanced.mindLlm')}</option>
-                          <option value="scripted">{t('splash.advanced.mindScripted')}</option>
-                        </select>
-                      </label>
-                    </div>
-                  </details>
+                  <button
+                    type="button"
+                    className={styles.advancedTrigger}
+                    onClick={() => setSettingsOpen(true)}
+                  >
+                    {t('splash.advanced.summary')}
+                  </button>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -265,6 +273,57 @@ export function SplashScreen() {
           )}
         </motion.div>
       </div>
+
+      <Modal
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        title={t('splash.advanced.summary')}
+        testId="advanced-settings-modal"
+      >
+        <label className={styles.field}>
+          <span className={styles.fieldLabel}>{t('splash.advanced.mindLabel')}</span>
+          <select
+            value={engine}
+            onChange={(e) => setEngine(e.target.value as OpponentType)}
+            data-testid="engine-select"
+          >
+            <option value="llm">{t('splash.advanced.mindLlm')}</option>
+            <option value="scripted">{t('splash.advanced.mindScripted')}</option>
+          </select>
+        </label>
+
+        {engine === 'llm' && (
+          <label className={styles.field}>
+            <span className={styles.fieldLabel}>{t('splash.advanced.difficultyLabel')}</span>
+            <select
+              value={model}
+              onChange={(e) => chooseModel(e.target.value as LlmModel)}
+              data-testid="model-select"
+            >
+              {DIFFICULTIES.map((difficulty) => (
+                <optgroup key={difficulty} label={t(`splash.advanced.difficulty.${difficulty}`)}>
+                  {MODELS_BY_DIFFICULTY[difficulty].map((id) => (
+                    <option key={id} value={id}>
+                      {MODEL_META[id].label}
+                    </option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
+          </label>
+        )}
+
+        <label className={styles.field}>
+          <span className={styles.fieldLabel}>{t('splash.advanced.seedLabel')}</span>
+          <input
+            type="text"
+            value={seed}
+            onChange={(e) => setSeed(e.target.value)}
+            placeholder={t('splash.advanced.seedPlaceholder')}
+            data-testid="seed-input"
+          />
+        </label>
+      </Modal>
     </div>
   );
 }

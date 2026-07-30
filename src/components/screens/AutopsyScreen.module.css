@@ -9,12 +9,23 @@
 }
 
 .report {
+  position: relative;
   width: 100%;
   max-width: 680px;
   background: var(--color-parchment);
   border-radius: var(--radius-bubble);
   box-shadow: var(--shadow-sheet);
   padding: var(--space-6) var(--space-5) var(--space-8);
+}
+
+/* Pinned to the report's corner, not buried in the numbers fold, since
+ * export is a top-level action a returning analyst reaches for immediately. */
+.exportButton {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
 }
 
 /* ── Header / summary ─────────────────────────────────────────── */

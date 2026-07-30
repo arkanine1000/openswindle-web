@@ -30,6 +30,12 @@ export const hr = {
       mindLabel: 'Um protivnika',
       mindLlm: 'Jezični model',
       mindScripted: 'Skriptirano (vježba)',
+      difficultyLabel: 'Težina',
+      difficulty: {
+        easy: 'Lagano',
+        standard: 'Standardno',
+        advanced: 'Napredno',
+      },
     },
   },
 
@@ -87,6 +93,8 @@ export const hr = {
     numbers: 'Brojke',
     numbersExplain:
       'Svaka odluka ocijenjena prema najsigurnijem potezu jednog koraka, ne teorijskom optimumu, pa i lukav blef djeluje kao „odstupanje". Ukupno: ',
+    model: 'Model: {{model}}',
+    exportPdf: 'Izvezi u PDF',
     ledgerRd: 'Rd',
     ledgerPlayed: 'Potez',
     ledgerSafest: 'Sigurno',

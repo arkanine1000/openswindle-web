@@ -30,6 +30,12 @@ export const en = {
       mindLabel: 'Opponent mind',
       mindLlm: 'Language model',
       mindScripted: 'Scripted (practice)',
+      difficultyLabel: 'Difficulty',
+      difficulty: {
+        easy: 'Easy',
+        standard: 'Standard',
+        advanced: 'Advanced',
+      },
     },
   },
 
@@ -87,6 +93,8 @@ export const en = {
     numbers: 'The numbers',
     numbersExplain:
       'Each decision priced against the safest single-ply move, not the game-theoretic optimum, so a shrewd bluff still reads as a "deviation." Total: ',
+    model: 'Model: {{model}}',
+    exportPdf: 'Export to PDF',
     ledgerRd: 'Rd',
     ledgerPlayed: 'Bid',
     ledgerSafest: 'Safe',
