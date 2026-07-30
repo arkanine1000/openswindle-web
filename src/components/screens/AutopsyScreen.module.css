@@ -320,16 +320,34 @@
   color: rgba(29, 24, 18, 0.8);
 }
 
+.ledgerScroll {
+  /* Cells (a spoken bid plus the fallback tag) can outgrow the report's
+   * width on narrow viewports — scroll inside this box instead of letting
+   * the table (and its row borders) bleed past the parchment edge. */
+  overflow-x: auto;
+}
+
 .ledger {
   width: 100%;
+  min-width: 24rem;
   border-collapse: collapse;
 }
 
 .ledger th,
 .ledger td {
   text-align: left;
-  padding: var(--space-2);
+  padding: var(--space-2) var(--space-1);
   border-bottom: 1px solid var(--color-parchment-shade);
+  white-space: nowrap;
+}
+
+/* Rd and Cost hold short, fixed-shape values (a number, a 3-decimal price) —
+ * pin them narrow so Bid/Safe keep the room the spoken-bid text needs. */
+.ledger th:first-child,
+.ledger td:first-child,
+.ledger th:last-child,
+.ledger td:last-child {
+  width: 3.5rem;
 }
 
 .ledger th {

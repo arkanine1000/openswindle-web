@@ -230,29 +230,33 @@ export function AutopsyScreen() {
                 {t('autopsy.numbersExplain')}
                 <b data-testid="total-deviation">{formatFixed(autopsy.total_deviation_price, 3)}</b>
               </p>
-              <table className={styles.ledger}>
-                <thead>
-                  <tr>
-                    <th>{t('autopsy.ledgerRd')}</th>
-                    <th>{t('autopsy.ledgerPlayed')}</th>
-                    <th>{t('autopsy.ledgerSafest')}</th>
-                    <th>{t('autopsy.ledgerPrice')}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {ledger.map((d, i) => (
-                    <tr key={i} data-testid="ledger-row">
-                      <td>{d.round_no}</td>
-                      <td>
-                        {moveText(d.chosen_move, t)}
-                        {d.fallback && <span className={styles.flag}>{t('autopsy.fallbackTag')}</span>}
-                      </td>
-                      <td>{moveText(d.optimal_move, t)}</td>
-                      <td>{formatFixed(d.deviation_price, 3)}</td>
+              <div className={styles.ledgerScroll}>
+                <table className={styles.ledger}>
+                  <thead>
+                    <tr>
+                      <th>{t('autopsy.ledgerRd')}</th>
+                      <th>{t('autopsy.ledgerPlayed')}</th>
+                      <th>{t('autopsy.ledgerSafest')}</th>
+                      <th>{t('autopsy.ledgerPrice')}</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {ledger.map((d, i) => (
+                      <tr key={i} data-testid="ledger-row">
+                        <td>{d.round_no}</td>
+                        <td>
+                          {moveText(d.chosen_move, t)}
+                          {d.fallback && (
+                            <span className={styles.flag}>{t('autopsy.fallbackTag')}</span>
+                          )}
+                        </td>
+                        <td>{moveText(d.optimal_move, t)}</td>
+                        <td>{formatFixed(d.deviation_price, 3)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
               <p className={styles.explain}>
                 {accounting}
                 {tokens.prompt > 0 &&

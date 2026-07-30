@@ -88,8 +88,8 @@ export const hr = {
     numbersExplain:
       'Svaka odluka ocijenjena prema najsigurnijem potezu jednog koraka, ne teorijskom optimumu, pa i lukav blef djeluje kao „odstupanje". Ukupno: ',
     ledgerRd: 'Rd',
-    ledgerPlayed: 'Odigrano',
-    ledgerSafest: 'Najsigurnije',
+    ledgerPlayed: 'Potez',
+    ledgerSafest: 'Sigurno',
     ledgerPrice: 'Cijena',
     fallbackTag: ' (rezerva)',
     acctDecisions_one: '{{count}} odluka',
