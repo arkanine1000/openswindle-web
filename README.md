@@ -75,11 +75,11 @@ Two ideas carry the architecture:
 - **The choreography queue** (`game/choreography.ts`). `POST /moves` is synchronous and returns
   everything the opponent did before it's your turn again — possibly a call, the round reveal,
   and their opening bid of the next round. The response is converted into an ordered list of
-  presentation steps that the store plays out with paced delays. Sequencing is correct by
+  presentation steps that the store plays out with paced delays, so sequencing is correct by
   construction and unit-testable without a DOM. While the request is in flight the opponent
   "thinks" out loud, which is exactly the window an LLM opponent needs. A human opponent's move
-  arrives out-of-band via the poll loop instead, so `buildRemoteSteps` reconstructs it from a
-  view-diff and feeds the very same step queue.
+  arrives differently: out-of-band via the poll loop, so `buildRemoteSteps` reconstructs it from
+  a view-diff and feeds it into that same step queue.
 - **Presentation state vs. authoritative state** (`game/store.ts`). The server view is applied
   between beats, never mid-play, so the HUD can't leak a round's outcome before its reveal has
   played.
@@ -109,10 +109,11 @@ Smaller things that aren't obvious from a file listing:
 
 `public/manifest.webmanifest` and `public/sw.js` make the client installable and let the shell
 open offline. The worker **never caches the engine** — a match is authoritative server state,
-and a stale cached view would be a lie the player could act on. Its precache list is written at
-build time by a plugin in `vite.config.ts` that knows the hashed filenames Vite emitted, so each
-deploy lands in a fresh cache; it registers in production builds only, keeping it clear of HMR
-and the e2e suite.
+and a stale cached view would be a lie the player could act on.
+
+Its precache list is written at build time by a plugin in `vite.config.ts` that knows the
+hashed filenames Vite emitted, so each deploy lands in a fresh cache. That plugin registers in
+production builds only, keeping it clear of HMR and the e2e suite.
 
 Known gap: reloading while _already offline_ serves the cached shell but its scripts don't
 execute, so the app doesn't remount. Installing, launching, and online play are unaffected.
