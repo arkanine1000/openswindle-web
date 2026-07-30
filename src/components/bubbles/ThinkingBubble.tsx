@@ -35,7 +35,7 @@ export function ThinkingBubble({ tail = 'npc' }: ThinkingBubbleProps) {
           });
           tick();
         },
-        900 + Math.random() * 1100,
+        1800 + Math.random() * 2200,
       );
     };
     tick();
