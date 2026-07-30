@@ -65,7 +65,8 @@ export function GameScreen() {
   const [rulesOpen, setRulesOpen] = useState(false);
   const [forfeitOpen, setForfeitOpen] = useState(false);
   // Lives here, not in the composer, so the choice survives across turns.
-  const [autoTalk, setAutoTalk] = useState(() => localStorage.getItem(AUTO_TALK_KEY) === 'true');
+  // Defaults on; an explicit opt-out is the only thing that turns it off.
+  const [autoTalk, setAutoTalk] = useState(() => localStorage.getItem(AUTO_TALK_KEY) !== 'false');
   const toggleAutoTalk = () => {
     const next = !autoTalk;
     localStorage.setItem(AUTO_TALK_KEY, String(next));

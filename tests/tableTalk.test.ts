@@ -33,10 +33,10 @@ describe('talkLevel', () => {
 });
 
 describe('TABLE_TALK', () => {
-  it('offers at least eight phrases at every level', () => {
+  it('offers at least sixteen phrases at every level', () => {
     expect(TABLE_TALK).toHaveLength(5);
     for (const phrases of TABLE_TALK) {
-      expect(phrases.length).toBeGreaterThanOrEqual(8);
+      expect(phrases.length).toBeGreaterThanOrEqual(16);
     }
   });
 

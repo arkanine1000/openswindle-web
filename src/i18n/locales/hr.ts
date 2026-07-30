@@ -246,7 +246,7 @@ export const hr = {
     leaveFailed: 'Nije moguće napustiti stol.',
   },
 
-  // Auto-talk corpus (DRAFT): 5 razine × 8 kratkih dobacivanja.
+  // Auto-talk corpus: 5 razine × 16 kratkih dobacivanja.
   tableTalk: [
     [
       'Hladna noć za kocke.',
@@ -257,6 +257,14 @@ export const hr = {
       'Jedva vrijedno daha.',
       'Topla vatra, niski ulozi.',
       'Tek se upoznajemo.',
+      'Polako večeras.',
+      'Male uloge, prijatelju.',
+      'Miran krug.',
+      'Idemo polako.',
+      'Tek zagrijavamo.',
+      'Nizak žar, zasad.',
+      'Skromna ponuda.',
+      'Ništa smjelo još.',
     ],
     [
       'Samo pipam stol.',
@@ -267,6 +275,14 @@ export const hr = {
       'Ispitujem šavove.',
       'Hrabrije blefiram u snu.',
       'Neka bude zanimljivo.',
+      'Ispitujem te.',
+      'Mali izazov.',
+      'Hoćeš pratiti?',
+      'Ispitujem hrabrost.',
+      'Samo poticaj.',
+      'Malo dižem uloge.',
+      'Pokaži više.',
+      'Držim to lagano.',
     ],
     [
       'Kocke su uz mene.',
@@ -277,6 +293,14 @@ export const hr = {
       'Izgledi idu meni.',
       'Taj trzaj govori dosta.',
       'Postaje strmo, ha?',
+      'Sreća je uz mene.',
+      'Nadmaši, ako smiješ.',
+      'Već oklijevaš.',
+      'Broj postaje težak.',
+      'Osjećaš stisak?',
+      'Mirne ruke, mislim.',
+      'Pazi se, prijatelju.',
+      'Stol te gleda.',
     ],
     [
       'Uzvrati, ako smiješ.',
@@ -287,6 +311,14 @@ export const hr = {
       'Još korak i utapaš se.',
       'Riječi te neće spasiti.',
       'Zakopao sam i bolje.',
+      'Duboka voda sad.',
+      'Živci popuštaju.',
+      'Broji pažljivo.',
+      'Krivi korak, gotov si.',
+      'Ova oklada boli.',
+      'Osjećaš pritisak?',
+      'Nema lakog izlaza.',
+      'Ulozi grizu natrag.',
     ],
     [
       'Blefiraš.',
@@ -297,6 +329,14 @@ export const hr = {
       'Pogledaj me i prozovi.',
       'Odlaziš praznog vrča.',
       'Moli se, ako to radiš.',
+      'Prozovi, dakle.',
+      'Nemaš zaklona.',
+      'Ovo je kraj.',
+      'Nema kamo pobjeći.',
+      'Kocke te izdaju.',
+      'Zadnji čin, druže.',
+      'Nijedan blef ne prođe.',
+      'Slomi se, ili prozovi.',
     ],
   ],
 } as const;

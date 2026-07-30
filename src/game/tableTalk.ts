@@ -13,9 +13,9 @@ export type TalkLevel = 0 | 1 | 2 | 3 | 4;
 /** The mobile bid bubble's per-phrase character budget (English reference).
  * Kept for the corpus budget test; the corpus itself lives in the i18n
  * catalog now, one array-of-arrays per locale. */
-export const MAX_TALK_LENGTH = 27;
+export const MAX_TALK_LENGTH = 25;
 
-/** The active locale's auto-talk corpus: 5 aggression levels × 8 phrases. */
+/** The active locale's auto-talk corpus: 5 aggression levels × 16 phrases. */
 export function talkPool(): readonly string[][] {
   return i18n.t('tableTalk', { returnObjects: true }) as unknown as string[][];
 }

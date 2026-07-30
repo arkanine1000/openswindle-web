@@ -18,7 +18,7 @@ export interface LocaleInfo {
 }
 
 export const LOCALE_META: Record<Locale, LocaleInfo> = {
-  en: { label: 'English', flag: '🇺🇸', maxTalkLength: 27 },
-  hr: { label: 'Hrvatski', flag: '🇭🇷', maxTalkLength: 30 },
+  en: { label: 'English', flag: '🇺🇸', maxTalkLength: 25 },
+  hr: { label: 'Hrvatski', flag: '🇭🇷', maxTalkLength: 25 },
 };
 
