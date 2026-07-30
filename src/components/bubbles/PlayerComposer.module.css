@@ -1,6 +1,6 @@
 .bubble {
   /* The composer is a control surface: wider than conversational bubbles. */
-  width: min(66vw, 330px);
+  width: min(79vw, 396px);
   max-width: none;
 }
 
@@ -48,6 +48,6 @@
 
 @media (min-width: 768px) {
   .bubble {
-    width: min(36vw, 440px);
+    width: min(43vw, 528px);
   }
 }
