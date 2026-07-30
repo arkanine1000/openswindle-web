@@ -6,7 +6,7 @@ import { getAutopsy } from '../../api/client';
 import type { Autopsy, DecisionRecord, Move } from '../../api/types';
 import { otherSeat } from '../../api/types';
 import { spokenBid } from '../../game/bids';
-import { autopsyReportHtml, printAutopsyReport } from '../../game/exportAutopsy';
+import { autopsyMarkdown, downloadTextFile } from '../../game/exportAutopsy';
 import { MODEL_META } from '../../game/models';
 import { buildPostmortem } from '../../game/postmortem';
 import { useGameStore } from '../../game/store';
@@ -103,9 +103,9 @@ export function AutopsyScreen() {
     ? (MODEL_META[autopsy.llm_model as keyof typeof MODEL_META]?.label ?? autopsy.llm_model)
     : null;
 
-  const exportPdf = () => {
+  const exportMarkdown = () => {
     if (!autopsy) return;
-    const html = autopsyReportHtml({
+    const md = autopsyMarkdown({
       autopsy,
       opponent,
       outcomeLabel,
@@ -119,7 +119,7 @@ export function AutopsyScreen() {
       accounting: fullAccounting,
       moveText: (m) => moveText(m, t),
     });
-    printAutopsyReport(html);
+    downloadTextFile(`swindlestones-autopsy-${matchId ?? 'match'}.md`, md, 'text/markdown;charset=utf-8');
   };
 
   return (
@@ -134,11 +134,11 @@ export function AutopsyScreen() {
           <Button
             variant="secondary"
             className={styles.exportButton}
-            onClick={exportPdf}
-            data-testid="export-pdf"
+            onClick={exportMarkdown}
+            data-testid="export-markdown"
           >
             <Download size={16} aria-hidden />
-            {t('autopsy.exportPdf')}
+            {t('autopsy.exportMarkdown')}
           </Button>
         )}
 

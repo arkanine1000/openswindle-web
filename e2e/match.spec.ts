@@ -37,14 +37,12 @@ test.describe('a match against the scripted opponent', () => {
     await page.getByTestId('numbers-toggle').click();
     await expect(page.getByTestId('ledger-row').first()).toBeVisible();
     await expect(page.getByTestId('total-deviation')).toHaveText(/\d+\.\d{3}/);
-    // Full-autopsy export opens a print-ready report in a new tab, no
-    // server round-trip and no PDF-generation dependency.
-    const [reportPage] = await Promise.all([
-      page.waitForEvent('popup'),
-      page.getByTestId('export-pdf').click(),
+    // Full-autopsy export downloads a markdown file, no server round-trip.
+    const [download] = await Promise.all([
+      page.waitForEvent('download'),
+      page.getByTestId('export-markdown').click(),
     ]);
-    await expect(reportPage.getByRole('heading', { name: /Swindlestones autopsy/ })).toBeVisible();
-    await reportPage.close();
+    expect(download.suggestedFilename()).toMatch(/\.md$/);
     await page.screenshot({
       path: `test-results/screens/${test.info().project.name}-autopsy.png`,
       fullPage: true,
