@@ -8,8 +8,15 @@
  * Ordered ascending by OpenRouter output price per million tokens — a rough
  * proxy for reasoning depth — as of 2026-07. That price is never shown to
  * the player; only the difficulty grouping derived from it is. */
+// poolside/laguna-xs-2.1 was tried and dropped: a narrow coding-specialist
+// model, it handled non-English locales (hr) poorly. Prefer general-purpose
+// models here, not code-focused ones, given the locale requirement.
+//
+// minimax/minimax-m2.7 was also tried and dropped: its endpoint mandates
+// reasoning and rejects the backend's unified reasoning-disable outright,
+// and it's a shakier model besides. Revisit reasoning-mandatory models
+// later, as a deliberate feature rather than a one-off workaround.
 export const LLM_MODELS = [
-  'poolside/laguna-xs-2.1',
   'deepseek/deepseek-v4-flash',
   'qwen/qwen3.5-flash-02-23',
   'z-ai/glm-5.2',
@@ -28,7 +35,6 @@ export interface ModelInfo {
 }
 
 export const MODEL_META: Record<LlmModel, ModelInfo> = {
-  'poolside/laguna-xs-2.1': { label: 'Laguna XS 2.1', difficulty: 'easy' },
   'deepseek/deepseek-v4-flash': { label: 'DeepSeek V4 Flash', difficulty: 'easy' },
   'qwen/qwen3.5-flash-02-23': { label: 'Qwen 3.5 Flash', difficulty: 'standard' },
   'z-ai/glm-5.2': { label: 'GLM 5.2', difficulty: 'standard' },

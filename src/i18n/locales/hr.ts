@@ -36,6 +36,7 @@ export const hr = {
         standard: 'Standardno',
         advanced: 'Napredno',
       },
+      confirm: 'Potvrdi',
     },
   },
 

@@ -28,4 +28,12 @@ test.describe('splash screen', () => {
     await page.getByTestId('engine-select').selectOption('scripted');
     await expect(page.getByTestId('model-select')).toBeHidden();
   });
+
+  test('confirm button closes the settings modal', async ({ page }) => {
+    await page.goto('/');
+    await page.getByText('Advanced Settings').click();
+    await expect(page.getByTestId('advanced-settings-modal')).toBeVisible();
+    await page.getByTestId('settings-confirm').click();
+    await expect(page.getByTestId('advanced-settings-modal')).toBeHidden();
+  });
 });

@@ -406,6 +406,14 @@
   border-color: var(--color-accent);
 }
 
+/* Closing the modal already saves these settings live; this button is a
+ * deliberate, explicit affordance so leaving the sheet doesn't feel like
+ * the only way out. */
+.confirmButton {
+  width: 100%;
+  margin-top: var(--space-4);
+}
+
 .hint {
   margin-top: var(--space-3);
   font-size: clamp(0.9rem, 3.4vw, 1.05rem);

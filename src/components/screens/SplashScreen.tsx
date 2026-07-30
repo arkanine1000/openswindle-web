@@ -13,6 +13,7 @@ import {
 } from '../../game/models';
 import { useGameStore } from '../../game/store';
 import { LanguageMenu } from '../hud/LanguageMenu';
+import { Button } from '../ui/Button';
 import { Modal } from '../ui/Modal';
 import styles from './SplashScreen.module.css';
 
@@ -323,6 +324,14 @@ export function SplashScreen() {
             data-testid="seed-input"
           />
         </label>
+
+        <Button
+          className={styles.confirmButton}
+          onClick={() => setSettingsOpen(false)}
+          data-testid="settings-confirm"
+        >
+          {t('splash.advanced.confirm')}
+        </Button>
       </Modal>
     </div>
   );

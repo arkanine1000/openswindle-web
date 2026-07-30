@@ -36,6 +36,7 @@ export const en = {
         standard: 'Standard',
         advanced: 'Advanced',
       },
+      confirm: 'Confirm',
     },
   },
 
