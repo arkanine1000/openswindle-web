@@ -34,6 +34,15 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* The scene is fixed/absolute-positioned, not a document — nothing should
+ * ever scroll during gameplay. But that same lock swallows the mobile PWA's
+ * native pull-to-refresh gesture with no on-screen alternative, so the
+ * splash screen (nothing to protect from an accidental scroll) opts back
+ * into normal overflow via this class — toggled in App.tsx. */
+body.allow-page-scroll {
+  overflow: auto;
+}
+
 /* Selection earns its keep in two places: what you type, and the opponent
  * seed the autopsy invites you to share. */
 input,

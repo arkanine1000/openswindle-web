@@ -136,9 +136,9 @@ export function AutopsyScreen() {
             className={styles.exportButton}
             onClick={exportMarkdown}
             data-testid="export-markdown"
+            aria-label={t('autopsy.exportMarkdown')}
           >
             <Download size={16} aria-hidden />
-            {t('autopsy.exportMarkdown')}
           </Button>
         )}
 

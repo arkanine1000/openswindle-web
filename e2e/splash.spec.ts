@@ -24,7 +24,7 @@ test.describe('splash screen', () => {
   test('difficulty picker only applies to an llm opponent', async ({ page }) => {
     await page.goto('/');
     await page.getByText('Advanced Settings').click();
-    await expect(page.getByTestId('model-select')).toHaveValue('deepseek/deepseek-v4-flash');
+    await expect(page.getByTestId('model-select')).toHaveValue('deepseek/deepseek-v4-flash-0731');
     await page.getByTestId('engine-select').selectOption('scripted');
     await expect(page.getByTestId('model-select')).toBeHidden();
   });

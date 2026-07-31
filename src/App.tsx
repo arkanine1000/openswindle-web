@@ -44,6 +44,16 @@ export default function App() {
     };
   }, [rehydrate, joinMatch]);
 
+  // Body scroll is locked everywhere by default (global.css) — the scene is
+  // fixed/absolute-positioned, not a document. The splash has nothing to
+  // protect from an accidental scroll, so it opts back in: on mobile PWAs
+  // that's the only way to expose the native pull-to-refresh gesture, since
+  // there's no in-app refresh button.
+  useEffect(() => {
+    document.body.classList.toggle('allow-page-scroll', phase === 'splash');
+    return () => document.body.classList.remove('allow-page-scroll');
+  }, [phase]);
+
   let screen;
   if (joining && phase === 'splash') {
     // Between mount and the join resolving (or failing back to splash).
