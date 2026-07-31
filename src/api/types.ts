@@ -118,9 +118,9 @@ export interface NPCProfile {
 export interface DecisionRecord {
   round_no: number;
   chosen_move: Move;
-  optimal_move: Move;
+  safest_move: Move;
   chosen_probability: number;
-  optimal_probability: number;
+  safest_probability: number;
   deviation_price: number;
   scratchpad: string;
   table_talk: string;

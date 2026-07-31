@@ -300,7 +300,7 @@ export function AutopsyScreen() {
                             <span className={styles.flag}>{t('autopsy.fallbackTag')}</span>
                           )}
                         </td>
-                        <td>{moveText(d.optimal_move, t)}</td>
+                        <td>{moveText(d.safest_move, t)}</td>
                         <td>{formatFixed(d.deviation_price, 3)}</td>
                       </tr>
                     ))}

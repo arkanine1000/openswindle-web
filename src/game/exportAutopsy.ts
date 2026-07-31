@@ -75,7 +75,7 @@ export function autopsyMarkdown(input: AutopsyExportInput): string {
   for (const d of autopsy.decisions) {
     lines.push(
       `| ${d.round_no} | ${escapeCell(moveText(d.chosen_move))} | ` +
-        `${escapeCell(moveText(d.optimal_move))} | ${d.deviation_price.toFixed(3)} | ` +
+        `${escapeCell(moveText(d.safest_move))} | ${d.deviation_price.toFixed(3)} | ` +
         `${d.fallback ? 'yes' : ''} | ${escapeCell(d.scratchpad)} |`,
     );
   }
