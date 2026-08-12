@@ -53,7 +53,11 @@ function recapLine(
     return i18n.t('postmortem.recapWin', { count: rounds, opponent });
   }
   if (outcome === 'defeat') {
-    return i18n.t('postmortem.recapDefeat', { count: rounds, opponent, theirs: finalCounts.theirs });
+    return i18n.t('postmortem.recapDefeat', {
+      count: rounds,
+      opponent,
+      theirs: finalCounts.theirs,
+    });
   }
   return i18n.t('postmortem.recapAbandoned', { count: rounds });
 }

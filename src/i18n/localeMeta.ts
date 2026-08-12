@@ -21,4 +21,3 @@ export const LOCALE_META: Record<Locale, LocaleInfo> = {
   en: { label: 'English', flag: '🇺🇸', maxTalkLength: 25 },
   hr: { label: 'Hrvatski', flag: '🇭🇷', maxTalkLength: 25 },
 };
-

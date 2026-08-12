@@ -94,9 +94,7 @@ export function ResultScreen() {
         </Button>
       </motion.div>
       <p className={styles.footnote}>
-        {isHuman
-          ? t('result.footnoteHuman')
-          : t('result.footnoteBot', { opponent: npcName })}
+        {isHuman ? t('result.footnoteHuman') : t('result.footnoteBot', { opponent: npcName })}
       </p>
     </div>
   );

@@ -43,7 +43,9 @@ function PipStrip({ total, alive, who }: { total: number; alive: number; who: 'p
             key={i}
             className={styles.pip}
             src={shown ? assets.pips[who] : assets.pips.lost}
-            alt={i18n.t(shown ? (who === 'player' ? 'hud.ariaYourDie' : 'hud.ariaOppDie') : 'hud.ariaLostDie')}
+            alt={i18n.t(
+              shown ? (who === 'player' ? 'hud.ariaYourDie' : 'hud.ariaOppDie') : 'hud.ariaLostDie',
+            )}
             animate={
               flashing
                 ? { opacity: [1, 0.12, 1, 0.12, 0.9], scale: [1, 1.22, 1, 1.16, 1] }

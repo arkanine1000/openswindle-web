@@ -13,12 +13,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
  * quieter parchment for cancel/dismiss actions. The splash screen keeps its
  * own oversized hero `.cta` — everything else should reach for this.
  */
-export function Button({
-  variant = 'primary',
-  className,
-  type = 'button',
-  ...rest
-}: ButtonProps) {
+export function Button({ variant = 'primary', className, type = 'button', ...rest }: ButtonProps) {
   const classes = [styles.btn, styles[variant], className].filter(Boolean).join(' ');
   return <button type={type} className={classes} {...rest} />;
 }

@@ -3,7 +3,12 @@ import { buildRemoteSteps } from '../src/game/choreography';
 import type { BidRecord } from '../src/api/types';
 import { bid, reveal, view } from './helpers';
 
-const record = (seat: 'a' | 'b', q: number, f: 1 | 2 | 3 | 4, talk: string | null = null): BidRecord => ({
+const record = (
+  seat: 'a' | 'b',
+  q: number,
+  f: 1 | 2 | 3 | 4,
+  talk: string | null = null,
+): BidRecord => ({
   seat,
   bid: bid(q, f),
   table_talk: talk,

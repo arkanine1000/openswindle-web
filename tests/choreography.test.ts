@@ -7,7 +7,12 @@ describe('buildSteps', () => {
     const res = moveResponse({ npc_events: [npcBid('3x2', 'Bold of you.')] });
     const steps = buildSteps({ action: 'bid', bid: bid(2, 4) }, res);
     expect(steps).toEqual([
-      { type: 'npcMove', roundNo: 1, move: { action: 'bid', bid: bid(3, 2) }, talk: 'Bold of you.' },
+      {
+        type: 'npcMove',
+        roundNo: 1,
+        move: { action: 'bid', bid: bid(3, 2) },
+        talk: 'Bold of you.',
+      },
     ]);
   });
 

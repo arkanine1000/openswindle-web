@@ -19,13 +19,18 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      # Each check runs even when an earlier one failed, so a formatting nit
+      # cannot mask a broken test or build the way it did before.
       - name: Lint
         run: pnpm lint
       - name: Format check
+        if: ${{ !cancelled() }}
         run: pnpm format:check
       - name: Unit tests
+        if: ${{ !cancelled() }}
         run: pnpm test
       - name: Build
+        if: ${{ !cancelled() }}
         run: pnpm build
 
   # The e2e suite drives the real engine in mock-LLM mode, so it needs the

@@ -38,7 +38,9 @@ export function LanguageMenu() {
         aria-label={t('lang.menu')}
         data-testid="language-menu"
       >
-        <span className={styles.flag} aria-hidden>{LOCALE_META[current].flag}</span>
+        <span className={styles.flag} aria-hidden>
+          {LOCALE_META[current].flag}
+        </span>
         <ChevronDown size={14} aria-hidden />
       </button>
       {open && (
@@ -53,7 +55,9 @@ export function LanguageMenu() {
                 onClick={() => pick(lng)}
                 data-testid={`lang-${lng}`}
               >
-                <span className={styles.flag} aria-hidden>{LOCALE_META[lng].flag}</span>
+                <span className={styles.flag} aria-hidden>
+                  {LOCALE_META[lng].flag}
+                </span>
                 <span>{LOCALE_META[lng].label}</span>
               </button>
             </li>

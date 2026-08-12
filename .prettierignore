@@ -1,5 +1,6 @@
 dist
 pnpm-lock.yaml
+.claude
 playwright-report
 test-results
 interface-references

@@ -26,7 +26,10 @@ export interface ModelInfo {
 
 export const MODEL_META: Record<LlmModel, ModelInfo> = {
   'deepseek/deepseek-v4-flash': { label: 'DeepSeek V4 Flash', difficulty: 'easy' },
-  'deepseek/deepseek-v4-flash-0731': { label: 'DeepSeek V4 Flash (0731 Preview)', difficulty: 'easy' },
+  'deepseek/deepseek-v4-flash-0731': {
+    label: 'DeepSeek V4 Flash (0731 Preview)',
+    difficulty: 'easy',
+  },
   'moonshotai/kimi-k2.6': { label: 'Kimi K2.6', difficulty: 'standard' },
   'z-ai/glm-5.2': { label: 'GLM 5.2', difficulty: 'advanced' },
 };

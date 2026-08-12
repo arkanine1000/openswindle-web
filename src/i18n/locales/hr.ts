@@ -182,9 +182,11 @@ export const hr = {
   rules: {
     title: 'Kako varati',
     lede: 'Igra lažljivaca s četverostranim kockama. Ti i protivnik skrivate šaku kocaka (strane 1–4). Nitko ne vidi tuđu šaku.',
-    step1: 'Postavi okladu poput <bid>3 × četiri</bid> — da barem tri četvorke leže u <i>obje</i> šake zajedno.',
+    step1:
+      'Postavi okladu poput <bid>3 × četiri</bid> — da barem tri četvorke leže u <i>obje</i> šake zajedno.',
     step2: 'Nadmaši svaku okladu: veći broj, ili isti broj na višoj strani.',
-    step3: 'Umjesto toga prozovi, ako nanjušiš laž. Obje šake se otkrivaju — ako oklada stoji, prozivač gubi kocku; ako je blef, gubi onaj tko se okladio.',
+    step3:
+      'Umjesto toga prozovi, ako nanjušiš laž. Obje šake se otkrivaju — ako oklada stoji, prozivač gubi kocku; ako je blef, gubi onaj tko se okladio.',
     step4: 'Preživi. Izgubiš li posljednju kocku, ispadaš. Uzmi protivnikove i stol je tvoj.',
     aside: 'Razgovor je dio igre. Blefiraj, bockaj ili šuti.',
   },

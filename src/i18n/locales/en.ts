@@ -174,9 +174,11 @@ export const en = {
   rules: {
     title: 'How to Swindle',
     lede: "A liar's game of four-sided bones. You and your opponent each hide a handful of dice (faces 1–4). Nobody sees the other's hand.",
-    step1: 'Bid a claim like <bid>3 × four</bid> — that at least three fours lie across <i>both</i> hands, yours and theirs together.',
+    step1:
+      'Bid a claim like <bid>3 × four</bid> — that at least three fours lie across <i>both</i> hands, yours and theirs together.',
     step2: 'Raise or beat every bid: a higher count, or the same count on a higher face.',
-    step3: "Call instead, if you smell a lie. Both hands come open — if the bid holds, the caller loses a die; if it was a bluff, the bidder does.",
+    step3:
+      'Call instead, if you smell a lie. Both hands come open — if the bid holds, the caller loses a die; if it was a bluff, the bidder does.',
     step4: "Survive. Lose your last die and you're out. Take theirs and the table is yours.",
     aside: 'Talk is part of the game. Bluff, needle, or hold your tongue.',
   },

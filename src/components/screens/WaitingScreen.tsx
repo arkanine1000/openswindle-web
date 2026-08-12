@@ -84,10 +84,7 @@ export function WaitingScreen() {
               <div className={styles.qrCornerTopRight} aria-hidden />
               <div className={styles.qrCornerBottomLeft} aria-hidden />
               <div className={styles.qrCornerBottomRight} aria-hidden />
-              <div
-                className={styles.qrCode}
-                dangerouslySetInnerHTML={{ __html: qrSvg }}
-              />
+              <div className={styles.qrCode} dangerouslySetInnerHTML={{ __html: qrSvg }} />
             </div>
           )}
           <div className={styles.linkRow}>

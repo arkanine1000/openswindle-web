@@ -393,7 +393,11 @@ export const useGameStore = create<GameState>((set, get) => {
       runId += 1;
       stopPolling();
       try {
-        const res = await createMatch({ ...config, opponent_type: 'human', locale: currentLocale() });
+        const res = await createMatch({
+          ...config,
+          opponent_type: 'human',
+          locale: currentLocale(),
+        });
         const token = res.tokens.a;
         const startTotal = Object.values(res.view.dice_counts).reduce((a, b) => a + b, 0);
         sessionStorage.setItem(
