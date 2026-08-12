@@ -98,7 +98,7 @@ export function BidCarousel({ items, armedIndex, onArm, onSubmit }: BidCarouselP
                 <span className={styles.callLabel}>{t('carousel.call')}</span>
               ) : (
                 <>
-                  <Die face={item.option.bid.face} owner="player" small />
+                  <Die face={item.option.bid.face} owner="player" small decorative />
                   <b className={styles.count}>{item.option.bid.quantity}x</b>
                 </>
               )}

@@ -184,6 +184,7 @@ export const en = {
     ariaAuto: 'Let the game talk for you',
     autoTitle: 'Auto table talk',
     sayPlaceholder: 'Say something…',
+    ariaConfirm: 'Confirm — {{move}}',
     bidStrip: 'Bid {{bid}}',
     callStrip: 'Call!',
     noBid: 'No bid left to make, call!',
@@ -209,6 +210,7 @@ export const en = {
   scene: {
     dieYou: 'your die showing {{face}}',
     dieOpp: "opponent's die showing {{face}}",
+    bidChip: 'bid: {{bid}}',
     npcSeated: '{{name}}, seated at the table',
     npcAccusing: '{{name}}, standing to accuse',
     handRevealed: 'your hand drawn aside, revealing your dice',

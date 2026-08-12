@@ -192,6 +192,7 @@ export const hr = {
     ariaAuto: 'Neka igra govori umjesto tebe',
     autoTitle: 'Automatsko dobacivanje',
     sayPlaceholder: 'Reci nešto…',
+    ariaConfirm: 'Potvrdi — {{move}}',
     bidStrip: 'Okladi {{bid}}',
     callStrip: 'Proziv!',
     noBid: 'Nema više oklade, prozovi!',
@@ -217,6 +218,7 @@ export const hr = {
   scene: {
     dieYou: 'tvoja kocka pokazuje {{face}}',
     dieOpp: 'protivnikova kocka pokazuje {{face}}',
+    bidChip: 'ulog: {{bid}}',
     npcSeated: '{{name}}, sjedi za stolom',
     npcAccusing: '{{name}}, ustaje da optuži',
     handRevealed: 'tvoja ruka je odmaknuta, otkriva kocke',

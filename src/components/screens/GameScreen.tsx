@@ -13,6 +13,7 @@ import { ThinkingBubble } from '../bubbles/ThinkingBubble';
 import { HistorySheet } from '../hud/HistorySheet';
 import { RulesModal } from '../hud/RulesModal';
 import { TopBar } from '../hud/TopBar';
+import { Announcer } from '../ui/Announcer';
 import { Button } from '../ui/Button';
 import { Modal } from '../ui/Modal';
 import { NpcDiceReveal } from '../scene/NpcDiceReveal';
@@ -83,6 +84,7 @@ export function GameScreen() {
   // After a call there is nothing to "think" about — the hands come open.
   const lastUtterance = feed[feed.length - 1];
   const playerCalled = lastUtterance?.speaker === 'you' && lastUtterance.move.action === 'call';
+  const revealOutcome = activeReveal ? describeReveal(revealEntry(activeReveal, mySeat)) : '';
 
   const spring = { type: 'spring', stiffness: 380, damping: 28 } as const;
 
@@ -234,9 +236,9 @@ export function GameScreen() {
           </StatusStrip>
         </>
       )}
-      {activeReveal && (
+      {revealOutcome && (
         <StatusStrip placement="top" testId="reveal-outcome">
-          {describeReveal(revealEntry(activeReveal, mySeat))}
+          {revealOutcome}
         </StatusStrip>
       )}
       {/* Only the call-resolution beat gets a strip — while the NPC weighs
@@ -271,6 +273,7 @@ export function GameScreen() {
         }
       }}
     >
+      <Announcer message={revealOutcome} />
       <TableScene
         hud={
           <TopBar

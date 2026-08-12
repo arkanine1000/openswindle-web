@@ -129,7 +129,11 @@ export function PlayerComposer({
         <BidCarousel items={items} armedIndex={armed} onArm={setArmed} onSubmit={submit} />
       </SpeechBubble>
       {stripLabel ? (
-        <StatusStrip onClick={() => submit(armedItem)} testId="confirm-strip">
+        <StatusStrip
+          onClick={() => submit(armedItem)}
+          testId="confirm-strip"
+          ariaLabel={t('composer.ariaConfirm', { move: stripLabel })}
+        >
           {stripLabel}
         </StatusStrip>
       ) : (
