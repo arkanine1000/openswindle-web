@@ -9,11 +9,11 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
         with:
           version: 11
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
@@ -38,23 +38,25 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           path: openswindle-web
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: arkanine1000/openswindle
           path: openswindle
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           version: 11
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
           cache-dependency-path: openswindle-web/pnpm-lock.yaml
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        # Pinned to a full version: setup-uv dropped its major/minor tags in
+        # v7, so there is no @v9 to float on.
+        uses: astral-sh/setup-uv@v9.0.0
       - name: Sync engine dependencies
         run: uv sync --locked
         working-directory: openswindle
@@ -67,7 +69,7 @@ jobs:
       - name: End-to-end tests
         run: pnpm e2e
         working-directory: openswindle-web
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: playwright-report
