@@ -16,6 +16,8 @@ export interface AutopsyExportInput {
   mySeat: Seat;
   opponentSeat: Seat;
   modelLabel: string | null;
+  /** Empty for a human opponent, who has no seeded persona. */
+  npcSeed: string;
   accounting: string;
   moveText: (move: Move) => string;
 }
@@ -25,9 +27,14 @@ export interface AutopsyExportInput {
  * profile, and the full decision ledger — for offline analysis. */
 export function autopsyMarkdown(input: AutopsyExportInput): string {
   const { autopsy, opponent, outcomeLabel, recap, stats, rounds, scratchByRound } = input;
-  const { mySeat, opponentSeat, modelLabel, accounting, moveText } = input;
-  const lines: string[] = [`# Swindlestones autopsy — ${opponent}`, '', `- Outcome: ${outcomeLabel}`];
+  const { mySeat, opponentSeat, modelLabel, npcSeed, accounting, moveText } = input;
+  const lines: string[] = [
+    `# Swindlestones autopsy — ${opponent}`,
+    '',
+    `- Outcome: ${outcomeLabel}`,
+  ];
   if (modelLabel) lines.push(`- Model: ${modelLabel}`);
+  if (npcSeed) lines.push(`- Opponent seed: ${npcSeed}`);
   lines.push('', recap, '', '## At a glance', '');
   for (const stat of stats) lines.push(`- ${stat.label}: ${stat.value}`);
 

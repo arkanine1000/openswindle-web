@@ -95,6 +95,7 @@ export const en = {
     numbersExplain:
       'Each decision priced against the safest single-ply move, not the game-theoretic optimum, so a shrewd bluff still reads as a "deviation." Total: ',
     model: 'Model: {{model}}',
+    seed: 'Opponent seed: {{seed}}',
     exportMarkdown: 'Export to Markdown',
     ledgerRd: 'Rd',
     ledgerPlayed: 'Bid',

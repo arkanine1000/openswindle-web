@@ -34,6 +34,7 @@ export function AutopsyScreen() {
   const isHuman = useGameStore((s) => s.isHuman);
   const mySeat = useGameStore((s) => s.mySeat);
   const npcName = useGameStore((s) => s.npcName);
+  const npcSeed = useGameStore((s) => s.npcSeed);
   const outcome = useGameStore((s) => s.outcome) ?? 'abandoned';
   const view = useGameStore((s) => s.view);
   const transcript = useGameStore((s) => s.transcript);
@@ -116,10 +117,15 @@ export function AutopsyScreen() {
       mySeat,
       opponentSeat,
       modelLabel,
+      npcSeed,
       accounting: fullAccounting,
       moveText: (m) => moveText(m, t),
     });
-    downloadTextFile(`swindlestones-autopsy-${matchId ?? 'match'}.md`, md, 'text/markdown;charset=utf-8');
+    downloadTextFile(
+      `swindlestones-autopsy-${matchId ?? 'match'}.md`,
+      md,
+      'text/markdown;charset=utf-8',
+    );
   };
 
   return (
@@ -168,7 +174,9 @@ export function AutopsyScreen() {
               return (
                 <details key={round.roundNo} className={styles.round} data-testid="round-card">
                   <summary className={styles.roundHead}>
-                    <span className={styles.roundNo}>{t('autopsy.round', { n: round.roundNo })}</span>
+                    <span className={styles.roundNo}>
+                      {t('autopsy.round', { n: round.roundNo })}
+                    </span>
                     <span className={styles.roundLine}>{round.headline}</span>
                     <ChevronDown className={styles.chevron} size="1.1em" aria-hidden />
                   </summary>
@@ -250,7 +258,9 @@ export function AutopsyScreen() {
               {TRAITS.map((trait) => (
                 <div key={trait} className={styles.trait}>
                   <span className={styles.traitName}>
-                    {t(`autopsy.trait${trait.charAt(0).toUpperCase()}${trait.slice(1)}` as 'autopsy.traitDeception')}
+                    {t(
+                      `autopsy.trait${trait.charAt(0).toUpperCase()}${trait.slice(1)}` as 'autopsy.traitDeception',
+                    )}
                   </span>
                   <div className={styles.traitTrack}>
                     <div
@@ -274,6 +284,11 @@ export function AutopsyScreen() {
               {modelLabel && (
                 <p className={styles.explain} data-testid="autopsy-model">
                   {t('autopsy.model', { model: modelLabel })}
+                </p>
+              )}
+              {npcSeed && (
+                <p className={styles.explain} data-testid="autopsy-seed">
+                  {t('autopsy.seed', { seed: npcSeed })}
                 </p>
               )}
               <p className={styles.explain}>

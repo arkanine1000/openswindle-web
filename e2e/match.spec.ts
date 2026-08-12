@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { readFileSync } from 'node:fs';
 import { playToTheEnd, playTurn, rollDice, sitDown, waitForTurnOrEnd } from './helpers';
 
 test.describe('a match against the scripted opponent', () => {
@@ -37,12 +38,15 @@ test.describe('a match against the scripted opponent', () => {
     await page.getByTestId('numbers-toggle').click();
     await expect(page.getByTestId('ledger-row').first()).toBeVisible();
     await expect(page.getByTestId('total-deviation')).toHaveText(/\d+\.\d{3}/);
+    // The seed names the opponent you played, so the match can be replayed.
+    await expect(page.getByTestId('autopsy-seed')).toContainText('seed 4471');
     // Full-autopsy export downloads a markdown file, no server round-trip.
     const [download] = await Promise.all([
       page.waitForEvent('download'),
       page.getByTestId('export-markdown').click(),
     ]);
     expect(download.suggestedFilename()).toMatch(/\.md$/);
+    expect(readFileSync(await download.path(), 'utf8')).toContain('- Opponent seed: seed 4471');
     await page.screenshot({
       path: `test-results/screens/${test.info().project.name}-autopsy.png`,
       fullPage: true,

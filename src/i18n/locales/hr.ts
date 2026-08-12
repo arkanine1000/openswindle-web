@@ -95,6 +95,7 @@ export const hr = {
     numbersExplain:
       'Svaka odluka ocijenjena prema najsigurnijem potezu jednog koraka, ne teorijskom optimumu, pa i lukav blef djeluje kao „odstupanje". Ukupno: ',
     model: 'Model: {{model}}',
+    seed: 'Sjeme protivnika: {{seed}}',
     exportMarkdown: 'Izvezi u Markdown',
     ledgerRd: 'Rd',
     ledgerPlayed: 'Potez',
