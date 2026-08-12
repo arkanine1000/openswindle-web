@@ -10,7 +10,7 @@ import { parseBid } from './bids';
  * construction and testable without DOM.
  */
 export type Step =
-  | { type: 'npcMove'; move: Move; talk: string }
+  | { type: 'npcMove'; roundNo: number; move: Move; talk: string }
   | { type: 'reveal'; reveal: RoundReveal }
   | { type: 'roundStart'; roundNo: number; yourHand: number[]; opener: Seat }
   | { type: 'matchEnd'; winner: Seat | null };
@@ -30,15 +30,19 @@ export function buildSteps(playerMove: Move | null, response: MoveResponse): Ste
   const { view, npc_events, reveals } = response;
   const steps: Step[] = [];
   let revealIndex = 0;
+  // A batch can straddle a round boundary, so npcMove carries the round it was
+  // actually played in rather than the trailing view's.
+  let roundNo = reveals[0]?.round_no ?? view.round_no;
 
   const pushReveal = () => {
     const reveal = reveals[revealIndex++];
     if (!reveal) throw new Error('Move response missing an expected reveal');
     steps.push({ type: 'reveal', reveal });
+    roundNo = reveal.round_no + 1;
     if (view.phase !== 'finished' || revealIndex < reveals.length) {
       steps.push({
         type: 'roundStart',
-        roundNo: reveal.round_no + 1,
+        roundNo,
         yourHand: view.your_hand,
         opener: reveal.loser,
       });
@@ -52,11 +56,12 @@ export function buildSteps(playerMove: Move | null, response: MoveResponse): Ste
       if (!event.bid) throw new Error('NPC bid event without a bid');
       steps.push({
         type: 'npcMove',
+        roundNo,
         move: { action: 'bid', bid: parseBid(event.bid) },
         talk: event.table_talk,
       });
     } else {
-      steps.push({ type: 'npcMove', move: { action: 'call' }, talk: event.table_talk });
+      steps.push({ type: 'npcMove', roundNo, move: { action: 'call' }, talk: event.table_talk });
       pushReveal();
     }
   }
@@ -99,6 +104,7 @@ export function buildRemoteSteps(
       if (record.seat !== opponent) continue;
       steps.push({
         type: 'npcMove',
+        roundNo: prevView.round_no,
         move: { action: 'bid', bid: record.bid },
         talk: record.table_talk ?? '',
       });
@@ -113,7 +119,12 @@ export function buildRemoteSteps(
 
     // A genuine call ends the round; a walk-away leaves no move to voice.
     if (!abandoned) {
-      steps.push({ type: 'npcMove', move: { action: 'call' }, talk: reveal.table_talk ?? '' });
+      steps.push({
+        type: 'npcMove',
+        roundNo: reveal.round_no,
+        move: { action: 'call' },
+        talk: reveal.table_talk ?? '',
+      });
     }
     steps.push({ type: 'reveal', reveal });
 
@@ -131,6 +142,7 @@ export function buildRemoteSteps(
         if (opening?.seat === opponent) {
           steps.push({
             type: 'npcMove',
+            roundNo: reveal.round_no + 1,
             move: { action: 'bid', bid: opening.bid },
             talk: opening.table_talk ?? '',
           });

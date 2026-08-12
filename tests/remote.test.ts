@@ -15,7 +15,7 @@ describe('buildRemoteSteps', () => {
     const next = view({ turn: 'a', bid_history: [record('a', 1, 1), record('b', 1, 2, 'higher')] });
     const steps = buildRemoteSteps(prev, next, 'a');
     expect(steps).toEqual([
-      { type: 'npcMove', move: { action: 'bid', bid: bid(1, 2) }, talk: 'higher' },
+      { type: 'npcMove', roundNo: 1, move: { action: 'bid', bid: bid(1, 2) }, talk: 'higher' },
     ]);
   });
 
@@ -29,7 +29,7 @@ describe('buildRemoteSteps', () => {
     });
     const steps = buildRemoteSteps(prev, next, 'a');
     expect(steps.map((s) => s.type)).toEqual(['npcMove', 'reveal', 'roundStart']);
-    expect(steps[0]).toMatchObject({ move: { action: 'call' }, talk: 'gotcha' });
+    expect(steps[0]).toMatchObject({ roundNo: 1, move: { action: 'call' }, talk: 'gotcha' });
     expect(steps[2]).toMatchObject({ type: 'roundStart', roundNo: 2, opener: 'a' });
   });
 
@@ -44,7 +44,12 @@ describe('buildRemoteSteps', () => {
     const steps = buildRemoteSteps(prev, next, 'a');
     expect(steps.map((s) => s.type)).toEqual(['npcMove', 'reveal', 'roundStart', 'npcMove']);
     expect(steps[2]).toMatchObject({ opener: 'b' });
-    expect(steps[3]).toMatchObject({ move: { action: 'bid', bid: bid(1, 1) }, talk: 'again' });
+    expect(steps[0]).toMatchObject({ roundNo: 1, move: { action: 'call' } });
+    expect(steps[3]).toMatchObject({
+      roundNo: 2,
+      move: { action: 'bid', bid: bid(1, 1) },
+      talk: 'again',
+    });
   });
 
   it('ends the match when the opponent call takes my last die', () => {
@@ -81,7 +86,7 @@ describe('buildRemoteSteps', () => {
     const next = view({ seat: 'b', turn: 'b', bid_history: [record('a', 2, 3, 'mine')] });
     const steps = buildRemoteSteps(prev, next, 'b');
     expect(steps).toEqual([
-      { type: 'npcMove', move: { action: 'bid', bid: bid(2, 3) }, talk: 'mine' },
+      { type: 'npcMove', roundNo: 1, move: { action: 'bid', bid: bid(2, 3) }, talk: 'mine' },
     ]);
   });
 });

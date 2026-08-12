@@ -7,7 +7,7 @@ describe('buildSteps', () => {
     const res = moveResponse({ npc_events: [npcBid('3x2', 'Bold of you.')] });
     const steps = buildSteps({ action: 'bid', bid: bid(2, 4) }, res);
     expect(steps).toEqual([
-      { type: 'npcMove', move: { action: 'bid', bid: bid(3, 2) }, talk: 'Bold of you.' },
+      { type: 'npcMove', roundNo: 1, move: { action: 'bid', bid: bid(3, 2) }, talk: 'Bold of you.' },
     ]);
   });
 
@@ -34,7 +34,7 @@ describe('buildSteps', () => {
     const steps = buildSteps({ action: 'call' }, res);
     expect(steps.map((s) => s.type)).toEqual(['reveal', 'roundStart', 'npcMove']);
     expect(steps[1]).toMatchObject({ opener: 'b', roundNo: 2 });
-    expect(steps[2]).toMatchObject({ move: { action: 'bid', bid: bid(1, 2) } });
+    expect(steps[2]).toMatchObject({ roundNo: 2, move: { action: 'bid', bid: bid(1, 2) } });
   });
 
   it('NPC calls the player and the player loses the round', () => {
@@ -46,8 +46,25 @@ describe('buildSteps', () => {
     });
     const steps = buildSteps({ action: 'bid', bid: bid(4, 4) }, res);
     expect(steps.map((s) => s.type)).toEqual(['npcMove', 'reveal', 'roundStart']);
-    expect(steps[0]).toMatchObject({ move: { action: 'call' }, talk: 'I do not believe you.' });
+    expect(steps[0]).toMatchObject({
+      roundNo: 1,
+      move: { action: 'call' },
+      talk: 'I do not believe you.',
+    });
     expect(steps[2]).toMatchObject({ opener: 'a' });
+  });
+
+  it('an NPC call is stamped with the round it ended, not the one it opens', () => {
+    const r = reveal({ round_no: 4, caller: 'b', loser: 'b', bid_met: true });
+    const res = moveResponse({
+      view: view({ round_no: 5 }),
+      npc_events: [npcCall('Three fours? I have one right here.'), npcBid('2x4', 'Two fours.')],
+      reveals: [r],
+    });
+    const steps = buildSteps({ action: 'bid', bid: bid(3, 4) }, res);
+    expect(steps.map((s) => s.type)).toEqual(['npcMove', 'reveal', 'roundStart', 'npcMove']);
+    expect(steps[0]).toMatchObject({ roundNo: 4, move: { action: 'call' } });
+    expect(steps[3]).toMatchObject({ roundNo: 5, move: { action: 'bid', bid: bid(2, 4) } });
   });
 
   it('match-ending call produces matchEnd and no roundStart', () => {

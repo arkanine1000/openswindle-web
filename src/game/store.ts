@@ -174,7 +174,7 @@ export const useGameStore = create<GameState>((set, get) => {
             currentBid: step.move.action === 'bid' ? step.move.bid : s.currentBid,
             transcript: [
               ...s.transcript,
-              moveEntry(finalView.round_no, 'npc', step.move, step.talk || null),
+              moveEntry(step.roundNo, 'npc', step.move, step.talk || null),
             ],
           }));
           await sleep(talkLinger(step.talk));
