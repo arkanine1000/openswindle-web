@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { playTurn, submitCall } from './helpers';
+import { playTurn, submitCall, manualTalk } from './helpers';
 
 /**
  * Two browser contexts share one server-held match: seat A creates an invite,
@@ -42,6 +42,7 @@ test.describe('human vs human (invite match)', () => {
       await expect(pageB.getByTestId('player-composer')).toBeVisible({ timeout: 20_000 });
 
       // B calls with parting words — the case where table talk isn't a bid.
+      await manualTalk(pageB);
       await pageB.getByTestId('talk-input').fill('You are bluffing.');
       await submitCall(pageB);
 

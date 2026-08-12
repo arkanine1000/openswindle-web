@@ -1,10 +1,11 @@
 import { expect, test } from '@playwright/test';
-import { rollDice, sitDown, waitForTurnOrEnd } from './helpers';
+import { rollDice, sitDown, manualTalk, waitForTurnOrEnd } from './helpers';
 
 test.describe('composer and history ergonomics', () => {
   test('Enter in the talk field plays the armed bid, talk attached', async ({ page }) => {
     await sitDown(page, { dice: 3 });
     await rollDice(page);
+    await manualTalk(page);
     await page.getByTestId('talk-input').fill('Hear me out.');
     await page.getByTestId('talk-input').press('Enter');
     await waitForTurnOrEnd(page);

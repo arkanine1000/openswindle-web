@@ -35,9 +35,18 @@ export async function submitCall(page: Page): Promise<void> {
   await call.click({ timeout: 10_000 });
 }
 
+/** Auto talk is on by default and holds the talk field disabled, so writing
+ * your own line means opting out first. */
+export async function manualTalk(page: Page): Promise<void> {
+  if (await page.getByTestId('talk-input').isDisabled()) {
+    await page.getByTestId('talk-toggle').click();
+  }
+}
+
 /** One human turn: raise minimally when the strip offers a bid, else call. */
 export async function playTurn(page: Page, talk?: string): Promise<void> {
   if (talk !== undefined) {
+    await manualTalk(page);
     await page.getByTestId('talk-input').fill(talk);
   }
   const strip = page.getByTestId('confirm-strip');

@@ -43,18 +43,22 @@ test.describe('the bid carousel', () => {
       const ghosted = page.locator('[data-selectable="false"]');
       if ((await ghosted.count()) > 0) {
         // A die has been lost: every ghosted bid exceeds the live board total,
-        // which the HUD pips display (lost sockets go dark).
-        const liveTotal =
-          (await page.locator('img[alt="your die"]').count()) +
-          (await page.locator(`img[alt="opponent's die"]`).count());
-        const labels = await ghosted.evaluateAll((nodes) =>
-          nodes.map((n) => n.getAttribute('data-testid') ?? ''),
-        );
-        expect(labels.length).toBeGreaterThan(0);
-        for (const label of labels) {
-          const quantity = Number(/bid-option-(\d+)x/.exec(label)?.[1]);
-          expect(quantity).toBeGreaterThan(liveTotal);
-        }
+        // which the HUD pips display (lost sockets go dark). The struck pip
+        // holds its owner's colour for a blink before greying, so retry until
+        // the plate has settled rather than counting it as still held.
+        await expect(async () => {
+          const liveTotal =
+            (await page.locator('img[alt="your die"]').count()) +
+            (await page.locator(`img[alt="opponent's die"]`).count());
+          const labels = await ghosted.evaluateAll((nodes) =>
+            nodes.map((n) => n.getAttribute('data-testid') ?? ''),
+          );
+          expect(labels.length).toBeGreaterThan(0);
+          for (const label of labels) {
+            const quantity = Number(/bid-option-(\d+)x/.exec(label)?.[1]);
+            expect(quantity).toBeGreaterThan(liveTotal);
+          }
+        }).toPass({ timeout: 5_000 });
         // And a dead bid is inert — aria-disabled blocks pointer submission.
         await expect(ghosted.first()).toBeDisabled();
         await expect(page.getByTestId('player-composer')).toBeVisible();
